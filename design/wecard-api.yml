@@ -1,0 +1,425 @@
+swagger: '2.0'
+info:
+  version: v1
+  title: wecard
+  description: A wecard API based on Swagger and built using Node.js
+host: wecard.azurewebsites.net
+schemes:
+  - http
+  - https
+basePath: /api
+securityDefinitions:
+  Bearer:
+    type: apiKey
+    name: Authorization
+    in: header
+security:
+  - Bearer: []
+consumes:
+  - application/json
+  - text/json
+produces:
+  - application/json
+  - text/json
+paths:
+  '/auth':
+    get:
+      security: []
+      tags: 
+        - Authentication
+      parameters:
+        - name: WX-LOGIN-CODE
+          in: header
+          description: The WX login code
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/UserInfo'
+  '/namecard':
+    get:
+      tags:
+        - Namecard
+      summary: Get all Namecards of current user
+      operationId: namecard_get
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Namecard'
+    post:
+      tags:
+        - Namecard
+      summary: Create a Namecard
+      operationId: namecard_create
+      parameters:
+        - $ref: '#/parameters/Namecard'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Namecard'
+    put:
+      tags:
+        - Namecard
+      summary: Update the Namecard
+      operationId: namecard_update
+      parameters:
+        - $ref: '#/parameters/Namecard'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Namecard'
+  '/namecard/{id}':
+    get:
+      tags:
+        - Namecard
+      summary: Get the Namecard with the id
+      operationId: namecard_getById
+      parameters:
+        - $ref: '#/parameters/EntityId'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Namecard'
+    delete:
+      tags:
+        - Namecard
+      summary: Delete the Namecard with the id
+      operationId: namecard_deleteById
+      parameters:
+        - $ref: '#/parameters/EntityId'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Namecard'
+  '/cardcase/{id}':
+    get:
+      tags:
+        - Cardcase
+      summary: Get the Cardcase with the id
+      operationId: cardcase_getById
+      parameters:
+        - $ref: '#/parameters/EntityId'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Cardcase'
+  '/cardcase/{id}/item':
+    get:
+      tags:
+        - Cardcase
+      summary: Get all CardcaseItem belonging to the Cardcase with the id
+      operationId: cardcaseitem_get
+      parameters:
+        - $ref: '#/parameters/EntityId'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/CardcaseItem'
+    post:
+      tags:
+        - Cardcase
+      summary: Create a CardcaseItem in Cardcase with the Id
+      operationId: cardcaseitem_create
+      parameters:
+        - $ref: '#/parameters/EntityId'
+        - $ref: '#/parameters/CardcaseItem'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CardcaseItem'
+  '/cardcase/item/{id}':
+    delete:
+      tags:
+        - Cardcase
+      summary: Delete the CardcaseItem with id
+      operationId: cardcase_item_deleteById
+      parameters:
+        - $ref: '#/parameters/EntityId'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CardcaseItem'
+  '/group':
+    post:
+      tags:
+        - Group
+      summary: Create a Group
+      operationId: group_create
+      parameters:
+          - $ref: '#/parameters/Group'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Group'
+    put:
+      tags:
+        - Group
+      summary: Update a Group
+      operationId: group_update
+      parameters:
+          - $ref: '#/parameters/Group'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Group'
+  '/group/{id}':
+    get:
+      tags:
+        - Group
+      summary: Get all Groups of current user
+      operationId: group_getById
+      parameters:
+        - $ref: '#/parameters/EntityId'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Group'
+  '/group/{id}/member':
+    get:
+      tags:
+        - Group
+      summary: Get all GroupMember belonging to the Group with the Id
+      operationId: groupmemeber_get
+      parameters:
+        - $ref: '#/parameters/EntityId'
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GroupMember'
+  '/accessrequest':
+    get:
+      tags:
+        - AccessRequest
+      summary: Get all AccessRequest sent to current user
+      operationId: accessreqeust_get
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/AccessRequest'
+    put:
+      tags:
+        - AccessRequest
+      summary: Update an AccessRequest
+      operationId: accessreqeust_update
+      parameters:
+        - $ref: '#/parameters/AccessRequest'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AccessRequest'
+  '/accesslevel/{card_id}':
+    get:
+      tags:
+        - AccessLevel
+      summary: Get Access of the specified id
+      operationId: access_getByCardId
+      parameters:
+        - name: card_id
+          in: path
+          description: The card Id to be accessed
+          required: true
+          type: string
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AccessLevel'
+  '/accesslevel':
+    post:
+      tags:
+        - AccessLevel
+      summary: Create an AccessLevle
+      operationId: accesslevel_create
+      parameters:
+        - $ref: '#/parameters/AccessLevel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AccessLevel'
+    put:
+      tags:
+        - AccessLevel
+      summary: Update an Access
+      operationId: accesslevel_update
+      parameters:
+        - $ref: '#/parameters/AccessLevel'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/AccessLevel'
+# The entity definitions
+definitions:
+  UserInfo:
+    type: object
+    properties:
+      id:
+        type: string
+      wx_open_id:
+        type: string
+      cardcase_id:
+        type: string
+      token:
+        type: string
+  Namecard:
+    type: object
+    properties:
+      id:
+        type: string
+      card_type:
+        type: integer
+      user_id:
+        type: string
+      avatar_uri:
+        type: string
+      name:
+        type: string
+      phone:
+        type: string
+      employment:
+        type:  array
+        items:
+          type: object
+          properties:
+            company:
+              type: string
+            occupation:
+              type: string
+      education:
+        type:  array
+        items:
+          type: object
+          properties:
+            school:
+              type: string
+            major:
+              type: string
+            grade:
+              type: integer
+      residence:
+        type: string
+      hometown:
+        type: string
+  Group:
+    type: object
+    properties:
+      id:
+        type: string
+      wx_group_id:
+        type: string
+  GroupMember:
+    type: object
+    properties:
+      id:
+        type: string
+      user_id:
+        type: string
+      card_id:
+        type: string
+      hidden:
+        type: boolean
+  Cardcase:
+    type: object
+    properties:
+      id:
+        type: string
+  CardcaseItem:
+    type: object
+    properties:
+      id:
+        type: string
+      item_id:
+        type: string
+      item_type:
+        type: string
+      cardcase_id:
+        type: string
+  AccessLevel:
+    type: object
+    properties:
+      id:
+        type: string
+      RequestUserId:
+        type: string
+      TargetUserId:
+        type: string
+      Level:
+        type: integer
+  AccessRequest:
+    type: object
+    properties:
+      id:
+        type: string
+      RequestUserId:
+        type: string
+      TargetUserId:
+        type: string
+# The parameters
+parameters:
+  EntityId:
+    name: id
+    type: integer
+    in: path
+    description: The entity id
+    required: true
+  Namecard:
+    name: body
+    in: body
+    required: true
+    description: The Namecard
+    schema:
+      $ref: '#/definitions/Namecard'
+  CardcaseItem:
+    name: body
+    in: body
+    required: true
+    description: The Cardcase
+    schema:
+      $ref: '#/definitions/CardcaseItem'
+  Group:
+    name: body
+    in: body
+    required: true
+    description: The Group
+    schema:
+      $ref: '#/definitions/Group'    
+  AccessRequest:
+    name: body
+    in: body
+    required: true
+    description: The AccessRequest
+    schema:
+      $ref: '#/definitions/AccessRequest'
+  AccessLevel:
+    name: body
+    in: body
+    required: true
+    description: The AccessLevel
+    schema:
+      $ref: '#/definitions/AccessLevel'
