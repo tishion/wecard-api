@@ -22,9 +22,10 @@ var Server = Http.createServer(App);
 
 // Add body parser middleware
 App.use(BodyParser.json());
-App.use(BodyParser.urlencoded({
-    extended: true
-}));
+App.use(BodyParser.urlencoded({ extended: true }));
+
+// Add swagger UI middleware
+App.use('/viewer', SwaggerUi({ docs: '/api/docs' }));
 
 // Add swaggerize middleware
 App.use(Swaggerize({
@@ -32,11 +33,6 @@ App.use(Swaggerize({
     handlers: Path.resolve('./handlers'),
     security: Path.resolve('./security'),
     docspath: '/docs'
-}));
-
-// Add swagger UI middleware
-App.use('/viewer', SwaggerUi({
-    docs: '/api/docs'
 }));
 
 // Start the server
