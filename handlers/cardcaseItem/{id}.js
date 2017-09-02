@@ -1,17 +1,17 @@
 'use strict';
-var dataProvider = require('../../../data/cardcase/item/{id}.js');
+var dataProvider = require('../../data/cardcaseItem/{id}.js');
 /**
- * Operations on /cardcase/item/{id}
+ * Operations on /cardcaseItem/{id}
  */
 module.exports = {
     /**
-     * summary: Delete the CardcaseItem with id
+     * summary: Delete the CardcaseItem by id
      * description: 
      * parameters: id
      * produces: 
      * responses: 200
      */
-    delete: function cardcase_item_deleteById(req, res, next) {
+    delete: function cardcaseItem_deleteById(req, res, next) {
         /**
          * Get the data for response 200
          * For response `default` status 200 is used.

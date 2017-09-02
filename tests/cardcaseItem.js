@@ -5,13 +5,13 @@ var BodyParser = require('body-parser');
 var Swaggerize = require('swaggerize-express');
 var Path = require('path');
 var Request = require('supertest');
-var Mockgen = require('../../../data/mockgen.js');
+var Mockgen = require('../data/mockgen.js');
 var Parser = require('swagger-parser');
 /**
- * Test for /cardcase/{id}/item
+ * Test for /cardcaseItem
  */
-Test('/cardcase/{id}/item', function (t) {
-    var apiPath = Path.resolve(__dirname, '../../../config/swagger.yml');
+Test('/cardcaseItem', function (t) {
+    var apiPath = Path.resolve(__dirname, '../config/swagger.yml');
     var App = Express();
     App.use(BodyParser.json());
     App.use(BodyParser.urlencoded({
@@ -19,22 +19,22 @@ Test('/cardcase/{id}/item', function (t) {
     }));
     App.use(Swaggerize({
         api: apiPath,
-        handlers: Path.resolve(__dirname, '../../../handlers'),
-        security: Path.resolve(__dirname, '../../../security')
+        handlers: Path.resolve(__dirname, '../handlers'),
+        security: Path.resolve(__dirname, '../security')
     }));
     Parser.validate(apiPath, function (err, api) {
         t.error(err, 'No parse error');
         t.ok(api, 'Valid swagger api');
         /**
-         * summary: Get all CardcaseItem belonging to the Cardcase with the id
+         * summary: Get all CardcaseItems by Cardcase id
          * description: 
-         * parameters: id
+         * parameters: cardcaseId
          * produces: 
          * responses: 200
          */
-        t.test('test cardcaseitem_get get operation', function (t) {
+        t.test('test cardcaseItem_getByCardcaseId get operation', function (t) {
             Mockgen().requests({
-                path: '/cardcase/{id}/item',
+                path: '/cardcaseItem',
                 operation: 'get'
             }, function (err, mock) {
                 var request;
@@ -64,7 +64,7 @@ Test('/cardcase/{id}/item', function (t) {
                     t.error(err, 'No error');
                     t.ok(res.statusCode === 200, 'Ok response status');
                     var Validator = require('is-my-json-valid');
-                    var validate = Validator(api.paths['/cardcase/{id}/item']['get']['responses']['200']['schema']);
+                    var validate = Validator(api.paths['/cardcaseItem']['get']['responses']['200']['schema']);
                     var response = res.body;
                     if (Object.keys(response).length <= 0) {
                         response = res.text;
@@ -75,15 +75,15 @@ Test('/cardcase/{id}/item', function (t) {
                 });
             });
         });/**
-         * summary: Create a CardcaseItem in Cardcase with the Id
+         * summary: Create a CardcaseItem in by Cardcase id
          * description: 
-         * parameters: id, body
+         * parameters: body
          * produces: 
          * responses: 200
          */
-        t.test('test cardcaseitem_create post operation', function (t) {
+        t.test('test cardcaseItem_Create post operation', function (t) {
             Mockgen().requests({
-                path: '/cardcase/{id}/item',
+                path: '/cardcaseItem',
                 operation: 'post'
             }, function (err, mock) {
                 var request;
@@ -113,7 +113,7 @@ Test('/cardcase/{id}/item', function (t) {
                     t.error(err, 'No error');
                     t.ok(res.statusCode === 200, 'Ok response status');
                     var Validator = require('is-my-json-valid');
-                    var validate = Validator(api.paths['/cardcase/{id}/item']['post']['responses']['200']['schema']);
+                    var validate = Validator(api.paths['/cardcaseItem']['post']['responses']['200']['schema']);
                     var response = res.body;
                     if (Object.keys(response).length <= 0) {
                         response = res.text;

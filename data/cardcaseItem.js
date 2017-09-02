@@ -1,16 +1,16 @@
 'use strict';
-var Mockgen = require('../../mockgen.js');
+var Mockgen = require('./mockgen.js');
 /**
- * Operations on /cardcase/{id}/item
+ * Operations on /cardcaseItem
  */
 module.exports = {
     /**
-     * summary: Get all CardcaseItem belonging to the Cardcase with the id
+     * summary: Get all CardcaseItems by Cardcase id
      * description: 
-     * parameters: id
+     * parameters: cardcaseId
      * produces: 
      * responses: 200
-     * operationId: cardcaseitem_get
+     * operationId: cardcaseItem_getByCardcaseId
      */
     get: {
         200: function (req, res, callback) {
@@ -19,19 +19,19 @@ module.exports = {
              * Replace this by actual data for the api.
              */
             Mockgen().responses({
-                path: '/cardcase/{id}/item',
+                path: '/cardcaseItem',
                 operation: 'get',
                 response: '200'
             }, callback);
         }
     },
     /**
-     * summary: Create a CardcaseItem in Cardcase with the Id
+     * summary: Create a CardcaseItem in by Cardcase id
      * description: 
-     * parameters: id, body
+     * parameters: body
      * produces: 
      * responses: 200
-     * operationId: cardcaseitem_create
+     * operationId: cardcaseItem_Create
      */
     post: {
         200: function (req, res, callback) {
@@ -40,7 +40,7 @@ module.exports = {
              * Replace this by actual data for the api.
              */
             Mockgen().responses({
-                path: '/cardcase/{id}/item',
+                path: '/cardcaseItem',
                 operation: 'post',
                 response: '200'
             }, callback);

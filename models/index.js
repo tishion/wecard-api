@@ -3,19 +3,19 @@
 var Fs        = require('fs');
 var Path      = require('path');
 var Sequelize = require('sequelize');
-var Config    = require(Path.join(__dirname, '../config/config'));
+var Config    = require('../config/config.js');
 
 var db        = {};
-var db_config = Config.db_config;
-var sequelize = new Sequelize(db_config.connection_string, db_config.options);
-var basename  = Path.basename(module.filename);
+var sequelize = new Sequelize(Config.database.connection, Config.database.options);
+var entityFolderName = Path.join(__dirname, 'entity');
+
 Fs
-  .readdirSync(__dirname)
+  .readdirSync(entityFolderName)
   .filter(function(file) {
-    return (file.indexOf('.') !== 0) && (file !== basename) && (file.slice(-3) === '.js');
+    return (file.indexOf('.') !== 0) && (file.slice(-3) === '.js');
   })
   .forEach(function(file) {
-    var model = sequelize['import'](Path.join(__dirname, file));
+    var model = sequelize['import'](Path.join(entityFolderName, file));
     db[model.name] = model;
   });
 

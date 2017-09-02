@@ -5,13 +5,13 @@ var BodyParser = require('body-parser');
 var Swaggerize = require('swaggerize-express');
 var Path = require('path');
 var Request = require('supertest');
-var Mockgen = require('../../data/mockgen.js');
+var Mockgen = require('../data/mockgen.js');
 var Parser = require('swagger-parser');
 /**
- * Test for /group/{id}
+ * Test for /cardcase
  */
-Test('/group/{id}', function (t) {
-    var apiPath = Path.resolve(__dirname, '../../config/swagger.yml');
+Test('/cardcase', function (t) {
+    var apiPath = Path.resolve(__dirname, '../config/swagger.yml');
     var App = Express();
     App.use(BodyParser.json());
     App.use(BodyParser.urlencoded({
@@ -19,22 +19,22 @@ Test('/group/{id}', function (t) {
     }));
     App.use(Swaggerize({
         api: apiPath,
-        handlers: Path.resolve(__dirname, '../../handlers'),
-        security: Path.resolve(__dirname, '../../security')
+        handlers: Path.resolve(__dirname, '../handlers'),
+        security: Path.resolve(__dirname, '../security')
     }));
     Parser.validate(apiPath, function (err, api) {
         t.error(err, 'No parse error');
         t.ok(api, 'Valid swagger api');
         /**
-         * summary: Get all Groups of current user
+         * summary: Get Cardcase by User id
          * description: 
-         * parameters: id
+         * parameters: userId
          * produces: 
          * responses: 200
          */
-        t.test('test group_getById get operation', function (t) {
+        t.test('test cardcase_get get operation', function (t) {
             Mockgen().requests({
-                path: '/group/{id}',
+                path: '/cardcase',
                 operation: 'get'
             }, function (err, mock) {
                 var request;
@@ -64,7 +64,7 @@ Test('/group/{id}', function (t) {
                     t.error(err, 'No error');
                     t.ok(res.statusCode === 200, 'Ok response status');
                     var Validator = require('is-my-json-valid');
-                    var validate = Validator(api.paths['/group/{id}']['get']['responses']['200']['schema']);
+                    var validate = Validator(api.paths['/cardcase']['get']['responses']['200']['schema']);
                     var response = res.body;
                     if (Object.keys(response).length <= 0) {
                         response = res.text;

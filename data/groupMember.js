@@ -1,26 +1,26 @@
 'use strict';
-var Mockgen = require('../../mockgen.js');
+var Mockgen = require('./mockgen.js');
 /**
- * Operations on /cardcase/item/{id}
+ * Operations on /groupMember
  */
 module.exports = {
     /**
-     * summary: Delete the CardcaseItem with id
+     * summary: Get all GroupMembers by Group id
      * description: 
-     * parameters: id
+     * parameters: groupId
      * produces: 
      * responses: 200
-     * operationId: cardcase_item_deleteById
+     * operationId: groupMemeber_getbyGroupId
      */
-    delete: {
+    get: {
         200: function (req, res, callback) {
             /**
              * Using mock data generator module.
              * Replace this by actual data for the api.
              */
             Mockgen().responses({
-                path: '/cardcase/item/{id}',
-                operation: 'delete',
+                path: '/groupMember',
+                operation: 'get',
                 response: '200'
             }, callback);
         }

@@ -1,6 +1,7 @@
 'use strict';
-var AuthJwt = require('./auth-jwt');
-var Config = require('../config/congif');
+var HttpError   = require('http-errors');
+var Config      = require('../config/config.js');
+var AuthJwt     = require('./auth-jwt.js');
 /**
  * Authorize function for securityDefinitions:Bearer
  * type : apiKey
@@ -12,22 +13,19 @@ module.exports = function authorize(req, res, next) {
     //this.in - The location of the API key ("query" or "header") for securityDefinitions:Bearer apiKey security scheme.
     // var authorization = this.in.get(this.name);
     var authorization = req.get('Authorization');
-    console.log('Authorization: %s', this.Authorization);
-    if (typeof this.Authorization !== 'undefined' && this.Authorization) {
-
+    console.log('Authorization: %s', authorization);
+    if (typeof authorization !== 'undefined' && authorization) {
         var sa = authorization.split(' ');
         if (2 == sa.length && sa[0] == 'Bearer') {
 
-            var payload = AuthJwt.verifyToken(sa[1], Config.token_secret);
-            if (payload && payload.id) {
-                console.log('User Id: %s', user_infor.id);
-                req['session'] = { id: user_infor.id };
+            var user = AuthJwt.verifyToken(sa[1], Config.tokenSecret);
+            if (user && user.id) {
+                console.log('User Id: %s', user.id);
+                req.session = { userId: user.id };
                 return next();
             }
         }
     }
 
-    var err = new Error('Authentication Failed');
-    err.status = 401;
-    next(err);
+    next(new HttpError.Unauthorized());
 };

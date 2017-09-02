@@ -5,13 +5,13 @@ var BodyParser = require('body-parser');
 var Swaggerize = require('swaggerize-express');
 var Path = require('path');
 var Request = require('supertest');
-var Mockgen = require('../../../data/mockgen.js');
+var Mockgen = require('../data/mockgen.js');
 var Parser = require('swagger-parser');
 /**
- * Test for /group/{id}/member
+ * Test for /groupMember
  */
-Test('/group/{id}/member', function (t) {
-    var apiPath = Path.resolve(__dirname, '../../../config/swagger.yml');
+Test('/groupMember', function (t) {
+    var apiPath = Path.resolve(__dirname, '../config/swagger.yml');
     var App = Express();
     App.use(BodyParser.json());
     App.use(BodyParser.urlencoded({
@@ -19,22 +19,22 @@ Test('/group/{id}/member', function (t) {
     }));
     App.use(Swaggerize({
         api: apiPath,
-        handlers: Path.resolve(__dirname, '../../../handlers'),
-        security: Path.resolve(__dirname, '../../../security')
+        handlers: Path.resolve(__dirname, '../handlers'),
+        security: Path.resolve(__dirname, '../security')
     }));
     Parser.validate(apiPath, function (err, api) {
         t.error(err, 'No parse error');
         t.ok(api, 'Valid swagger api');
         /**
-         * summary: Get all GroupMember belonging to the Group with the Id
+         * summary: Get all GroupMembers by Group id
          * description: 
-         * parameters: id
+         * parameters: groupId
          * produces: 
          * responses: 200
          */
-        t.test('test groupmemeber_get get operation', function (t) {
+        t.test('test groupMemeber_getbyGroupId get operation', function (t) {
             Mockgen().requests({
-                path: '/group/{id}/member',
+                path: '/groupMember',
                 operation: 'get'
             }, function (err, mock) {
                 var request;
@@ -64,7 +64,7 @@ Test('/group/{id}/member', function (t) {
                     t.error(err, 'No error');
                     t.ok(res.statusCode === 200, 'Ok response status');
                     var Validator = require('is-my-json-valid');
-                    var validate = Validator(api.paths['/group/{id}/member']['get']['responses']['200']['schema']);
+                    var validate = Validator(api.paths['/groupMember']['get']['responses']['200']['schema']);
                     var response = res.body;
                     if (Object.keys(response).length <= 0) {
                         response = res.text;

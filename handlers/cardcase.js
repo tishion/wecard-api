@@ -1,17 +1,17 @@
 'use strict';
-var dataProvider = require('../../../data/group/{id}/member.js');
+var dataProvider = require('../data/cardcase.js');
 /**
- * Operations on /group/{id}/member
+ * Operations on /cardcase
  */
 module.exports = {
     /**
-     * summary: Get all GroupMember belonging to the Group with the Id
+     * summary: Get Cardcase by User id
      * description: 
-     * parameters: id
+     * parameters: userId
      * produces: 
      * responses: 200
      */
-    get: function groupmemeber_get(req, res, next) {
+    get: function cardcase_get(req, res, next) {
         /**
          * Get the data for response 200
          * For response `default` status 200 is used.

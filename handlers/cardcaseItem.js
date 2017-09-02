@@ -1,17 +1,17 @@
 'use strict';
-var dataProvider = require('../../../data/cardcase/{id}/item.js');
+var dataProvider = require('../data/cardcaseItem.js');
 /**
- * Operations on /cardcase/{id}/item
+ * Operations on /cardcaseItem
  */
 module.exports = {
     /**
-     * summary: Get all CardcaseItem belonging to the Cardcase with the id
+     * summary: Get all CardcaseItems by Cardcase id
      * description: 
-     * parameters: id
+     * parameters: cardcaseId
      * produces: 
      * responses: 200
      */
-    get: function cardcaseitem_get(req, res, next) {
+    get: function cardcaseItem_getByCardcaseId(req, res, next) {
         /**
          * Get the data for response 200
          * For response `default` status 200 is used.
@@ -27,13 +27,13 @@ module.exports = {
         });
     },
     /**
-     * summary: Create a CardcaseItem in Cardcase with the Id
+     * summary: Create a CardcaseItem in by Cardcase id
      * description: 
-     * parameters: id, body
+     * parameters: body
      * produces: 
      * responses: 200
      */
-    post: function cardcaseitem_create(req, res, next) {
+    post: function cardcaseItem_Create(req, res, next) {
         /**
          * Get the data for response 200
          * For response `default` status 200 is used.

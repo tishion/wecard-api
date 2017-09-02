@@ -44,7 +44,7 @@ auth_jwt.issueToken = function auth_jwt_issueToken(payload, secret) {
  */
 auth_jwt.verifyToken = function auth_jwt_verifyToken(token, secret) {
     try {
-        return Jwt.decode(token, secret);
+        return Jwt.decode(token, secret).pub;
     } catch (err) { 
         Console.log(err);
     }

@@ -1,6 +1,6 @@
 User:
   Id:
-  CardcaseId:
+  wxOpenId:
     
 NameCard:
   Id:
@@ -17,6 +17,7 @@ GroupMember:
 
 Cardcase:
   Id:
+  UserId:
 
 CardcaseItem:
   Id:

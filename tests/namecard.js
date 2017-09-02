@@ -26,13 +26,13 @@ Test('/namecard', function (t) {
         t.error(err, 'No parse error');
         t.ok(api, 'Valid swagger api');
         /**
-         * summary: Get all Namecards of current user
+         * summary: Get all Namecards by User id
          * description: 
-         * parameters: 
+         * parameters: userId
          * produces: 
          * responses: 200
          */
-        t.test('test namecard_get get operation', function (t) {
+        t.test('test namecard_getByUserId get operation', function (t) {
             Mockgen().requests({
                 path: '/namecard',
                 operation: 'get'

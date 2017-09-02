@@ -5,13 +5,13 @@ var BodyParser = require('body-parser');
 var Swaggerize = require('swaggerize-express');
 var Path = require('path');
 var Request = require('supertest');
-var Mockgen = require('../../../data/mockgen.js');
+var Mockgen = require('../../data/mockgen.js');
 var Parser = require('swagger-parser');
 /**
- * Test for /cardcase/item/{id}
+ * Test for /cardcaseItem/{id}
  */
-Test('/cardcase/item/{id}', function (t) {
-    var apiPath = Path.resolve(__dirname, '../../../config/swagger.yml');
+Test('/cardcaseItem/{id}', function (t) {
+    var apiPath = Path.resolve(__dirname, '../../config/swagger.yml');
     var App = Express();
     App.use(BodyParser.json());
     App.use(BodyParser.urlencoded({
@@ -19,22 +19,22 @@ Test('/cardcase/item/{id}', function (t) {
     }));
     App.use(Swaggerize({
         api: apiPath,
-        handlers: Path.resolve(__dirname, '../../../handlers'),
-        security: Path.resolve(__dirname, '../../../security')
+        handlers: Path.resolve(__dirname, '../../handlers'),
+        security: Path.resolve(__dirname, '../../security')
     }));
     Parser.validate(apiPath, function (err, api) {
         t.error(err, 'No parse error');
         t.ok(api, 'Valid swagger api');
         /**
-         * summary: Delete the CardcaseItem with id
+         * summary: Delete the CardcaseItem by id
          * description: 
          * parameters: id
          * produces: 
          * responses: 200
          */
-        t.test('test cardcase_item_deleteById delete operation', function (t) {
+        t.test('test cardcaseItem_deleteById delete operation', function (t) {
             Mockgen().requests({
-                path: '/cardcase/item/{id}',
+                path: '/cardcaseItem/{id}',
                 operation: 'delete'
             }, function (err, mock) {
                 var request;
@@ -64,7 +64,7 @@ Test('/cardcase/item/{id}', function (t) {
                     t.error(err, 'No error');
                     t.ok(res.statusCode === 200, 'Ok response status');
                     var Validator = require('is-my-json-valid');
-                    var validate = Validator(api.paths['/cardcase/item/{id}']['delete']['responses']['200']['schema']);
+                    var validate = Validator(api.paths['/cardcaseItem/{id}']['delete']['responses']['200']['schema']);
                     var response = res.body;
                     if (Object.keys(response).length <= 0) {
                         response = res.text;

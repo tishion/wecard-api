@@ -1,7 +1,9 @@
 'use strict';
-var Config = require('../config/congif');
-var Mockgen = require('./mockgen.js');
-var AuthJwt = require('../security/auth-jwt');
+var HttpError   = require('http-errors');
+var Config      = require('../config/config.js');
+var AuthJwt     = require('../security/auth-jwt.js');
+var db          = require('../models');
+
 /**
  * Operations on /auth
  */
@@ -16,34 +18,43 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            var wx_login_code = req.get('WX-LOGIN-CODE');
-            if (typeof wx_login_code === 'undefined' || !wx_login_code) {
-                return callback(400);
+            var wxLoginCode = req.get('WX-LOGIN-CODE');
+            if (typeof wxLoginCode === 'undefined' || !wxLoginCode) {
+                return callback(new HttpError.BadRequest());
             }
-            
-            // Communicate with WX server to get the session_key
-            var wx_open_id = 'hZxqCXRI';
-            var wx_session_key = '4b-6kQQrOFC1UyBiZqHnMZd/6C4oMg';
-            var user_id = '10001'
-            var cardcase_id = '10001'
-            var user_info = {
-                id: user_id,
-                wx_open_id: wx_open_id,
-                cardcase_id: cardcase_id,
-            };
-            user_info['token'] = AuthJwt.issueToken(user_info, Config.token_secret);
-            callback(null, { responses: user_info });
-            return;
 
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/auth',
-                operation: 'get',
-                response: '200'
-            }, callback);
+            // Communicate with WX server to get the open id and session key
+            
+            var wxOpenId = wxLoginCode;
+            var wxSessionKey = '4b-6kQQrOFC1UyBiZqHnMZd/6C4oMg';
+
+            // Find the user with this open id if not found then create one
+            db.User.findOrCreate({
+                where: {
+                    wxOpenId: wxOpenId,
+                }
+            })
+            .then(result => {
+                const [user, created] = result;
+                // If this is a new crated user then create cardcase for it
+                if (created) {
+                    db.Cardcase.create({
+                        userId: user.id
+                    });
+                }
+                return user;
+            })
+            .then(user => {
+                var userInfo = {
+                    id: user.id,
+                    wxOpenId: user.wxOpenId,
+                };
+                userInfo.token = AuthJwt.issueToken(userInfo, Config.tokenSecret);
+                callback(null, { responses: userInfo });
+            })
+            .catch(err => {
+                callback(new HttpError.InternalServerError(err));
+            });
         }
     }
 };

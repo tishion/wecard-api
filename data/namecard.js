@@ -5,12 +5,12 @@ var Mockgen = require('./mockgen.js');
  */
 module.exports = {
     /**
-     * summary: Get all Namecards of current user
+     * summary: Get all Namecards by User id
      * description: 
-     * parameters: 
+     * parameters: userId
      * produces: 
      * responses: 200
-     * operationId: namecard_get
+     * operationId: namecard_getByUserId
      */
     get: {
         200: function (req, res, callback) {

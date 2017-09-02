@@ -5,13 +5,13 @@ var dataProvider = require('../data/namecard.js');
  */
 module.exports = {
     /**
-     * summary: Get all Namecards of current user
+     * summary: Get all Namecards by User id
      * description: 
-     * parameters: 
+     * parameters: userId
      * produces: 
      * responses: 200
      */
-    get: function namecard_get(req, res, next) {
+    get: function namecard_getByUserId(req, res, next) {
         /**
          * Get the data for response 200
          * For response `default` status 200 is used.

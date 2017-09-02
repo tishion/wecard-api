@@ -37,13 +37,19 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/UserInfo'
+            $ref: '#/definitions/User'
   /namecard:
     get:
       tags:
         - Namecard
-      summary: Get all Namecards of current user
-      operationId: namecard_get
+      summary: Get all Namecards by User id
+      operationId: namecard_getByUserId
+      parameters:
+        - name: userId
+          type: string
+          in: query
+          required: false
+          description: The user id
       responses:
         '200':
           description: OK
@@ -79,7 +85,7 @@ paths:
     get:
       tags:
         - Namecard
-      summary: Get the Namecard with the id
+      summary: Get the Namecard by id
       operationId: namecard_getById
       parameters:
         - $ref: '#/parameters/EntityId'
@@ -91,7 +97,7 @@ paths:
     delete:
       tags:
         - Namecard
-      summary: Delete the Namecard with the id
+      summary: Delete the Namecard by id
       operationId: namecard_deleteById
       parameters:
         - $ref: '#/parameters/EntityId'
@@ -100,27 +106,37 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Namecard'
-  '/cardcase/{id}':
+  /cardcase:
     get:
       tags:
         - Cardcase
-      summary: Get the Cardcase with the id
-      operationId: cardcase_getById
+      summary: Get Cardcase by User id
+      operationId: cardcase_get
       parameters:
-        - $ref: '#/parameters/EntityId'
+        - name: userId
+          type: string
+          in: query
+          required: false
+          description: The user id
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/Cardcase'
-  '/cardcase/{id}/item':
+            type: array
+            items:
+              $ref: '#/definitions/Cardcase'
+  /cardcaseItem:
     get:
       tags:
-        - Cardcase
-      summary: Get all CardcaseItem belonging to the Cardcase with the id
-      operationId: cardcaseitem_get
+        - CardcaseItem
+      summary: Get all CardcaseItems by Cardcase id
+      operationId: cardcaseItem_getByCardcaseId
       parameters:
-        - $ref: '#/parameters/EntityId'
+        - name: cardcaseId
+          type: string
+          in: query
+          required: false
+          description: The Cardcase id
       responses:
         '200':
           description: OK
@@ -130,23 +146,22 @@ paths:
               $ref: '#/definitions/CardcaseItem'
     post:
       tags:
-        - Cardcase
-      summary: Create a CardcaseItem in Cardcase with the Id
-      operationId: cardcaseitem_create
+        - CardcaseItem
+      summary: Create a CardcaseItem in by Cardcase id
+      operationId: cardcaseItem_Create
       parameters:
-        - $ref: '#/parameters/EntityId'
         - $ref: '#/parameters/CardcaseItem'
       responses:
         '200':
           description: OK
           schema:
             $ref: '#/definitions/CardcaseItem'
-  '/cardcase/item/{id}':
+  '/cardcaseItem/{id}':
     delete:
       tags:
-        - Cardcase
-      summary: Delete the CardcaseItem with id
-      operationId: cardcase_item_deleteById
+        - CardcaseItem
+      summary: Delete the CardcaseItem by id
+      operationId: cardcaseItem_deleteById
       parameters:
         - $ref: '#/parameters/EntityId'
       responses:
@@ -155,51 +170,34 @@ paths:
           schema:
             $ref: '#/definitions/CardcaseItem'
   /group:
-    post:
-      tags:
-        - Group
-      summary: Create a Group
-      operationId: group_create
-      parameters:
-        - $ref: '#/parameters/Group'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Group'
     put:
       tags:
         - Group
-      summary: Update a Group
-      operationId: group_update
+      summary: Create a Group (if not exist)
+      operationId: group_create
       parameters:
-        - $ref: '#/parameters/Group'
+        - name: groupId
+          type: string
+          in: query
+          required: true
+          description: The Group id
       responses:
         '200':
           description: OK
           schema:
             $ref: '#/definitions/Group'
-  '/group/{id}':
+  /groupMember:
     get:
       tags:
-        - Group
-      summary: Get all Groups of current user
-      operationId: group_getById
+        - GroupMember
+      summary: Get all GroupMembers by Group id
+      operationId: groupMemeber_getbyGroupId
       parameters:
-        - $ref: '#/parameters/EntityId'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/Group'
-  '/group/{id}/member':
-    get:
-      tags:
-        - Group
-      summary: Get all GroupMember belonging to the Group with the Id
-      operationId: groupmemeber_get
-      parameters:
-        - $ref: '#/parameters/EntityId'
+        - name: groupId
+          type: string
+          in: query
+          required: false
+          description: The Group id
       responses:
         '200':
           description: OK
@@ -275,14 +273,12 @@ paths:
           schema:
             $ref: '#/definitions/AccessLevel'
 definitions:
-  UserInfo:
+  User:
     type: object
     properties:
       id:
         type: string
-      wx_open_id:
-        type: string
-      cardcase_id:
+      wxOpenId:
         type: string
       token:
         type: string
@@ -291,11 +287,11 @@ definitions:
     properties:
       id:
         type: string
-      card_type:
+      cardType:
         type: integer
-      user_id:
+      userId:
         type: string
-      avatar_uri:
+      avatarUri:
         type: string
       name:
         type: string
@@ -325,40 +321,42 @@ definitions:
         type: string
       hometown:
         type: string
-  Group:
-    type: object
-    properties:
-      id:
-        type: string
-      wx_group_id:
-        type: string
-  GroupMember:
-    type: object
-    properties:
-      id:
-        type: string
-      user_id:
-        type: string
-      card_id:
-        type: string
-      hidden:
-        type: boolean
   Cardcase:
     type: object
     properties:
       id:
+        type: string
+      userId:
         type: string
   CardcaseItem:
     type: object
     properties:
       id:
         type: string
-      item_id:
+      itemId:
         type: string
-      item_type:
+      itemType:
         type: string
-      cardcase_id:
+      cardcaseId:
         type: string
+  Group:
+    type: object
+    properties:
+      id:
+        type: string
+      wxGroupId:
+        type: string
+  GroupMember:
+    type: object
+    properties:
+      id:
+        type: string
+      userId:
+        type: string
+      cardId:
+        type: string
+      hidden:
+        type: boolean
   AccessLevel:
     type: object
     properties:

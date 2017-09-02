@@ -26,7 +26,7 @@ Test('/namecard/{id}', function (t) {
         t.error(err, 'No parse error');
         t.ok(api, 'Valid swagger api');
         /**
-         * summary: Get the Namecard with the id
+         * summary: Get the Namecard by id
          * description: 
          * parameters: id
          * produces: 
@@ -75,7 +75,7 @@ Test('/namecard/{id}', function (t) {
                 });
             });
         });/**
-         * summary: Delete the Namecard with the id
+         * summary: Delete the Namecard by id
          * description: 
          * parameters: id
          * produces: 

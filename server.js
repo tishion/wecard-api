@@ -3,13 +3,13 @@
 var Http        = require('http');
 var Express     = require('express');
 var BodyParser  = require('body-parser');
-var ExpressJwt  = require("express-jwt");
 var Swaggerize  = require('swaggerize-express');
 var SwaggerUi   = require('swaggerize-ui');
 var Path        = require('path');
-var Config      = require(Path.join(__dirname, 'config/congif'));
+var Config      = require('./config/config.js');
+var db          = require('./models');
 
-var db = require(Path.join(__dirname, 'models'));
+db.sequelize.sync();
 
 // Create Express instance
 var App = Express();

@@ -5,7 +5,7 @@ var Mockgen = require('../mockgen.js');
  */
 module.exports = {
     /**
-     * summary: Get the Namecard with the id
+     * summary: Get the Namecard by id
      * description: 
      * parameters: id
      * produces: 
@@ -26,7 +26,7 @@ module.exports = {
         }
     },
     /**
-     * summary: Delete the Namecard with the id
+     * summary: Delete the Namecard by id
      * description: 
      * parameters: id
      * produces: 
