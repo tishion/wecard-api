@@ -1,18 +1,15 @@
 'use strict';
 
-var Config = require('./config/congif')
-var Http = require('http');
-var Express = require('express');
-var BodyParser = require('body-parser');
-var ExpressJwt = require("express-jwt");
-var JsonWebToken = require("jsonwebtoken");
-var Swaggerize = require('swaggerize-express');
-var SwaggerUi = require('swaggerize-ui');
-var Path = require('path');
+var Http        = require('http');
+var Express     = require('express');
+var BodyParser  = require('body-parser');
+var ExpressJwt  = require("express-jwt");
+var Swaggerize  = require('swaggerize-express');
+var SwaggerUi   = require('swaggerize-ui');
+var Path        = require('path');
+var Config      = require(Path.join(__dirname, 'config/congif'));
 
-// Get the host and port
-var host = process.env.WECARD_SEVER_HOST_NAME || Config.host
-var port = process.env.PORT || Config.port;
+var db = require(Path.join(__dirname, 'models'));
 
 // Create Express instance
 var App = Express();
@@ -36,8 +33,8 @@ App.use(Swaggerize({
 }));
 
 // Start the server
-Server.listen(port, function () {
-    App.swagger.api.host = host;
+Server.listen(Config.port, function () {
+    App.swagger.api.host = Config.host;
     if (this.address().port != undefined) {
         App.swagger.api.host += (':' + this.address().port);
     }

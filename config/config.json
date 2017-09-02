@@ -1,0 +1,29 @@
+{
+  "development": {
+    "host": "localhost",
+    "port": 8000,
+    "token_secret": "lessismore",
+    "db_config": {
+      "connection_string": "sqlite://wecard_dev.db",
+      "options": {
+        "username": "root",
+        "password": "wechatwecard",
+        "dialect": "sqlite"
+      }
+    }
+  },
+  "test": {
+  },
+  "production": {
+    "host": "wecard.azurewebsites.net",
+    "token_secret": "lessismore",
+    "db_config": {
+      "connection_string": "sqlite://wecard_dev.db",
+      "options": {
+        "username": "root",
+        "password": "wechatwecard",
+        "dialect": "sqlite"
+      }
+    }
+  }
+}
