@@ -9,12 +9,12 @@ var Moment = require('moment');
 /**
  * 
  */
-var auth_jwt = module.exports;
+var jwtAuth = module.exports;
 
 /**
  * 
  */
-auth_jwt.version = '0.0.1';
+jwtAuth.version = '0.0.1';
 
 /**
  * 
@@ -23,7 +23,7 @@ auth_jwt.version = '0.0.1';
  * @param {any} secret 
  * @returns 
  */
-auth_jwt.issueToken = function auth_jwt_issueToken(payload, secret) {
+jwtAuth.issueToken = function _issueToken(payload, secret) {
     return Jwt.encode({
         iss: 'wecard-api-service',
         sub: 'wecard-api-consumer',
@@ -42,7 +42,7 @@ auth_jwt.issueToken = function auth_jwt_issueToken(payload, secret) {
  * @param {any} secret 
  * @returns 
  */
-auth_jwt.verifyToken = function auth_jwt_verifyToken(token, secret) {
+jwtAuth.verifyToken = function _verifyToken(token, secret) {
     try {
         return Jwt.decode(token, secret).pub;
     } catch (err) { 

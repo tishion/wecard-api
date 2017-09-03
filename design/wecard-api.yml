@@ -298,29 +298,27 @@ definitions:
         type: string
       phone:
         type: string
-      employment:
-        type:  array
-        items:
-          type: object
-          properties:
-            company:
-              type: string
-            occupation:
-              type: string
-      education:
-        type:  array
-        items:
-          type: object
-          properties:
-            school:
-              type: string
-            major:
-              type: string
-            grade:
-              type: integer
       residence:
         type: string
       hometown:
+        type: string
+      company:
+        type: string
+      department:
+        type: string
+      occupation:
+        type: string
+      school:
+        type: string
+      major:
+        type: string
+      grade:
+        type: integer
+      exCompany:
+        type: string
+      exDepartment:
+        type: string
+      exOccupation:
         type: string
   Cardcase:
     type: object
@@ -334,11 +332,17 @@ definitions:
     properties:
       id:
         type: string
+      userId:
+        type: string
       itemId:
         type: string
       itemType:
         type: string
       cardcaseId:
+        type: string
+      name:
+        type: string
+      thumbnail:
         type: string
   Group:
     type: object

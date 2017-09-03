@@ -11,15 +11,15 @@ var entityFolderName = Path.join(__dirname, 'entity');
 
 Fs
   .readdirSync(entityFolderName)
-  .filter(function(file) {
+  .filter(file => {
     return (file.indexOf('.') !== 0) && (file.slice(-3) === '.js');
   })
-  .forEach(function(file) {
+  .forEach(file => {
     var model = sequelize['import'](Path.join(entityFolderName, file));
     db[model.name] = model;
   });
 
-Object.keys(db).forEach(function(modelName) {
+Object.keys(db).forEach(modelName => {
   if (db[modelName].associate) {
     db[modelName].associate(db);
   }

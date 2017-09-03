@@ -8,7 +8,7 @@ module.exports = function _User(sequelize, DataTypes) {
             primaryKey: true
         },
         wxOpenId: {
-            type: DataTypes.STRING,
+            type: DataTypes.CHAR,
             allowNull: false,
         }
     });

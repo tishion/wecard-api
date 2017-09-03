@@ -1,4 +1,6 @@
 'use strict';
+var HttpError = require('http-error');
+var Validator = require('./validator/validator.js');
 var Mockgen = require('./mockgen.js');
 /**
  * Operations on /namecard
@@ -14,6 +16,7 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
+
             /**
              * Using mock data generator module.
              * Replace this by actual data for the api.
@@ -35,15 +38,14 @@ module.exports = {
      */
     post: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/namecard',
-                operation: 'post',
-                response: '200'
-            }, callback);
+            Validator.sessionUserIdEqualsBodyUserId(
+                req,
+                () => {
+
+                },
+                () => {
+                    callback(new HttpError.Unauthorized('Illegal Request'));
+                });
         }
     },
     /**
@@ -56,15 +58,14 @@ module.exports = {
      */
     put: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/namecard',
-                operation: 'put',
-                response: '200'
-            }, callback);
+            Validator.sessionUserIdEqualsBodyUserId(
+                req,
+                () => {
+
+                },
+                () => {
+                    callback(new HttpError.Unauthorized('Illegal Request'));
+                });
         }
     }
 };

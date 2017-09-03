@@ -1,7 +1,7 @@
 'use strict';
 var HttpError   = require('http-errors');
 var Config      = require('../config/config.js');
-var AuthJwt     = require('./auth-jwt.js');
+var AuthJwt     = require('./jwtAuth.js');
 /**
  * Authorize function for securityDefinitions:Bearer
  * type : apiKey
