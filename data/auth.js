@@ -33,28 +33,30 @@ module.exports = {
                 where: {
                     wxOpenId: wxOpenId,
                 }
-            })
-                .then(result => {
-                    const [user, created] = result;
-                    // If this is a new crated user then create cardcase for it
-                    if (created) {
-                        db.Cardcase.create({
+            }).spread((user, created) => {
+                return Promise.all([
+                    user,
+                    db.Cardcase.findOrCreate({
+                        where: {
                             userId: user.id
-                        });
-                    }
-                    return user;
-                })
-                .then(user => {
-                    var userInfo = {
-                        id: user.id,
-                        wxOpenId: user.wxOpenId,
-                    };
-                    userInfo.token = AuthJwt.issueToken(userInfo, Config.tokenSecret);
-                    callback(null, { responses: userInfo });
-                })
-                .catch(err => {
-                    callback(new HttpError.InternalServerError(err));
+                        }
+                    }).spread(cardcase => cardcase)
+                ]);
+            }).spread((user, cardcase) => {
+                var userInfo = {
+                    id: user.id,
+                    wxOpenId: user.wxOpenId,
+                    cardcaseId: cardcase.id
+                };
+                userInfo.token = AuthJwt.issueToken(userInfo, Config.tokenSecret);
+                return callback(null, {
+                    responses: userInfo
                 });
+            }).catch(db.sequelize.Error, err => {
+                return callback(new HttpError.InternalServerError(err));
+            }).catch(err => {
+                return callback(err);
+            });
         }
     }
 };

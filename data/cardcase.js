@@ -8,12 +8,12 @@ var db = require('../models');
  */
 module.exports = {
     /**
-     * summary: Get Cardcase by User id
+     * summary: Get Cardcase by current User
      * description: 
-     * parameters: userId
+     * parameters: 
      * produces: 
      * responses: 200
-     * operationId: cardcase_get
+     * operationId: cardcase_getByCurrentUserId
      */
     get: {
         200: function (req, res, callback) {

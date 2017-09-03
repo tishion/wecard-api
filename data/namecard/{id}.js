@@ -1,4 +1,7 @@
 'use strict';
+var HttpError = require('http-errors');
+var Validator = require('../validator/validator.js');
+var db = require('../../models');
 var Mockgen = require('../mockgen.js');
 /**
  * Operations on /namecard/{id}
@@ -14,15 +17,24 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/namecard/{id}',
-                operation: 'get',
-                response: '200'
-            }, callback);
+            db.Namecard.findOne({
+                where: {
+                    userId: req.session.userId,
+                    id: req.params.id,
+                }
+            }).then(namecard => {
+                if (namecard) {
+                    return callback(null, {
+                        responses: namecard
+                    });
+                } else {
+                    throw new HttpError.NotFound();
+                }
+            }).catch(db.sequelize.Error, err => {
+                return callback(new HttpError.InternalServerError(err));
+            }).catch(err => {
+                return callback(err);
+            });
         }
     },
     /**
@@ -35,15 +47,26 @@ module.exports = {
      */
     delete: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/namecard/{id}',
-                operation: 'delete',
-                response: '200'
-            }, callback);
+            db.Namecard.findOne({
+                where: {
+                    userId: req.session.userId,
+                    id: req.params.id,
+                }
+            }).then(namecard => {
+                if (namecard) {
+                    return db.Namecard.destroy(namecard);                    
+                } else {
+                    throw new HttpError.NotFound();
+                }
+            }).then(count => {
+                return callback(null, {
+                    responses: count
+                });
+            }).catch(db.sequelize.Error, err => {
+                return callback(new HttpError.InternalServerError(err));
+            }).catch(err => {
+                return callback(err);
+            });
         }
     }
 };

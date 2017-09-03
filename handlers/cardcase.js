@@ -5,13 +5,13 @@ var dataProvider = require('../data/cardcase.js');
  */
 module.exports = {
     /**
-     * summary: Get Cardcase by User id
+     * summary: Get all Cardcases of current User
      * description: 
-     * parameters: userId
+     * parameters: 
      * produces: 
      * responses: 200
      */
-    get: function cardcase_get(req, res, next) {
+    get: function cardcase_getByCurrentUserId(req, res, next) {
         /**
          * Get the data for response 200
          * For response `default` status 200 is used.

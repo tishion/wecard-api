@@ -3,24 +3,24 @@ var Validator = module.exports;
 
 Validator.validate = function _validate(req, predict, onSuccess, onError) {
     if (predict) {
-        onSuccess();        
+        return onSuccess();        
     } else {
-        onError();
+        return onError();
     }
 };
 
 Validator.sessionUserIdEqualsQueryUserId = function _sessionUserIdEqualsQueryUserId(req, onSuccess, onError) {
     if (req.session.userId == req.query.userId) {
-        onSuccess();
+        return onSuccess();
     } else {
-        onError();
+        return onError();
     }
 };
 
 Validator.sessionUserIdEqualsBodyUserId = function _sessionUserIdEqualsBodyUserId(req, onSuccess, onError) {
     if (req.session.userId == req.body.userId) {
-        onSuccess();
+        return onSuccess();
     } else {
-        onError();
+        return onError();
     }
 };
