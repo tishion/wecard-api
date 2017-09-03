@@ -17,23 +17,19 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            Validator.sessionUserIdEqualsQueryUserId(
-                req,
-                () => {
-                    db.Cardcase.findAll({
-                        where: {
-                            userId: req.session.userId
-                        }
-                    }).then(result => {
-                        callback(null, { responses: result });
-                    }).catch(err => {
-                        console.log(err);
-                        callback(err);
-                    });
-                },
-                () => {
-                    callback(new HttpError.Unauthorized('Illegal Request'));
+            db.Cardcase.findAll({
+                where: {
+                    userId: req.session.userId
+                }
+            }).then(cardcase => {
+                return callback(null, {
+                    responses: cardcase
                 });
+            }).catch(db.sequelize.Error, err => {
+                return callback(new HttpError.InternalServerError(err));
+            }).catch(err => {
+                return callback(err);
+            });
         }
     }
 };
