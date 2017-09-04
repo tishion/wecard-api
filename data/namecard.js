@@ -78,7 +78,7 @@ module.exports = {
                 if (original) {
                     // Update attributes
                     for (var attr in namecard) {
-                        if (original.hasOwnProperty(attr)) {
+                        if (original.rawAttributes.hasOwnProperty(attr)) {
                             original[attr] = namecard[attr];
                         }
                     }
@@ -88,7 +88,7 @@ module.exports = {
                     throw new HttpError.NotFound();
                 }
             }).then(updated => {
-                callback({
+                callback(null, {
                     responses: updated
                 });
             }).catch(db.sequelize.Error, err => {

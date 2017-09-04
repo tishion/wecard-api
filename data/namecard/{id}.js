@@ -47,20 +47,16 @@ module.exports = {
      */
     delete: {
         200: function (req, res, callback) {
-            db.Namecard.findOne({
+            db.Namecard.destroy({
                 where: {
                     userId: req.session.userId,
                     id: req.params.id,
                 }
-            }).then(namecard => {
-                if (namecard) {
-                    return db.Namecard.destroy(namecard);                    
-                } else {
-                    throw new HttpError.NotFound();
-                }
             }).then(count => {
                 return callback(null, {
-                    responses: count
+                    responses: {
+                        completed: count
+                    }
                 });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
