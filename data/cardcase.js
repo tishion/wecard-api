@@ -20,10 +20,14 @@ module.exports = {
                 where: {
                     userId: req.session.userId
                 }
-            }).then(cardcase => {
-                return callback(null, {
-                    responses: cardcase
-                });
+            }).then(cardcases => {
+                if (cardcases) {
+                    return callback(null, {
+                        responses: cardcases
+                    });
+                } else {
+                    throw new HttpError.InternalServerError('Database error');
+                }
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {

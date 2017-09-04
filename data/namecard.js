@@ -21,10 +21,14 @@ module.exports = {
                 where: {
                     userId: req.session.userId,
                 }
-            }).then(namecardList => {
-                return callback(null, {
-                    responses: namecardList
-                });
+            }).then(namecards => {
+                if (namecards) {
+                    return callback(null, {
+                        responses: namecards
+                    });
+                } else {
+                    throw new HttpError.InternalServerError('Database error');
+                }
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {
@@ -47,9 +51,13 @@ module.exports = {
             namecard.userId = req.session.userId
             return db.Namecard.create(namecard)
                 .then(created => {
-                    return callback(null, {
-                        responses: created
-                    })
+                    if (created) {
+                        return callback(null, {
+                            responses: created
+                        })
+                    } else {
+                        throw new HttpError.InternalServerError('Database error');                        
+                    }
                 })
                 .catch(db.sequelize.Error, err => {
                     return callback(new HttpError.InternalServerError(err));
@@ -88,9 +96,13 @@ module.exports = {
                     throw new HttpError.NotFound();
                 }
             }).then(updated => {
-                callback(null, {
-                    responses: updated
-                });
+                if (updated) {
+                    callback(null, {
+                        responses: updated
+                    });
+                } else {
+                    throw new HttpError.InternalServerError('Database error');                    
+                }
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {

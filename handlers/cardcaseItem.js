@@ -27,7 +27,7 @@ module.exports = {
         });
     },
     /**
-     * summary: Create a CardcaseItem in by Cardcase id
+     * summary: Create a CardcaseItem in Cardcase
      * description: 
      * parameters: body
      * produces: 

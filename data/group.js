@@ -26,7 +26,7 @@ module.exports = {
                         responses: group
                     });
                 } else {
-                    throw new HttpError.InternalServerError();
+                    throw new HttpError.InternalServerError('Database error');
                 }
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));

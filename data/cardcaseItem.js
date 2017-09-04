@@ -21,10 +21,14 @@ module.exports = {
                     cardcaseId: req.query.cardcaseId,
                     userId: req.session.userId
                 }
-            }).then(cardcaseItemList => {
-                return callback(null, {
-                    responses: cardcaseItemList
-                });
+            }).then(cardcaseItems => {
+                if (cardcaseItems) {
+                    return callback(null, {
+                        responses: cardcaseItems
+                    });
+                } else {
+                    throw new HttpError.InternalServerError('Database error');
+                }
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {
@@ -33,7 +37,7 @@ module.exports = {
         }
     },
     /**
-     * summary: Create a CardcaseItem in by Cardcase id
+     * summary: Create a CardcaseItem in Cardcase
      * description: 
      * parameters: body
      * produces: 
@@ -45,13 +49,34 @@ module.exports = {
             var cardcaseItem = req.body;
             delete cardcaseItem.id;
             cardcaseItem.userId = req.session.userId
-            return db.CardcaseItem.create(cardcaseItem)
-                .then(created => {
-                    return callback(null, {
-                        responses: created
-                    })
-                })
-                .catch(db.sequelize.Error, err => {
+
+            if ('CARD' == cardcaseItem.itemType) {
+                var targetItem = db.Namecard;
+            } else if ('GROUP' == cardcaseItem.itemType) {
+                var targetItem = db.Group;
+            }
+            else {
+                return callback(new HttpError.BadRequest('Invalid itemType'));
+            }
+
+            targetItem.findById(cardcaseItem.itemId)
+                .then(itemObj => {
+                    if (itemObj) {
+                        // The target item exists
+                        return db.CardcaseItem.create(cardcaseItem);
+                    } else {
+                        // The target item doesn't exist
+                        throw new HttpError.BadRequest('Item object not exist');
+                    }
+                }).then(created => {
+                    if (created) {
+                        return callback(null, {
+                            responses: created
+                        })
+                    } else {
+                        throw new HttpError.InternalServerError('Database erro');
+                    }
+                }).catch(db.sequelize.Error, err => {
                     return callback(new HttpError.InternalServerError(err));
                 }).catch(err => {
                     return callback(err);

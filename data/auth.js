@@ -19,7 +19,7 @@ module.exports = {
         200: function (req, res, callback) {
             var wxLoginCode = req.get('WX-LOGIN-CODE');
             if (typeof wxLoginCode === 'undefined' || !wxLoginCode) {
-                return callback(new HttpError.BadRequest());
+                return callback(new HttpError.BadRequest('Missing header WX-LOGIN-CODE'));
             }
 
             // Communicate with WX server to get the open id and session key

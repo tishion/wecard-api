@@ -21,10 +21,14 @@ module.exports = {
                 where: {
                     groupId: req.query.groupId,
                 }
-            }).then(groupMemberList => {
-                return callback(null, {
-                    responses: groupMemberList
-                });
+            }).then(groupMembers => {
+                if (groupMembers) {
+                    return callback(null, {
+                        responses: groupMembers
+                    });
+                } else {
+                    throw new HttpError.InternalServerError('Database error');
+                }
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {

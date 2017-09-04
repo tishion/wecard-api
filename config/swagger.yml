@@ -135,7 +135,7 @@ paths:
     post:
       tags:
         - CardcaseItem
-      summary: Create a CardcaseItem in by Cardcase id
+      summary: Create a CardcaseItem in Cardcase
       operationId: cardcaseItem_Create
       parameters:
         - $ref: '#/parameters/CardcaseItem'
@@ -278,7 +278,8 @@ definitions:
       id:
         type: string
       cardType:
-        type: integer
+        type: string
+        enums: [EMPLOYEE, STUDENT]        
       userId:
         type: string
       avatarUri:
@@ -327,6 +328,7 @@ definitions:
         type: string
       itemType:
         type: string
+        enums: [CARD, GROUP]
       cardcaseId:
         type: string
       name:
