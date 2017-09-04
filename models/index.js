@@ -1,14 +1,23 @@
 'use strict';
 
-var Fs        = require('fs');
-var Path      = require('path');
+var Fs = require('fs');
+var Path = require('path');
 var Sequelize = require('sequelize');
-var Config    = require('../config/config.js');
+var Config = require('../config/config.js');
 
-var db        = {};
-var sequelize = new Sequelize(Config.database.connection, Config.database.options);
+var db = {};
+var connection = Config.database.connection;
+var options = Config.database.options;
+options.define = {
+  defaultScope: {
+    attributes: {
+      exclude: ['createdAt', 'updatedAt', 'deletedAt', 'version']
+    }
+  }
+};
+var sequelize = new Sequelize(connection, options);
+
 var entityFolderName = Path.join(__dirname, 'entity');
-
 Fs
   .readdirSync(entityFolderName)
   .filter(file => {

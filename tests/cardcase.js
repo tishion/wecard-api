@@ -26,13 +26,13 @@ Test('/cardcase', function (t) {
         t.error(err, 'No parse error');
         t.ok(api, 'Valid swagger api');
         /**
-         * summary: Get Cardcase by User id
+         * summary: Get all Cardcases of current User
          * description: 
-         * parameters: userId
+         * parameters: 
          * produces: 
          * responses: 200
          */
-        t.test('test cardcase_get get operation', function (t) {
+        t.test('test cardcase_getByCurrentUserId get operation', function (t) {
             Mockgen().requests({
                 path: '/cardcase',
                 operation: 'get'

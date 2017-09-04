@@ -158,13 +158,13 @@ paths:
           schema:
             $ref: '#/definitions/CardcaseItem'
   '/group':
-    put:
+    post:
       tags:
         - Group
       summary: Create a Group (if not exist)
       operationId: group_create
       parameters:
-        - name: groupId
+        - name: wxGroupId
           type: string
           in: query
           required: true
@@ -345,6 +345,8 @@ definitions:
     type: object
     properties:
       id:
+        type: string
+      groupId:
         type: string
       userId:
         type: string

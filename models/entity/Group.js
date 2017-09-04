@@ -1,7 +1,7 @@
 'use strict'
 module.exports = function _User(sequelize, DataTypes) {
     return sequelize.define(
-        'User',
+        'Group',
         {
             id: {
                 type: DataTypes.UUID,
@@ -9,7 +9,7 @@ module.exports = function _User(sequelize, DataTypes) {
                 allowNull: false,
                 primaryKey: true
             },
-            wxOpenId: {
+            wxGroupId: {
                 type: DataTypes.CHAR,
                 allowNull: false,
                 unique: true

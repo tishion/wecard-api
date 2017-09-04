@@ -1,4 +1,7 @@
 'use strict';
+var HttpError = require('http-errors');
+var db = require('../models');
+var Mockgen = require('./mockgen.js');
 var Mockgen = require('./mockgen.js');
 /**
  * Operations on /groupMember
@@ -14,15 +17,19 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/groupMember',
-                operation: 'get',
-                response: '200'
-            }, callback);
+            db.GroupMember.findAll({
+                where: {
+                    groupId: req.query.groupId,
+                }
+            }).then(groupMemberList => {
+                return callback(null, {
+                    responses: groupMemberList
+                });
+            }).catch(db.sequelize.Error, err => {
+                return callback(new HttpError.InternalServerError(err));
+            }).catch(err => {
+                return callback(err);
+            });
         }
     }
 };

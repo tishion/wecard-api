@@ -28,14 +28,14 @@ Test('/group', function (t) {
         /**
          * summary: Create a Group (if not exist)
          * description: 
-         * parameters: groupId
+         * parameters: wxGroupId
          * produces: 
          * responses: 200
          */
-        t.test('test group_create put operation', function (t) {
+        t.test('test group_create post operation', function (t) {
             Mockgen().requests({
                 path: '/group',
-                operation: 'put'
+                operation: 'post'
             }, function (err, mock) {
                 var request;
                 t.error(err);
@@ -44,7 +44,7 @@ Test('/group', function (t) {
                 //Get the resolved path from mock request
                 //Mock request Path templates({}) are resolved using path parameters
                 request = Request(App)
-                    .put('/api' + mock.request.path);
+                    .post('/api' + mock.request.path);
                 if (mock.request.body) {
                     //Send the request body
                     request = request.send(mock.request.body);
@@ -64,7 +64,7 @@ Test('/group', function (t) {
                     t.error(err, 'No error');
                     t.ok(res.statusCode === 200, 'Ok response status');
                     var Validator = require('is-my-json-valid');
-                    var validate = Validator(api.paths['/group']['put']['responses']['200']['schema']);
+                    var validate = Validator(api.paths['/group']['post']['responses']['200']['schema']);
                     var response = res.body;
                     if (Object.keys(response).length <= 0) {
                         response = res.text;

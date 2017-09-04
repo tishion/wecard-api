@@ -1,4 +1,6 @@
 'use strict';
+var HttpError = require('http-errors');
+var db = require('../models');
 var Mockgen = require('./mockgen.js');
 /**
  * Operations on /group
@@ -7,22 +9,30 @@ module.exports = {
     /**
      * summary: Create a Group (if not exist)
      * description: 
-     * parameters: groupId
+     * parameters: wxGroupId
      * produces: 
      * responses: 200
      * operationId: group_create
      */
-    put: {
+    post: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/group',
-                operation: 'put',
-                response: '200'
-            }, callback);
+            db.Group.findOrCreate({
+                where: {
+                    wxGroupId: req.query.wxGroupId,
+                }
+            }).spread((group, created) => {
+                if (group) {
+                    return callback(null, {
+                        responses: group
+                    });
+                } else {
+                    throw new HttpError.InternalServerError();
+                }
+            }).catch(db.sequelize.Error, err => {
+                return callback(new HttpError.InternalServerError(err));
+            }).catch(err => {
+                return callback(err);
+            });
         }
     }
 };
