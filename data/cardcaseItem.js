@@ -78,6 +78,7 @@ module.exports = {
             }).catch(err => {
                 return callback(err);
             });
+        }
     },
     /**
      * summary: Create a CardcaseItem in Cardcase
@@ -125,5 +126,5 @@ module.exports = {
                     return callback(err);
                 });
         }
-    }
+    },
 };
