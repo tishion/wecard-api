@@ -10,7 +10,9 @@ var Path = require('path');
 var Config = require('./config/config.js');
 var db = require('./models');
 
-db.sequelize.sync();
+db.sequelize.sync({
+    force: true
+});
 
 // Create Express instance
 var App = Express()
