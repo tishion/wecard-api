@@ -90,6 +90,7 @@ module.exports = {
                             original[attr] = namecard[attr];
                         }
                     }
+                    original.userId = req.session.userId;
                     return original.save();
                 }
                 else {

@@ -16,7 +16,6 @@ module.exports = function _Group(sequelize, DataTypes) {
             }
         },
         {
-            version: true,
             paranoid: true
         }
     );

@@ -15,7 +15,6 @@ module.exports = function _Cardcase(sequelize, DataTypes) {
             }
         },
         {
-            version: true,
             paranoid: true
         }
     );

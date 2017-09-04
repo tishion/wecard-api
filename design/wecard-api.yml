@@ -132,11 +132,23 @@ paths:
             type: array
             items: 
               $ref: '#/definitions/CardcaseItem'
+    put:
+      tags:
+        - CardcaseItem
+      summary: Update a CardcaseItem in Cardcase
+      operationId: cardcaseItem_update
+      parameters:
+        - $ref: '#/parameters/CardcaseItem'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CardcaseItem'
     post:
       tags:
         - CardcaseItem
       summary: Create a CardcaseItem in Cardcase
-      operationId: cardcaseItem_Create
+      operationId: cardcaseItem_create
       parameters:
         - $ref: '#/parameters/CardcaseItem'
       responses:
@@ -279,8 +291,7 @@ definitions:
       id:
         type: string
       cardType:
-        type: string
-        enums: [EMPLOYEE, STUDENT]        
+        type: integer
       userId:
         type: string
       avatarUri:
@@ -329,7 +340,6 @@ definitions:
         type: string
       itemType:
         type: string
-        enums: [CARD, GROUP]
       cardcaseId:
         type: string
       name:

@@ -16,7 +16,6 @@ module.exports = function _User(sequelize, DataTypes) {
             }
         },
         {
-            version: true,
             paranoid: true
         }
     );

@@ -73,7 +73,6 @@ module.exports = function _Namecard(sequelize, DataTypes) {
             }
         },
         {
-            version: true,
             paranoid: true
         }
     );

@@ -75,13 +75,62 @@ Test('/cardcaseItem', function (t) {
                 });
             });
         });/**
+         * summary: Update a CardcaseItem in Cardcase
+         * description: 
+         * parameters: body
+         * produces: 
+         * responses: 200
+         */
+        t.test('test cardcaseItem_update put operation', function (t) {
+            Mockgen().requests({
+                path: '/cardcaseItem',
+                operation: 'put'
+            }, function (err, mock) {
+                var request;
+                t.error(err);
+                t.ok(mock);
+                t.ok(mock.request);
+                //Get the resolved path from mock request
+                //Mock request Path templates({}) are resolved using path parameters
+                request = Request(App)
+                    .put('/api' + mock.request.path);
+                if (mock.request.body) {
+                    //Send the request body
+                    request = request.send(mock.request.body);
+                } else if (mock.request.formData){
+                    //Send the request form data
+                    request = request.send(mock.request.formData);
+                    //Set the Content-Type as application/x-www-form-urlencoded
+                    request = request.set('Content-Type', 'application/x-www-form-urlencoded');
+                }
+                // If headers are present, set the headers.
+                if (mock.request.headers && mock.request.headers.length > 0) {
+                    Object.keys(mock.request.headers).forEach(function (headerName) {
+                        request = request.set(headerName, mock.request.headers[headerName]);
+                    });
+                }
+                request.end(function (err, res) {
+                    t.error(err, 'No error');
+                    t.ok(res.statusCode === 200, 'Ok response status');
+                    var Validator = require('is-my-json-valid');
+                    var validate = Validator(api.paths['/cardcaseItem']['put']['responses']['200']['schema']);
+                    var response = res.body;
+                    if (Object.keys(response).length <= 0) {
+                        response = res.text;
+                    }
+                    t.ok(validate(response), 'Valid response');
+                    t.error(validate.errors, 'No validation errors');
+                    t.end();
+                });
+            });
+        });/**
          * summary: Create a CardcaseItem in Cardcase
          * description: 
          * parameters: body
          * produces: 
          * responses: 200
          */
-        t.test('test cardcaseItem_Create post operation', function (t) {
+        t.test('test cardcaseItem_create post operation', function (t) {
             Mockgen().requests({
                 path: '/cardcaseItem',
                 operation: 'post'

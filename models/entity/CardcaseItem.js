@@ -36,7 +36,6 @@ module.exports = function _CardcaseItem(sequelize, DataTypes) {
             }
         },
         {
-            version: true,
             paranoid: true,
             indexes: [{
                 fields: ['cardcaseId', 'itemId', 'itemType'],

@@ -36,6 +36,49 @@ module.exports = {
             });
         }
     },
+        /**
+     * summary: Update a CardcaseItem in Cardcase
+     * description: 
+     * parameters: body
+     * produces: 
+     * responses: 200
+     * operationId: cardcaseItem_update
+     */
+    put: {
+        200: function (req, res, callback) {
+            var cardcaseItem = req.body;
+            return db.CardcaseItem.findOne({
+                where: {
+                    id: cardcaseItem.id,
+                    userId: req.session.userId,
+                }
+            }).then(original => {
+                if (original) {
+                    // Update attributes
+                    for (var attr in cardcaseItem) {
+                        if (original.rawAttributes.hasOwnProperty(attr)) {
+                            original[attr] = cardcaseItem[attr];
+                        }
+                    }
+                    return original.save();
+                }
+                else {
+                    throw new HttpError.NotFound();
+                }
+            }).then(updated => {
+                if (updated) {
+                    callback(null, {
+                        responses: updated
+                    });
+                } else {
+                    throw new HttpError.InternalServerError('Database error');                    
+                }
+            }).catch(db.sequelize.Error, err => {
+                return callback(new HttpError.InternalServerError(err));
+            }).catch(err => {
+                return callback(err);
+            });
+    },
     /**
      * summary: Create a CardcaseItem in Cardcase
      * description: 

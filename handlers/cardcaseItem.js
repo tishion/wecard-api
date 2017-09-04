@@ -27,13 +27,35 @@ module.exports = {
         });
     },
     /**
+     * summary: Update a CardcaseItem in Cardcase
+     * description: 
+     * parameters: body
+     * produces: 
+     * responses: 200
+     */
+    put: function cardcaseItem_update(req, res, next) {
+        /**
+         * Get the data for response 200
+         * For response `default` status 200 is used.
+         */
+        var status = 200;
+        var provider = dataProvider['put']['200'];
+        provider(req, res, function (err, data) {
+            if (err) {
+                next(err);
+                return;
+            }
+            res.status(status).send(data && data.responses);
+        });
+    },
+    /**
      * summary: Create a CardcaseItem in Cardcase
      * description: 
      * parameters: body
      * produces: 
      * responses: 200
      */
-    post: function cardcaseItem_Create(req, res, next) {
+    post: function cardcaseItem_create(req, res, next) {
         /**
          * Get the data for response 200
          * For response `default` status 200 is used.
