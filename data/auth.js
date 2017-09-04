@@ -3,7 +3,6 @@ var HttpError = require('http-errors');
 var Config = require('../config/config.js');
 var AuthJwt = require('../security/jwtAuth.js');
 var db = require('../models');
-
 /**
  * Operations on /auth
  */

@@ -1,5 +1,5 @@
 'use strict'
-module.exports = function _User(sequelize, DataTypes) {
+module.exports = function _GroupMember(sequelize, DataTypes) {
     return sequelize.define(
         'GroupMember',
         {

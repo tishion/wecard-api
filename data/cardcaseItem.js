@@ -1,5 +1,7 @@
 'use strict';
-var Mockgen = require('./mockgen.js');
+var HttpError = require('http-errors');
+var Validator = require('./validator/validator.js');
+var db = require('../models');
 /**
  * Operations on /cardcaseItem
  */
@@ -14,15 +16,20 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/cardcaseItem',
-                operation: 'get',
-                response: '200'
-            }, callback);
+            db.CardcaseItem.findAll({
+                where: {
+                    cardcaseId: req.query.cardcaseId,
+                    userId: req.session.userId
+                }
+            }).then(cardcaseItemList => {
+                return callback(null, {
+                    responses: cardcaseItemList
+                });
+            }).catch(db.sequelize.Error, err => {
+                return callback(new HttpError.InternalServerError(err));
+            }).catch(err => {
+                return callback(err);
+            });
         }
     },
     /**
@@ -35,15 +42,20 @@ module.exports = {
      */
     post: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/cardcaseItem',
-                operation: 'post',
-                response: '200'
-            }, callback);
+            var cardcaseItem = req.body;
+            delete cardcaseItem.id;
+            cardcaseItem.userId = req.session.userId
+            return db.CardcaseItem.create(cardcaseItem)
+                .then(created => {
+                    return callback(null, {
+                        responses: created
+                    })
+                })
+                .catch(db.sequelize.Error, err => {
+                    return callback(new HttpError.InternalServerError(err));
+                }).catch(err => {
+                    return callback(err);
+                });
         }
     }
 };
