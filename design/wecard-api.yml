@@ -291,7 +291,7 @@ definitions:
       id:
         type: string
       cardType:
-        type: integer
+        type: string
       userId:
         type: string
       avatarUri:
