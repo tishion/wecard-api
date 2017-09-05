@@ -290,7 +290,7 @@ definitions:
       id:
         type: string
       cardType:
-        type: strng
+        type: string
       userId:
         type: string
       avatarUri:
