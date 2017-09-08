@@ -29,7 +29,14 @@ var App = Express()
     }))                         // Add swagger API
     .use('/viewer', SwaggerUi({
         docs: '/api/docs'
-    }));                        // Add swagger ui
+    }))                         // Add swagger ui
+    .use('/cleandb', (req, res) => {
+        db.sequelize.sync({
+            force: true
+        }).then(() => {
+            res.send('DB was cleaned successfully.');            
+        })
+      });
 
 // Start the server
 Http.createServer(App)
