@@ -70,6 +70,10 @@ module.exports = function _Namecard(sequelize, DataTypes) {
             exOccupation: {
                 type: DataTypes.CHAR,
 
+            },
+            nonpublic: {
+                type: DataTypes.BOOLEAN,
+                defaultValue: true,
             }
         },
         {

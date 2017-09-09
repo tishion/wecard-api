@@ -322,6 +322,8 @@ definitions:
         type: string
       exOccupation:
         type: string
+      nonpublic:
+        type: boolean
   Cardcase:
     type: object
     properties:
@@ -371,21 +373,23 @@ definitions:
     properties:
       id:
         type: string
-      RequestUserId:
+      namecardId:
         type: string
-      TargetUserId:
+      userId:
         type: string
-      Level:
+      level:
         type: integer
   AccessRequest:
     type: object
     properties:
       id:
         type: string
-      RequestUserId:
+      namecardId:
         type: string
-      TargetUserId:
+      userId:
         type: string
+      level:
+        type: integer
 # The parameters
 parameters:
   EntityId:
