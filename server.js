@@ -8,11 +8,8 @@ var Swaggerize = require('swaggerize-express');
 var SwaggerUi = require('swaggerize-ui');
 var Path = require('path');
 var Config = require('./config/config.js');
+var ErrorHandler = require('./error/handler.js');
 var db = require('./models');
-
-db.sequelize.sync({
-    force: true
-});
 
 // Create Express instance
 var App = Express()
@@ -20,23 +17,21 @@ var App = Express()
     .use(BodyParser.json())     // Add json body parser
     .use(BodyParser.urlencoded({
         extended: true
-    }))                         // Add URL encode parser
-    .use(Swaggerize({
+    })).use(Swaggerize({
         api: Path.resolve('./config/swagger.yml'),
         handlers: Path.resolve('./handlers'),
         security: Path.resolve('./security'),
         docspath: '/docs'
-    }))                         // Add swagger API
-    .use('/viewer', SwaggerUi({
+    })).use('/viewer', SwaggerUi({
         docs: '/api/docs'
-    }))                         // Add swagger ui
+    })).use(ErrorHandler.globalErrorHadler)
     .use('/cleandb', (req, res) => {
         db.sequelize.sync({
             force: true
         }).then(() => {
-            res.send('DB was cleaned successfully.');            
+            res.send('DB was cleaned successfully.');
         })
-      });
+    });
 
 // Start the server
 Http.createServer(App)

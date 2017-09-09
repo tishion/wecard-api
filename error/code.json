@@ -1,0 +1,11 @@
+{
+    "err_namecardCountExceedsLimit": {
+        "error": 80001,
+        "message": "Namecard count exceeds the limit"
+    },
+
+    "err_template": {
+        "error": 80000,
+        "message": "Error template"
+    }
+}

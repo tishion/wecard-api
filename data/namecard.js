@@ -1,6 +1,7 @@
 'use strict';
 var HttpError = require('http-errors');
 var Validator = require('./validator/validator.js');
+var ErrorCode = require('../error/code.json');
 var db = require('../models');
 var Mockgen = require('./mockgen.js');
 /**
@@ -49,21 +50,31 @@ module.exports = {
             var namecard = req.body;
             delete namecard.id;
             namecard.userId = req.session.userId
-            return db.Namecard.create(namecard)
-                .then(created => {
-                    if (created) {
-                        return callback(null, {
-                            responses: created
-                        })
-                    } else {
-                        throw new HttpError.InternalServerError('Database error');                        
-                    }
-                })
-                .catch(db.sequelize.Error, err => {
-                    return callback(new HttpError.InternalServerError(err));
-                }).catch(err => {
-                    return callback(err);
-                });
+
+            return db.Namecard.count({
+                where: {
+                    userId: req.session.userId
+                }
+            }).then(total => {
+                if (total < 5) {
+                    return db.Namecard.create(namecard);
+                }
+                else {
+                    throw new HttpError.BadRequest(ErrorCode.err_namecardCountExceedsLimit);
+                }
+            }).then(created => {
+                if (created) {
+                    return callback(null, {
+                        responses: created
+                    })
+                } else {
+                    throw new HttpError.InternalServerError('Database error');
+                }
+            }).catch(db.sequelize.Error, err => {
+                return callback(new HttpError.InternalServerError(err));
+            }).catch(err => {
+                return callback(err);
+            });
         }
     },
     /**
@@ -102,7 +113,7 @@ module.exports = {
                         responses: updated
                     });
                 } else {
-                    throw new HttpError.InternalServerError('Database error');                    
+                    throw new HttpError.InternalServerError('Database error');
                 }
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
