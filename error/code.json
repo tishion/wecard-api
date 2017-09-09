@@ -4,6 +4,11 @@
         "message": "Namecard count exceeds the limit"
     },
 
+    "err_invalidCardType": {
+        "error": 80002,
+        "message": "Invalid card type"
+    },
+
     "err_template": {
         "error": 80000,
         "message": "Error template"

@@ -323,6 +323,10 @@ definitions:
         type: string
       nonpublic:
         type: boolean
+      interests:
+        type: array
+        items:
+          type: string 
   Cardcase:
     type: object
     properties:

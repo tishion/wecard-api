@@ -14,8 +14,8 @@ module.exports = function _Namecard(sequelize, DataTypes) {
                 allowNull: false
             },
             cardType: {
-                type: DataTypes.ENUM('EMPLOYEE', 'STUDENT'),
-                defaultValue: 'STUDENT',
+                type: DataTypes.ENUM('WORK', 'STUDY'),
+                defaultValue: 'WORK',
                 allowNull: false
             },
             avatarUri: {
@@ -71,13 +71,26 @@ module.exports = function _Namecard(sequelize, DataTypes) {
                 type: DataTypes.CHAR,
 
             },
+            interests: {
+                type: DataTypes.STRING,
+            },
             nonpublic: {
                 type: DataTypes.BOOLEAN,
                 defaultValue: true,
             }
         },
         {
-            paranoid: true
+            paranoid: true,            
+            getterMethods: {
+                interests: function interests_getter() {
+                    return this.getDataValue('interests').split(';');
+                }
+            },
+            setterMethods: {
+                interests: function interests_setter(value) {
+                    this.setDataValue('interests', value.join(';'));
+                }
+            },
         }
     );
 };
