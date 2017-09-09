@@ -23,11 +23,8 @@ module.exports = {
                 }
             }).then(namecard => {
                 if (namecard) {
-                    if (namecard.nonpublic) {
-                        delete namecard.dataValues.phone;
-                    }
                     return callback(null, {
-                        responses: namecard
+                        responses: namecard.abridge
                     });
                 } else {
                     throw new HttpError.NotFound();

@@ -113,21 +113,6 @@ module.exports = {
                 }
             }).then(original => {
                 if (original) {
-                    if ('WORK' === namecard.cardType) {
-                        req.school = '';
-                        req.major = '';
-                        req.grade = 0;
-                    } else if ('STUDY' === namecard.cardType) {
-                        req.company = '';
-                        req.department = '';
-                        req.occupation = '';
-                        req.exCompany = '';
-                        req.exDepartment = '';
-                        req.exOccupation = '';
-                    } else {
-                        throw new HttpError.BadRequest(ErrorCode.err_invalidCardType);
-                    }
-
                     // Update attributes
                     for (var attr in namecard) {
                         if (original.rawAttributes.hasOwnProperty(attr)) {

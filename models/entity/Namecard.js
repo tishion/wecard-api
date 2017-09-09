@@ -38,11 +38,9 @@ module.exports = function _Namecard(sequelize, DataTypes) {
             },
             company: {
                 type: DataTypes.CHAR,
-
             },
             department: {
                 type: DataTypes.CHAR,
-
             },
             occupation: {
                 type: DataTypes.CHAR,
@@ -50,7 +48,6 @@ module.exports = function _Namecard(sequelize, DataTypes) {
             },
             school: {
                 type: DataTypes.CHAR,
-
             },
             major: {
                 type: DataTypes.CHAR,
@@ -61,18 +58,21 @@ module.exports = function _Namecard(sequelize, DataTypes) {
             },
             exCompany: {
                 type: DataTypes.CHAR,
-
             },
-            department: {
+            exDepartment: {
                 type: DataTypes.CHAR,
-
             },
             exOccupation: {
                 type: DataTypes.CHAR,
-
             },
             interests: {
                 type: DataTypes.STRING,
+                set(value) {
+                    this.setDataValue('interests', value.join(';'));                    
+                },
+                get() {
+                    return this.getDataValue('interests').split(';');                    
+                }
             },
             nonpublic: {
                 type: DataTypes.BOOLEAN,
@@ -80,17 +80,27 @@ module.exports = function _Namecard(sequelize, DataTypes) {
             }
         },
         {
-            paranoid: true,            
+            paranoid: true,
             getterMethods: {
-                interests: function interests_getter() {
-                    return this.getDataValue('interests').split(';');
+                cardType() {
+                    var cardType = this.getDataValue('cardType');
+                    if ('WORK' == cardType) {
+                        delete this.dataValues.school;
+                        delete this.dataValues.major;
+                        delete this.dataValues.grade;
+                    } else if ('STUDY' == cardType) {
+                        delete this.dataValues.company;
+                        delete this.dataValues.department;
+                        delete this.dataValues.occupation;
+                        delete this.dataValues.exCompany;
+                        delete this.dataValues.exDepartment;
+                        delete this.dataValues.exOccupation;
+                    }
+                    return cardType;
                 }
-            },
+              },
             setterMethods: {
-                interests: function interests_setter(value) {
-                    this.setDataValue('interests', value.join(';'));
-                }
-            },
+            }
         }
     );
 };
