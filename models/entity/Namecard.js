@@ -20,7 +20,6 @@ module.exports = function _Namecard(sequelize, DataTypes) {
             },
             avatarUri: {
                 type: DataTypes.CHAR,
-                allowNull: false
             },
             name: {
                 type: DataTypes.CHAR,

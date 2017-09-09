@@ -57,7 +57,7 @@ paths:
       summary: Create a Namecard
       operationId: namecard_create
       parameters:
-        - $ref: '#/parameters/Namecard'
+        - $ref: '#/parameters/NamecardCreate'
       responses:
         '200':
           description: OK
@@ -69,7 +69,7 @@ paths:
       summary: Update the Namecard
       operationId: namecard_update
       parameters:
-        - $ref: '#/parameters/Namecard'
+        - $ref: '#/parameters/NamecardUpdate'
       responses:
         '200':
           description: OK
@@ -132,25 +132,25 @@ paths:
             type: array
             items:
               $ref: '#/definitions/CardcaseItem'
-    put:
-      tags:
-        - CardcaseItem
-      summary: Update a CardcaseItem in Cardcase
-      operationId: cardcaseItem_update
-      parameters:
-        - $ref: '#/parameters/CardcaseItem'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/CardcaseItem'
     post:
       tags:
         - CardcaseItem
       summary: Create a CardcaseItem in Cardcase
       operationId: cardcaseItem_create
       parameters:
-        - $ref: '#/parameters/CardcaseItem'
+        - $ref: '#/parameters/CardcaseItemCreate'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CardcaseItem'
+    put:
+      tags:
+        - CardcaseItem
+      summary: Update a CardcaseItem in Cardcase
+      operationId: cardcaseItem_update
+      parameters:
+        - $ref: '#/parameters/CardcaseItemUpdate'
       responses:
         '200':
           description: OK
@@ -400,20 +400,52 @@ parameters:
     in: path
     description: The entity id
     required: true
-  Namecard:
+  NamecardCreate:
     name: body
     in: body
     required: true
     description: The Namecard
     schema:
-      $ref: '#/definitions/Namecard'
-  CardcaseItem:
+      allOf:
+        - $ref: '#/definitions/Namecard'
+      required:
+        - cardType
+        - name
+        - phone
+        - occupation
+        - grade
+  NamecardUpdate:
+    name: body
+    in: body
+    required: true
+    description: The Namecard
+    schema:
+      allOf:
+        - $ref: '#/definitions/Namecard'
+      required:
+        - id
+  CardcaseItemCreate:
     name: body
     in: body
     required: true
     description: The Cardcase
     schema:
-      $ref: '#/definitions/CardcaseItem'
+      allOf:
+        - $ref: '#/definitions/CardcaseItem'
+      required: 
+        - itemId
+        - itemType
+        - cardcaseId
+  CardcaseItemUpdate:
+    name: body
+    in: body
+    required: true
+    description: The Cardcase
+    schema:
+      allOf:
+        - $ref: '#/definitions/CardcaseItem'
+      required: 
+        - id
   Group:
     name: body
     in: body

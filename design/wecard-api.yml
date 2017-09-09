@@ -22,10 +22,10 @@ produces:
   - application/json
   - text/json
 paths:
-  '/auth':
+  /auth:
     get:
       security: []
-      tags: 
+      tags:
         - Authentication
       parameters:
         - name: WX-LOGIN-CODE
@@ -38,7 +38,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/User'
-  '/namecard':
+  /namecard:
     get:
       tags:
         - Namecard
@@ -49,7 +49,7 @@ paths:
           description: OK
           schema:
             type: array
-            items: 
+            items:
               $ref: '#/definitions/Namecard'
     post:
       tags:
@@ -57,11 +57,11 @@ paths:
       summary: Create a Namecard
       operationId: namecard_create
       parameters:
-        - $ref: '#/parameters/Namecard'
+        - $ref: '#/parameters/NamecardCreate'
       responses:
         '200':
           description: OK
-          schema: 
+          schema:
             $ref: '#/definitions/Namecard'
     put:
       tags:
@@ -69,11 +69,11 @@ paths:
       summary: Update the Namecard
       operationId: namecard_update
       parameters:
-        - $ref: '#/parameters/Namecard'
+        - $ref: '#/parameters/NamecardUpdate'
       responses:
         '200':
           description: OK
-          schema: 
+          schema:
             $ref: '#/definitions/Namecard'
   '/namecard/{id}':
     get:
@@ -86,7 +86,7 @@ paths:
       responses:
         '200':
           description: OK
-          schema: 
+          schema:
             $ref: '#/definitions/Namecard'
     delete:
       tags:
@@ -98,9 +98,9 @@ paths:
       responses:
         '200':
           description: OK
-          schema: 
+          schema:
             $ref: '#/definitions/Namecard'
-  '/cardcase':
+  /cardcase:
     get:
       tags:
         - Cardcase
@@ -111,9 +111,9 @@ paths:
           description: OK
           schema:
             type: array
-            items: 
+            items:
               $ref: '#/definitions/Cardcase'
-  '/cardcaseItem':
+  /cardcaseItem:
     get:
       tags:
         - CardcaseItem
@@ -130,27 +130,27 @@ paths:
           description: OK
           schema:
             type: array
-            items: 
+            items:
               $ref: '#/definitions/CardcaseItem'
-    put:
-      tags:
-        - CardcaseItem
-      summary: Update a CardcaseItem in Cardcase
-      operationId: cardcaseItem_update
-      parameters:
-        - $ref: '#/parameters/CardcaseItem'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/CardcaseItem'
     post:
       tags:
         - CardcaseItem
       summary: Create a CardcaseItem in Cardcase
       operationId: cardcaseItem_create
       parameters:
-        - $ref: '#/parameters/CardcaseItem'
+        - $ref: '#/parameters/CardcaseItemCreate'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/CardcaseItem'
+    put:
+      tags:
+        - CardcaseItem
+      summary: Update a CardcaseItem in Cardcase
+      operationId: cardcaseItem_update
+      parameters:
+        - $ref: '#/parameters/CardcaseItemUpdate'
       responses:
         '200':
           description: OK
@@ -169,7 +169,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/CardcaseItem'
-  '/group':
+  /group:
     post:
       tags:
         - Group
@@ -186,7 +186,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Group'
-  '/groupMember':
+  /groupMember:
     get:
       tags:
         - GroupMember
@@ -205,7 +205,7 @@ paths:
             type: array
             items:
               $ref: '#/definitions/GroupMember'
-  '/accessrequest':
+  /accessrequest:
     get:
       tags:
         - AccessRequest
@@ -247,7 +247,7 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/AccessLevel'
-  '/accesslevel':
+  /accesslevel:
     post:
       tags:
         - AccessLevel
@@ -272,7 +272,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/AccessLevel'
-# The entity definitions
 definitions:
   User:
     type: object
@@ -394,7 +393,6 @@ definitions:
         type: string
       level:
         type: integer
-# The parameters
 parameters:
   EntityId:
     name: id
@@ -402,27 +400,59 @@ parameters:
     in: path
     description: The entity id
     required: true
-  Namecard:
+  NamecardCreate:
     name: body
     in: body
     required: true
     description: The Namecard
     schema:
-      $ref: '#/definitions/Namecard'
-  CardcaseItem:
+      allOf:
+        - $ref: '#/definitions/Namecard'
+      required:
+        - cardType
+        - name
+        - phone
+        - occupation
+        - grade
+  NamecardUpdate:
+    name: body
+    in: body
+    required: true
+    description: The Namecard
+    schema:
+      allOf:
+        - $ref: '#/definitions/Namecard'
+      required:
+        - id
+  CardcaseItemCreate:
     name: body
     in: body
     required: true
     description: The Cardcase
     schema:
-      $ref: '#/definitions/CardcaseItem'
+      allOf:
+        - $ref: '#/definitions/CardcaseItem'
+      required: 
+        - itemId
+        - itemType
+        - cardcaseId
+  CardcaseItemUpdate:
+    name: body
+    in: body
+    required: true
+    description: The Cardcase
+    schema:
+      allOf:
+        - $ref: '#/definitions/CardcaseItem'
+      required: 
+        - id
   Group:
     name: body
     in: body
     required: true
     description: The Group
     schema:
-      $ref: '#/definitions/Group'    
+      $ref: '#/definitions/Group'
   AccessRequest:
     name: body
     in: body
