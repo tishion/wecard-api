@@ -107,16 +107,22 @@ module.exports = {
                 .then(itemObj => {
                     if (itemObj) {
                         // The target item exists
-                        return db.CardcaseItem.create(cardcaseItem);
+                        return db.CardcaseItem.findOrCreate(cardcaseItem);
                     } else {
                         // The target item doesn't exist
                         throw new HttpError.BadRequest('Item object not exist');
                     }
-                }).then(created => {
-                    if (created) {
+                }).then(item, created => {
+                    if (craeted) {
+                        return db.CardcaseItem.findById(item.id);
+                    } else {
+                        return item;
+                    }
+                }).then(item => {
+                    if (item) {
                         return callback(null, {
-                            responses: created
-                        })
+                            responses: item
+                        });
                     } else {
                         throw new HttpError.InternalServerError('Database erro');
                     }

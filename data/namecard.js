@@ -64,8 +64,12 @@ module.exports = {
                 }
             }).then(created => {
                 if (created) {
+                    return db.Namecard.findById(created.id);
+                }
+            }).then(found => {
+                if (found) {
                     return callback(null, {
-                        responses: created
+                        responses: found
                     })
                 } else {
                     throw new HttpError.InternalServerError('Database error');
