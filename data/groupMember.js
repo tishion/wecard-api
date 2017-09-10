@@ -1,8 +1,6 @@
 'use strict';
 var HttpError = require('http-errors');
 var db = require('../models');
-var Mockgen = require('./mockgen.js');
-var Mockgen = require('./mockgen.js');
 /**
  * Operations on /groupMember
  */

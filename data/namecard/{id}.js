@@ -1,8 +1,6 @@
 'use strict';
 var HttpError = require('http-errors');
-var Validator = require('../validator/validator.js');
 var db = require('../../models');
-var Mockgen = require('../mockgen.js');
 /**
  * Operations on /namecard/{id}
  */
