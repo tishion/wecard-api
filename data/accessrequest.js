@@ -54,8 +54,7 @@ module.exports = {
         200: function (req, res, callback) {
             var accessRequest = req.body;
 
-            return db.Namecard.findById(accessRequest.namecardId)
-            .then(namecard => {
+            return db.Namecard.findById(accessRequest.namecardId).then(namecard => {
                 if (namecard) {
                     return db.AccessRequest.findOrCreate({
                         where: {

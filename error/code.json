@@ -14,6 +14,16 @@
         "message": "Name card not found"
     },
 
+    "err_invalideOperation": {
+        "error": 80004,
+        "message": "Invalide sign operation [accept | reject]"
+    },
+
+    "err_requestSignedAlready": {
+        "error": 80004,
+        "message": "The request was signed already"
+    },
+
     "err_template": {
         "error": 80000,
         "message": "Error template"

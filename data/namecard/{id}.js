@@ -17,11 +17,7 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            db.Namecard.findOne({
-                where: {
-                    id: req.params.id,
-                }
-            }).then(namecard => {
+            db.Namecard.findById(req.params.id).then(namecard => {
                 if (namecard) {
                     if (req.session.userId != namecard.userId && namecard.nonpublic) {
                         delete namecard.dataValues.phone;
