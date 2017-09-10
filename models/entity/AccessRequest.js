@@ -13,17 +13,26 @@ module.exports = function _AccessRequest(sequelize, DataTypes) {
                 type: DataTypes.UUID,
                 allowNull: false,
             },
-            userId: {
+            fromUserId: {
                 type: DataTypes.UUID,
                 allowNull: false,
             },
-            level: {
-                type: DataTypes.INTEGER,
+            toUserId: {
+                type: DataTypes.UUID,
+                allowNull: false,
+            },
+            status: {
+                type: DataTypes.ENUM('PENDING', 'ACCEPTED', 'REJECTED'),
+                defaultValue: 'PENDING',
                 allowNull: false,
             }
         },
         {
-            paranoid: true
+            paranoid: true,
+            indexes: [{
+                fields: ['namecardId', 'fromUserId'],
+                unique: true
+            }]
         }
     );
 };

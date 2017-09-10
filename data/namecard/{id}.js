@@ -23,8 +23,12 @@ module.exports = {
                 }
             }).then(namecard => {
                 if (namecard) {
+                    if (req.session.userId != namecard.userId && namecard.nonpublic) {
+                        delete namecard.dataValues.phone;
+                    }
+                    
                     return callback(null, {
-                        responses: namecard.abridge
+                        responses: namecard.delicateCard
                     });
                 } else {
                     throw new HttpError.NotFound();
@@ -60,7 +64,7 @@ module.exports = {
             }).then(deleted => {
                 if (deleted) {
                     return callback(null, {
-                        responses: deleted
+                        responses: deleted.delicateCard
                     });
                 } else {
                     throw new HttpError.InternalServerError('Database error');

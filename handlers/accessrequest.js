@@ -27,19 +27,19 @@ module.exports = {
         });
     },
     /**
-     * summary: Update an AccessRequest
+     * summary: Create an AccessRequest
      * description: 
      * parameters: body
      * produces: 
      * responses: 200
      */
-    put: function accessreqeust_update(req, res, next) {
+    post: function accessreqeust_create(req, res, next) {
         /**
          * Get the data for response 200
          * For response `default` status 200 is used.
          */
         var status = 200;
-        var provider = dataProvider['put']['200'];
+        var provider = dataProvider['post']['200'];
         provider(req, res, function (err, data) {
             if (err) {
                 next(err);

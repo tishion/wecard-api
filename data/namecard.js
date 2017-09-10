@@ -24,8 +24,11 @@ module.exports = {
                 }
             }).then(namecards => {
                 if (namecards) {
+                    var result = namecards.map((item, index, input) => {
+                        return item.delicateCard;
+                    });
                     return callback(null, {
-                        responses: namecards
+                        responses: result
                     });
                 } else {
                     throw new HttpError.InternalServerError('Database error');
@@ -83,7 +86,7 @@ module.exports = {
             }).then(found => {
                 if (found) {
                     return callback(null, {
-                        responses: found
+                        responses: found.delicateCard
                     })
                 } else {
                     throw new HttpError.InternalServerError('Database error');
@@ -128,7 +131,7 @@ module.exports = {
             }).then(updated => {
                 if (updated) {
                     callback(null, {
-                        responses: updated
+                        responses: updated.delicateCard
                     });
                 } else {
                     throw new HttpError.InternalServerError('Database error');

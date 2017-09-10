@@ -1,23 +1,23 @@
 'use strict';
-var dataProvider = require('../../data/accesslevel/{card_id}.js');
+var dataProvider = require('../../../data/accessrequest/{id}/sign.js');
 /**
- * Operations on /accesslevel/{card_id}
+ * Operations on /accessrequest/{id}/sign
  */
 module.exports = {
     /**
-     * summary: Get Access of the specified id
+     * summary: Accept or refuse the AccessRequest by id
      * description: 
-     * parameters: card_id
+     * parameters: id, operation
      * produces: 
      * responses: 200
      */
-    get: function access_getByCardId(req, res, next) {
+    put: function accessRequest_signeById(req, res, next) {
         /**
          * Get the data for response 200
          * For response `default` status 200 is used.
          */
         var status = 200;
-        var provider = dataProvider['get']['200'];
+        var provider = dataProvider['put']['200'];
         provider(req, res, function (err, data) {
             if (err) {
                 next(err);

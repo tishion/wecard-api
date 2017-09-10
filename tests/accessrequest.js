@@ -75,16 +75,16 @@ Test('/accessrequest', function (t) {
                 });
             });
         });/**
-         * summary: Update an AccessRequest
+         * summary: Create an AccessRequest
          * description: 
          * parameters: body
          * produces: 
          * responses: 200
          */
-        t.test('test accessreqeust_update put operation', function (t) {
+        t.test('test accessreqeust_create post operation', function (t) {
             Mockgen().requests({
                 path: '/accessrequest',
-                operation: 'put'
+                operation: 'post'
             }, function (err, mock) {
                 var request;
                 t.error(err);
@@ -93,7 +93,7 @@ Test('/accessrequest', function (t) {
                 //Get the resolved path from mock request
                 //Mock request Path templates({}) are resolved using path parameters
                 request = Request(App)
-                    .put('/api' + mock.request.path);
+                    .post('/api' + mock.request.path);
                 if (mock.request.body) {
                     //Send the request body
                     request = request.send(mock.request.body);
@@ -113,7 +113,7 @@ Test('/accessrequest', function (t) {
                     t.error(err, 'No error');
                     t.ok(res.statusCode === 200, 'Ok response status');
                     var Validator = require('is-my-json-valid');
-                    var validate = Validator(api.paths['/accessrequest']['put']['responses']['200']['schema']);
+                    var validate = Validator(api.paths['/accessrequest']['post']['responses']['200']['schema']);
                     var response = res.body;
                     if (Object.keys(response).length <= 0) {
                         response = res.text;

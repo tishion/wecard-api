@@ -81,21 +81,22 @@ module.exports = function _Namecard(sequelize, DataTypes) {
         {
             paranoid: true,
             getterMethods: {
-                cardType() {
+                delicateCard() {
                     var cardType = this.getDataValue('cardType');
+                    var dataValues = this.dataValues;
                     if ('WORK' == cardType) {
-                        delete this.dataValues.school;
-                        delete this.dataValues.major;
-                        delete this.dataValues.grade;
+                        delete dataValues.school;
+                        delete dataValues.major;
+                        delete dataValues.grade;
                     } else if ('STUDY' == cardType) {
-                        delete this.dataValues.company;
-                        delete this.dataValues.department;
-                        delete this.dataValues.occupation;
-                        delete this.dataValues.exCompany;
-                        delete this.dataValues.exDepartment;
-                        delete this.dataValues.exOccupation;
+                        delete dataValues.company;
+                        delete dataValues.department;
+                        delete dataValues.occupation;
+                        delete dataValues.exCompany;
+                        delete dataValues.exDepartment;
+                        delete dataValues.exOccupation;
                     }
-                    return cardType;
+                    return dataValues;
                 }
               },
             setterMethods: {

@@ -218,11 +218,11 @@ paths:
             type: array
             items:
               $ref: '#/definitions/AccessRequest'
-    put:
+    post:
       tags:
         - AccessRequest
-      summary: Update an AccessRequest
-      operationId: accessreqeust_update
+      summary: Create an AccessRequest
+      operationId: accessreqeust_create
       parameters:
         - $ref: '#/parameters/AccessRequest'
       responses:
@@ -230,48 +230,24 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/AccessRequest'
-  '/accesslevel/{card_id}':
-    get:
+  '/accessrequest/{id}/sign':
+    put:
       tags:
-        - AccessLevel
-      summary: Get Access of the specified id
-      operationId: access_getByCardId
+        - AccessRequest
+      summary: Accept or refuse the AccessRequest by id
+      operationId: accessRequest_signeById
       parameters:
-        - name: card_id
-          in: path
-          description: The card Id to be accessed
+        - $ref: '#/parameters/EntityId'
+        - name: operation
+          in: query
+          description: The operation to be performed (accept|reject)
           required: true
           type: string
       responses:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/AccessLevel'
-  /accesslevel:
-    post:
-      tags:
-        - AccessLevel
-      summary: Create an AccessLevle
-      operationId: accesslevel_create
-      parameters:
-        - $ref: '#/parameters/AccessLevel'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/AccessLevel'
-    put:
-      tags:
-        - AccessLevel
-      summary: Update an Access
-      operationId: accesslevel_update
-      parameters:
-        - $ref: '#/parameters/AccessLevel'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/AccessLevel'
+            $ref: '#/definitions/AccessRequest'
 definitions:
   User:
     type: object
@@ -371,17 +347,6 @@ definitions:
         type: string
       hidden:
         type: boolean
-  AccessLevel:
-    type: object
-    properties:
-      id:
-        type: string
-      namecardId:
-        type: string
-      userId:
-        type: string
-      level:
-        type: integer
   AccessRequest:
     type: object
     properties:
@@ -389,9 +354,11 @@ definitions:
         type: string
       namecardId:
         type: string
-      userId:
+      fromUserId:
         type: string
-      level:
+      toUserId:
+        type: string
+      status:
         type: integer
 parameters:
   EntityId:
@@ -460,10 +427,3 @@ parameters:
     description: The AccessRequest
     schema:
       $ref: '#/definitions/AccessRequest'
-  AccessLevel:
-    name: body
-    in: body
-    required: true
-    description: The AccessLevel
-    schema:
-      $ref: '#/definitions/AccessLevel'

@@ -5,13 +5,13 @@ var BodyParser = require('body-parser');
 var Swaggerize = require('swaggerize-express');
 var Path = require('path');
 var Request = require('supertest');
-var Mockgen = require('../../data/mockgen.js');
+var Mockgen = require('../../../data/mockgen.js');
 var Parser = require('swagger-parser');
 /**
- * Test for /accesslevel/{card_id}
+ * Test for /accessrequest/{id}/sign
  */
-Test('/accesslevel/{card_id}', function (t) {
-    var apiPath = Path.resolve(__dirname, '../../config/swagger.yml');
+Test('/accessrequest/{id}/sign', function (t) {
+    var apiPath = Path.resolve(__dirname, '../../../config/swagger.yml');
     var App = Express();
     App.use(BodyParser.json());
     App.use(BodyParser.urlencoded({
@@ -19,23 +19,23 @@ Test('/accesslevel/{card_id}', function (t) {
     }));
     App.use(Swaggerize({
         api: apiPath,
-        handlers: Path.resolve(__dirname, '../../handlers'),
-        security: Path.resolve(__dirname, '../../security')
+        handlers: Path.resolve(__dirname, '../../../handlers'),
+        security: Path.resolve(__dirname, '../../../security')
     }));
     Parser.validate(apiPath, function (err, api) {
         t.error(err, 'No parse error');
         t.ok(api, 'Valid swagger api');
         /**
-         * summary: Get Access of the specified id
+         * summary: Accept or refuse the AccessRequest by id
          * description: 
-         * parameters: card_id
+         * parameters: id, operation
          * produces: 
          * responses: 200
          */
-        t.test('test access_getByCardId get operation', function (t) {
+        t.test('test accessRequest_signeById put operation', function (t) {
             Mockgen().requests({
-                path: '/accesslevel/{card_id}',
-                operation: 'get'
+                path: '/accessrequest/{id}/sign',
+                operation: 'put'
             }, function (err, mock) {
                 var request;
                 t.error(err);
@@ -44,7 +44,7 @@ Test('/accesslevel/{card_id}', function (t) {
                 //Get the resolved path from mock request
                 //Mock request Path templates({}) are resolved using path parameters
                 request = Request(App)
-                    .get('/api' + mock.request.path);
+                    .put('/api' + mock.request.path);
                 if (mock.request.body) {
                     //Send the request body
                     request = request.send(mock.request.body);
@@ -64,7 +64,7 @@ Test('/accesslevel/{card_id}', function (t) {
                     t.error(err, 'No error');
                     t.ok(res.statusCode === 200, 'Ok response status');
                     var Validator = require('is-my-json-valid');
-                    var validate = Validator(api.paths['/accesslevel/{card_id}']['get']['responses']['200']['schema']);
+                    var validate = Validator(api.paths['/accessrequest/{id}/sign']['put']['responses']['200']['schema']);
                     var response = res.body;
                     if (Object.keys(response).length <= 0) {
                         response = res.text;

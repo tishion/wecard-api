@@ -1,26 +1,26 @@
 'use strict';
-var Mockgen = require('../mockgen.js');
+var Mockgen = require('../../mockgen.js');
 /**
- * Operations on /accesslevel/{card_id}
+ * Operations on /accessrequest/{id}/sign
  */
 module.exports = {
     /**
-     * summary: Get Access of the specified id
+     * summary: Accept or refuse the AccessRequest by id
      * description: 
-     * parameters: card_id
+     * parameters: id, operation
      * produces: 
      * responses: 200
-     * operationId: access_getByCardId
+     * operationId: accessRequest_signeById
      */
-    get: {
+    put: {
         200: function (req, res, callback) {
             /**
              * Using mock data generator module.
              * Replace this by actual data for the api.
              */
             Mockgen().responses({
-                path: '/accesslevel/{card_id}',
-                operation: 'get',
+                path: '/accessrequest/{id}/sign',
+                operation: 'put',
                 response: '200'
             }, callback);
         }
