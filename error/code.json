@@ -9,6 +9,11 @@
         "message": "Invalid card type"
     },
 
+    "err_namecardNotFound": {
+        "error": 80003,
+        "message": "Name card not found"
+    },
+
     "err_template": {
         "error": 80000,
         "message": "Error template"

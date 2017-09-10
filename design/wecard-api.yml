@@ -224,7 +224,7 @@ paths:
       summary: Create an AccessRequest
       operationId: accessreqeust_create
       parameters:
-        - $ref: '#/parameters/AccessRequest'
+        - $ref: '#/parameters/AccessRequestCreate'
       responses:
         '200':
           description: OK
@@ -420,10 +420,15 @@ parameters:
     description: The Group
     schema:
       $ref: '#/definitions/Group'
-  AccessRequest:
+  AccessRequestCreate:
     name: body
     in: body
     required: true
     description: The AccessRequest
     schema:
-      $ref: '#/definitions/AccessRequest'
+      type: object
+      properties:
+        namecardId:
+          type: string
+        fromUserId:
+          type: string
