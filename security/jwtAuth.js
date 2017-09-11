@@ -1,28 +1,11 @@
 'use strict';
-/**
- * 
- */
-
 var Jwt = require('jwt-simple');
 var Moment = require('moment');
 
-/**
- * 
- */
 var jwtAuth = module.exports;
 
-/**
- * 
- */
 jwtAuth.version = '0.0.1';
 
-/**
- * 
- * 
- * @param {any} payload 
- * @param {any} secret 
- * @returns 
- */
 jwtAuth.issueToken = function _issueToken(payload, secret) {
     return Jwt.encode({
         iss: 'wecard-api-service',
@@ -35,13 +18,6 @@ jwtAuth.issueToken = function _issueToken(payload, secret) {
     }, secret);
 };
 
-/**
- * 
- * 
- * @param {any} token 
- * @param {any} secret 
- * @returns 
- */
 jwtAuth.verifyToken = function _verifyToken(token, secret) {
     try {
         return Jwt.decode(token, secret).pub;

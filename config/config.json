@@ -2,6 +2,8 @@
   "development": {
     "host": "localhost",
     "port": 8000,
+    "appId": "wx35466fb977fbe38c",
+    "appSecret": "8d28e9cc2d907f212de2e8a95df367f7", 
     "tokenSecret": "lessismore",
     "database": {
       "connection": "sqlite://wecard_dev.db",
@@ -14,6 +16,8 @@
   },
   "production": {
     "host": "wecard.azurewebsites.net",
+    "appId": "wx35466fb977fbe38c",
+    "appSecret": "8d28e9cc2d907f212de2e8a95df367f7", 
     "tokenSecret": "lessismore",
     "database": {
       "connection": "sqlite://wecard_dev.db",

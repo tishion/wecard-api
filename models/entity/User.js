@@ -13,6 +13,9 @@ module.exports = function _User(sequelize, DataTypes) {
                 type: DataTypes.CHAR,
                 allowNull: false,
                 unique: true
+            },
+            wxSessionKey: {
+                type: DataTypes.CHAR
             }
         },
         {

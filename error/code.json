@@ -24,6 +24,16 @@
         "message": "The request was signed already"
     },
 
+    "err_wxAuthenticateFail": {
+        "error": 80005,
+        "message": "Failed to authenticate with WX server"
+    },
+
+    "err_missingWxCodeInHeader": {
+        "error": 80005,
+        "message": "Missing WX login code in header"
+    },
+
     "err_template": {
         "error": 80000,
         "message": "Error template"
