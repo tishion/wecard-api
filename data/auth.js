@@ -30,11 +30,10 @@ module.exports = {
                 Config.appId,
                 Config.appSecret,
                 (err, response, ticket) => {
-                    if (err || !response || response.statusCode != 200 || !ticket) {
+                    if (err || !response || response.statusCode != 200 || !body) {
                         console.log(`Failed to authenticate with WX server: ${err}`);
                         return callback(new HttpError.BadRequest(ErrorCode.err_wxAuthenticateFail));
                     }
-
                     // Success
                     // {
                     //     "openid": "OPENID",
@@ -46,9 +45,12 @@ module.exports = {
                     //   "errcode": 40029,
                     //   "errmsg": "invalid code"
                     // }
-                    console.log(`ticket: ${ticket}`);
-                    console.log(`ticket.openid: ${ticket.openid}`);
-                    console.log(`ticket.session_key: ${ticket.session_key}`);
+                    try {
+                        var ticket = JSON.parse(body);                        
+                    } catch (e) {
+                        console.log(`Failed to parse WX server response: ${body} to JSON`);                        
+                        return callback(new HttpError.BadRequest(ErrorCode.err_wxAuthenticateFail));                        
+                    }
                     if (!ticket.openid || !ticket.session_key) {
                         console.log(`Failed to authenticate with WX server: ${ticket.errmsg} [${ticket.errcode}]`);
                         return callback(new HttpError.BadRequest(ErrorCode.err_wxAuthenticateFail));
