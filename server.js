@@ -9,13 +9,16 @@ var SwaggerUi = require('swaggerize-ui');
 var Path = require('path');
 var Config = require('./config/config.js');
 var ErrorHandler = require('./error/handler.js');
+var FileSystem = require('fs');
 var db = require('./models');
 
 // Create Express instance
 var App = Express()
-    .use(Logger('dev'))         // Add logger
-    .use(BodyParser.json())     // Add json body parser
-    .use(BodyParser.urlencoded({
+    .use(
+        Logger('dev')
+    ).use(
+        BodyParser.json()
+    ).use(BodyParser.urlencoded({
         extended: true
     })).use(Swaggerize({
         api: Path.resolve('./config/swagger.yml'),
