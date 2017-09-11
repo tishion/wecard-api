@@ -46,7 +46,9 @@ module.exports = {
                     //   "errcode": 40029,
                     //   "errmsg": "invalid code"
                     // }
-                    console.log(ticket);
+                    console.log(`ticket: ${ticket}`);
+                    console.log(`ticket.openid: ${ticket.openid}`);
+                    console.log(`ticket.session_key: ${ticket.session_key}`);
                     if (!ticket.openid || !ticket.session_key) {
                         console.log(`Failed to authenticate with WX server: ${ticket.errmsg} [${ticket.errcode}]`);
                         return callback(new HttpError.BadRequest(ErrorCode.err_wxAuthenticateFail));
