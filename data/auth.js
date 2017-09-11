@@ -29,7 +29,7 @@ module.exports = {
                 wxLoginCode,
                 Config.appId,
                 Config.appSecret,
-                (err, response, ticket) => {
+                (err, response, body) => {
                     if (err || !response || response.statusCode != 200 || !body) {
                         console.log(`Failed to authenticate with WX server: ${err}`);
                         return callback(new HttpError.BadRequest(ErrorCode.err_wxAuthenticateFail));
