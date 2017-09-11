@@ -30,7 +30,7 @@
     },
 
     "err_missingWxCodeInHeader": {
-        "error": 80005,
+        "error": 80006,
         "message": "Missing WX login code in header"
     },
 
