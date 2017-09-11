@@ -25,7 +25,7 @@ var App = Express()
     })).use('/viewer', SwaggerUi({
         docs: '/api/docs'
     })).use(ErrorHandler.globalErrorHadler)
-    .use('/cleandb', (req, res) => {
+    .use('/resetdb', (req, res) => {
         db.sequelize.sync({
             force: true
         }).then(() => {
