@@ -67,10 +67,10 @@ module.exports = function _Namecard(sequelize, DataTypes) {
             interests: {
                 type: DataTypes.STRING,
                 set(value) {
-                    this.setDataValue('interests', value.join(';'));                    
+                    this.setDataValue('interests', value.join(';'));
                 },
                 get() {
-                    return this.getDataValue('interests').split(';');                    
+                    return this.getDataValue('interests').split(';');
                 }
             },
             nonpublic: {
@@ -79,27 +79,27 @@ module.exports = function _Namecard(sequelize, DataTypes) {
             }
         },
         {
-            paranoid: true,
             getterMethods: {
-                delicateCard() {
-                    var cardType = this.getDataValue('cardType');
-                    var dataValues = this.dataValues;
-                    if ('WORK' == cardType) {
-                        delete dataValues.school;
-                        delete dataValues.major;
-                        delete dataValues.grade;
-                    } else if ('STUDY' == cardType) {
-                        delete dataValues.company;
-                        delete dataValues.department;
-                        delete dataValues.occupation;
-                        delete dataValues.exCompany;
-                        delete dataValues.exDepartment;
-                        delete dataValues.exOccupation;
+                prune() {
+                    var obj = this.dataValues;
+                    delete obj.createdAt;
+                    delete obj.updatedAt;
+                    delete obj.deletedAt;
+                    delete obj.version;
+                    if ('WORK' == obj.cardType) {
+                        delete obj.school;
+                        delete obj.major;
+                        delete obj.grade;
+                    } else if ('STUDY' == obj.cardType) {
+                        delete obj.company;
+                        delete obj.department;
+                        delete obj.occupation;
+                        delete obj.exCompany;
+                        delete obj.exDepartment;
+                        delete obj.exOccupation;
                     }
-                    return dataValues;
+                    return obj;
                 }
-              },
-            setterMethods: {
             }
         }
     );

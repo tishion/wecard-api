@@ -27,8 +27,11 @@ module.exports = {
                 }
             }).then(accessRequests => {
                 if (accessRequests) {
+                    var result = accessRequests.map((item, index, input) => {
+                        return item.prune;
+                    });
                     return callback(null, {
-                        responses: accessRequests
+                        responses: result
                     });
                 } else {
                     throw new HttpError.InternalServerError('Database error');
@@ -54,10 +57,14 @@ module.exports = {
 
             return db.Namecard.findById(accessRequest.namecardId).then(namecard => {
                 if (namecard) {
+                    if (req.session.userId == namecard.userId) {
+                        throw new HttpError.BadRequest(ErrorCode.err_selfRequestNotAllowed);
+                    }
+
                     return db.AccessRequest.findOrCreate({
                         where: {
                             namecardId: accessRequest.namecardId,
-                            fromUserId: accessRequest.fromUserId,
+                            fromUserId: req.session.userId,
                             toUserId: namecard.userId
                         }
                     });
@@ -66,8 +73,8 @@ module.exports = {
                 }
             }).spread((request, created) => {
                 if (created) {
-                    return callback({
-                        responses: request
+                    return callback(null, {
+                        responses: request.prune
                     });
                 } else 
                 {

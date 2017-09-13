@@ -430,5 +430,3 @@ parameters:
       properties:
         namecardId:
           type: string
-        fromUserId:
-          type: string

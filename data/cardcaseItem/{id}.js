@@ -29,7 +29,7 @@ module.exports = {
             }).then(deleted => {
                 if (deleted) {
                     return callback(null, {
-                        responses: deleted
+                        responses: deleted.prune
                     });
                 } else {
                     throw new HttpError.InternalServerError('Database error');

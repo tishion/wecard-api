@@ -17,9 +17,6 @@ module.exports = function _User(sequelize, DataTypes) {
             wxSessionKey: {
                 type: DataTypes.CHAR
             }
-        },
-        {
-            paranoid: true
         }
     );
 };

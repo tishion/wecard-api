@@ -33,7 +33,7 @@ module.exports = {
             }).then(accessRequest => {
                 if (accessRequest) {
                     if ('PENDING' === accessRequest.status) {
-                        accessRequest.update({
+                        return accessRequest.update({
                             status: operation
                         });
                     } else {
@@ -41,6 +41,14 @@ module.exports = {
                     }
                 } else {
                     throw new HttpError.NotFound();
+                }
+            }).then(accessRequest => {
+                if (accessRequest) {
+                    return callback(null, {
+                        responses: accessRequest.prune 
+                    });
+                } else {
+                    throw new HttpError.InternalServerError('Database error');
                 }
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));

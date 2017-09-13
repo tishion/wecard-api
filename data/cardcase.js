@@ -21,8 +21,11 @@ module.exports = {
                 }
             }).then(cardcases => {
                 if (cardcases) {
+                    var result = cardcases.map((item, index, input) => {
+                        return item.prune;
+                    });
                     return callback(null, {
-                        responses: cardcases
+                        responses: result
                     });
                 } else {
                     throw new HttpError.InternalServerError('Database error');

@@ -30,30 +30,37 @@ module.exports = {
                 Config.appId,
                 Config.appSecret,
                 (err, response, body) => {
-                    if (err || !response || response.statusCode != 200 || !body) {
-                        console.log(`Failed to authenticate with WX server: ${err}`);
-                        return callback(new HttpError.BadRequest(ErrorCode.err_wxAuthenticateFail));
-                    }
-                    // Success
-                    // {
-                    //     "openid": "OPENID",
-                    //     "session_key": "SESSIONKEY"
-                    //     "unionid":  "UNIONID"
-                    // }
-                    // Fail
-                    // {
-                    //   "errcode": 40029,
-                    //   "errmsg": "invalid code"
-                    // }
-                    try {
-                        var ticket = JSON.parse(body);                        
-                    } catch (e) {
-                        console.log(`Failed to parse WX server response: ${body} to JSON`);                        
-                        return callback(new HttpError.BadRequest(ErrorCode.err_wxAuthenticateFail));                        
-                    }
-                    if (!ticket.openid || !ticket.session_key) {
-                        console.log(`Failed to authenticate with WX server: ${ticket.errmsg} [${ticket.errcode}]`);
-                        return callback(new HttpError.BadRequest(ErrorCode.err_wxAuthenticateFail));
+                    if (Config.mockWxAuth){
+                        var ticket = {
+                            openid: wxLoginCode,
+                            session_key: 'mock_wx_auth_session_key'
+                        }
+                    } else {
+                        if (err || !response || response.statusCode != 200 || !body) {
+                            console.log(`Failed to authenticate with WX server: ${err}`);
+                            return callback(new HttpError.BadRequest(ErrorCode.err_wxAuthenticateFail));
+                        }
+                        // Success
+                        // {
+                        //     "openid": "OPENID",
+                        //     "session_key": "SESSIONKEY"
+                        //     "unionid":  "UNIONID"
+                        // }
+                        // Fail
+                        // {
+                        //   "errcode": 40029,
+                        //   "errmsg": "invalid code"
+                        // }
+                        try {
+                            var ticket = JSON.parse(body);                        
+                        } catch (e) {
+                            console.log(`Failed to parse WX server response: ${body} to JSON`);                        
+                            return callback(new HttpError.BadRequest(ErrorCode.err_wxAuthenticateFail));                        
+                        }
+                        if (!ticket.openid || !ticket.session_key) {
+                            console.log(`Failed to authenticate with WX server: ${ticket.errmsg} [${ticket.errcode}]`);
+                            return callback(new HttpError.BadRequest(ErrorCode.err_wxAuthenticateFail));
+                        }
                     }
 
                     // Find the user with this open id if not found then create one

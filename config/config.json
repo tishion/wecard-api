@@ -12,7 +12,8 @@
         "password": "wechatwecard",
         "dialect": "sqlite"
       }
-    }
+    },
+    "mockWxAuth": true
   },
   "production": {
     "host": "wecard.azurewebsites.net",

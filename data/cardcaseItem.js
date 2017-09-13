@@ -22,8 +22,11 @@ module.exports = {
                 }
             }).then(cardcaseItems => {
                 if (cardcaseItems) {
+                    var result = cardcaseItems.map((item, index, input) => {
+                        return item.prune;
+                    });
                     return callback(null, {
-                        responses: cardcaseItems
+                        responses: result
                     });
                 } else {
                     throw new HttpError.InternalServerError('Database error');
@@ -68,15 +71,9 @@ module.exports = {
                         throw new HttpError.BadRequest('Item object not exist');
                     }
                 }).then(item, created => {
-                    if (craeted) {
-                        return db.CardcaseItem.findById(item.id);
-                    } else {
-                        return item;
-                    }
-                }).then(item => {
                     if (item) {
                         return callback(null, {
-                            responses: item
+                            responses: item.prune
                         });
                     } else {
                         throw new HttpError.InternalServerError('Database erro');
@@ -120,7 +117,7 @@ module.exports = {
             }).then(updated => {
                 if (updated) {
                     callback(null, {
-                        responses: updated
+                        responses: updated.prune
                     });
                 } else {
                     throw new HttpError.InternalServerError('Database error');                    

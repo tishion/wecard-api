@@ -9,9 +9,20 @@ var db = {};
 var connection = Config.database.connection;
 var options = Config.database.options;
 options.define = {
+  paranoid: true,
   defaultScope: {
     attributes: {
       exclude: ['createdAt', 'updatedAt', 'deletedAt', 'version']
+    }
+  },
+  getterMethods: {
+    prune() {
+      var obj = this.dataValues;
+      delete obj.createdAt;
+      delete obj.updatedAt;
+      delete obj.deletedAt;
+      delete obj.version;
+      return obj;
     }
   }
 };

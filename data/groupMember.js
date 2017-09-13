@@ -21,8 +21,11 @@ module.exports = {
                 }
             }).then(groupMembers => {
                 if (groupMembers) {
+                    var result = groupMembers.map((item, index, input) => {
+                        return item.prune;
+                    });
                     return callback(null, {
-                        responses: groupMembers
+                        responses: result
                     });
                 } else {
                     throw new HttpError.InternalServerError('Database error');

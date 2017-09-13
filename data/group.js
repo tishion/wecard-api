@@ -20,15 +20,9 @@ module.exports = {
                     wxGroupId: req.query.wxGroupId,
                 }
             }).spread((group, created) => {
-                if (created) {
-                    return db.Group.findById(group.id);
-                } else {
-                    return group;
-                }
-            }).then(group => {
                 if (group) {
                     return callback(null, {
-                        responses: group
+                        responses: group.prune
                     });
                 } else {
                     throw new HttpError.InternalServerError('Database error');

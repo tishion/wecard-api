@@ -15,18 +15,39 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            db.Namecard.findById(req.params.id).then(namecard => {
-                if (namecard) {
-                    if (req.session.userId != namecard.userId && namecard.nonpublic) {
-                        delete namecard.dataValues.phone;
-                    }
-                    
-                    return callback(null, {
-                        responses: namecard.delicateCard
-                    });
-                } else {
+            return db.Namecard.findById(req.params.id).then(namecard => {
+                if (!namecard) {
                     throw new HttpError.NotFound();
+                } else {
+                    // If current user is not the owner of the card and the card is nonpublic
+                    if (req.session.userId != namecard.userId && namecard.nonpublic) {
+                        // If the we can find one accepted access reqeust for current user and the card owner
+                        return Promise.all([
+                            namecard,
+                            true,
+                            db.AccessRequest.findOne({
+                                where: {
+                                    namecardId: namecard.id,
+                                    fromUserId: req.session.userId
+                                }
+                            })
+                        ]);
+                    } else {
+                        return Promise.all([
+                            namecard,       // namecard
+                            false,          // no need to check access request
+                            null
+                        ]);
+                    }
                 }
+            }).spread((namecard, needCheck, accessRequest) => {
+                if (needCheck && !accessRequest) {
+                    delete namecard.dataValues.phone;
+                }
+
+                return callback(null, {
+                    responses: namecard.prune
+                });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {
@@ -58,7 +79,7 @@ module.exports = {
             }).then(deleted => {
                 if (deleted) {
                     return callback(null, {
-                        responses: deleted.delicateCard
+                        responses: deleted.prune
                     });
                 } else {
                     throw new HttpError.InternalServerError('Database error');

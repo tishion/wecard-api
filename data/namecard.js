@@ -23,7 +23,7 @@ module.exports = {
             }).then(namecards => {
                 if (namecards) {
                     var result = namecards.map((item, index, input) => {
-                        return item.delicateCard;
+                        return item.prune;
                     });
                     return callback(null, {
                         responses: result
@@ -52,16 +52,16 @@ module.exports = {
             delete namecard.id;
             namecard.userId = req.session.userId
             if ('WORK' === namecard.cardType) {
-                req.school = '';
-                req.major = '';
-                req.grade = 0;
+                namecard.school = '';
+                namecard.major = '';
+                namecard.grade = 0;
             } else if ('STUDY' === namecard.cardType) {
-                req.company = '';
-                req.department = '';
-                req.occupation = '';
-                req.exCompany = '';
-                req.exDepartment = '';
-                req.exOccupation = '';
+                namecard.company = '';
+                namecard.department = '';
+                namecard.occupation = '';
+                namecard.exCompany = '';
+                namecard.exDepartment = '';
+                namecard.exOccupation = '';
             } else {
                 return callback(new HttpError.BadRequest(ErrorCode.err_invalidCardType));
             }
@@ -79,12 +79,8 @@ module.exports = {
                 }
             }).then(created => {
                 if (created) {
-                    return db.Namecard.findById(created.id);
-                }
-            }).then(found => {
-                if (found) {
                     return callback(null, {
-                        responses: found.delicateCard
+                        responses: created.prune
                     })
                 } else {
                     throw new HttpError.InternalServerError('Database error');
@@ -129,7 +125,7 @@ module.exports = {
             }).then(updated => {
                 if (updated) {
                     callback(null, {
-                        responses: updated.delicateCard
+                        responses: updated.prune
                     });
                 } else {
                     throw new HttpError.InternalServerError('Database error');

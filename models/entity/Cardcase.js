@@ -13,9 +13,6 @@ module.exports = function _Cardcase(sequelize, DataTypes) {
                 type: DataTypes.UUID,
                 allowNull: false,
             }
-        },
-        {
-            paranoid: true
         }
     );
 };

@@ -14,9 +14,6 @@ module.exports = function _Group(sequelize, DataTypes) {
                 allowNull: false,
                 unique: true
             }
-        },
-        {
-            paranoid: true
         }
     );
 };

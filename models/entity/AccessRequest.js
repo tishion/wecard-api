@@ -28,7 +28,6 @@ module.exports = function _AccessRequest(sequelize, DataTypes) {
             }
         },
         {
-            paranoid: true,
             indexes: [{
                 fields: ['namecardId', 'fromUserId'],
                 unique: true

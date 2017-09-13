@@ -28,7 +28,6 @@ module.exports = function _GroupMember(sequelize, DataTypes) {
             }
         },
         {
-            paranoid: true,
             indexes: [{
                 fields: ['groupId', 'userId'],
                 unique: true
