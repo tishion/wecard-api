@@ -98,6 +98,7 @@ module.exports = function _Namecard(sequelize, DataTypes) {
                         delete obj.exDepartment;
                         delete obj.exOccupation;
                     }
+                    obj.interests = this.interests;
                     return obj;
                 }
             }
