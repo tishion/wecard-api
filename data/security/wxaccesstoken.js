@@ -4,7 +4,6 @@ var ErrorCode = require('../../error/code.json');
 var Config = require('../../config/config.js');
 var Cache = require('../../x-cache');
 var WxApi = require('../../wx-api');
-var db = require('../../models');
 var Moment = require('moment');
 /**
  * Operations on /security/wxaccesstoken

@@ -5,32 +5,34 @@ var Express = require('express');
 var Logger = require('morgan');
 var BodyParser = require('body-parser');
 var Swaggerize = require('swaggerize-express');
-var SwaggerUi = require('swaggerize-ui');
+var SwaggerizeUi = require('swaggerize-ui');
 var Path = require('path');
 var Config = require('./config/config.js');
 var ErrorHandler = require('./error/handler.js');
 var FileSystem = require('fs');
-var cache = require('./x-cache')
+var Cache = require('./x-cache')
+var WxApi = require('./wx-api');
 var db = require('./models');
 
-cache.syncInit();
+// Initialize the memory cache
+Cache.syncInit();
 
 // Create Express instance
 var App = Express()
-    .use(
-        Logger('dev')
-    ).use(
-        BodyParser.json()
-    ).use(BodyParser.urlencoded({
+    .use(Logger('dev'))
+    .use(BodyParser.json())
+    .use(BodyParser.urlencoded({
         extended: true
-    })).use(Swaggerize({
+    }))
+    .use('/wxa', WxApi.redirect)
+    .use(Swaggerize({
         api: Path.resolve('./config/swagger.yml'),
         handlers: Path.resolve('./handlers'),
         security: Path.resolve('./security'),
-        docspath: '/docs'
-    })).use('/viewer', SwaggerUi({
-        docs: '/api/docs'
-    })).use(ErrorHandler.globalErrorHadler)
+    }))
+    .use('/viewer', SwaggerizeUi({
+        docs: '/api'
+    }))
     .use('/resetdb', (req, res) => {
         db.sequelize.sync({
             force: true
@@ -39,9 +41,8 @@ var App = Express()
         }).catch(err => {
             res.statusCode(500).send(err);
         });
-    }).use('/redirect', (req, res) =>{
-        res.redirect('https://www.baidu.com');
-    });
+    })
+    .use(ErrorHandler.globalErrorHadler);
 
 // Start the server
 Http.createServer(App)

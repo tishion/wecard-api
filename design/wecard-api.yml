@@ -40,28 +40,17 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/UserInfo'
-  /security/wxaccesstoken:
-    get:
-      deprecated: true
-      tags:
-        - Security
-      summary: Get WX access token
-      operationId: security_getWxAccessToken
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/WxAccessToken'
-      obsolte
-  '/wxa/{api_name}':
-    post:
-      tags:
-        - WxApi
-      summary: WX API redirect
-      operationId: wxa_post
-      responses:
-        '302':
-          description: FOUND
+  # /security/wxaccesstoken:
+  #   get:
+  #     tags:
+  #       - Security
+  #     summary: Get WX access token
+  #     operationId: security_getWxAccessToken
+  #     responses:
+  #       '200':
+  #         description: OK
+  #         schema:
+  #           $ref: '#/definitions/WxAccessToken'
   /namecard:
     get:
       tags:
@@ -393,15 +382,28 @@ definitions:
         type: integer
 parameters:
   EntityId:
+    required: true
     name: id
     type: string
     in: path
     description: The entity id
+  WxApiName:
     required: true
-  NamecardCreate:
+    name: name
+    type: string
+    in: path
+    description: The API name
+  WxApiOption:
+    required: true
     name: body
     in: body
+    description: The API option
+    schema:
+      type: object
+  NamecardCreate:
     required: true
+    name: body
+    in: body
     description: The Namecard
     schema:
       allOf:
