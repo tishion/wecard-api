@@ -29,9 +29,10 @@ var App = Express()
         api: Path.resolve('./config/swagger.yml'),
         handlers: Path.resolve('./handlers'),
         security: Path.resolve('./security'),
+        docspath: 'docs'
     }))
     .use('/viewer', SwaggerizeUi({
-        docs: '/api'
+        docs: '/api/docs'
     }))
     .use('/resetdb', (req, res) => {
         db.sequelize.sync({
