@@ -39,6 +39,8 @@ var App = Express()
         }).catch(err => {
             res.statusCode(500).send(err);
         });
+    }).use('/redirect', (req, res) =>{
+        res.redirect('https://www.baidu.com');
     });
 
 // Start the server

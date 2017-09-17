@@ -42,6 +42,7 @@ paths:
             $ref: '#/definitions/UserInfo'
   /security/wxaccesstoken:
     get:
+      deprecated: true
       tags:
         - Security
       summary: Get WX access token
@@ -51,6 +52,16 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/WxAccessToken'
+      obsolte
+  '/wxa/{api_name}':
+    post:
+      tags:
+        - WxApi
+      summary: WX API redirect
+      operationId: wxa_post
+      responses:
+        '302':
+          description: FOUND
   /namecard:
     get:
       tags:

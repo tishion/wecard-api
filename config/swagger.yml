@@ -42,6 +42,7 @@ paths:
             $ref: '#/definitions/UserInfo'
   /security/wxaccesstoken:
     get:
+      deprecated: true
       tags:
         - Security
       summary: Get WX access token

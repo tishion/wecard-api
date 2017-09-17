@@ -6,25 +6,6 @@ var Cache = require('../../x-cache');
 var WxApi = require('../../wx-api');
 var db = require('../../models');
 var Moment = require('moment');
-
-function WxAccessTokenManager() {
-    this.quering = false;
-    this.request_promise = null;
-    this.get = () => {
-        if (!this.quering) {
-            this.quering = true;
-            this.request_promise = Promise.resolve(WxApi.getWxAccessToken(Config.appId, Config.appSecret))
-                .then(value => {
-                    this.quering = false;
-                    return value;
-                });
-        }
-        return this.request_promise;
-    }
-};
-
-var wxAccessTokenManager = new WxAccessTokenManager();
-
 /**
  * Operations on /security/wxaccesstoken
  */
@@ -44,7 +25,7 @@ module.exports = {
                     if (!value || 'undefined' === typeof value) {
                         return Promise.all([
                             // Communicate with WX server to get the WX access token
-                            wxAccessTokenManager.get(),
+                            WxApi.getWxAccessToken(Config.appId, Config.appSecret),
                             true
                         ]);
                     }
