@@ -12,6 +12,7 @@ var ErrorHandler = require('./error/handler.js');
 var FileSystem = require('fs');
 var Cache = require('./x-cache')
 var WxApi = require('./wx-api');
+var WxApiRouter = require('./wx-api/router.js');
 var db = require('./models');
 
 // Initialize the memory cache
@@ -24,13 +25,13 @@ var App = Express()
     .use(BodyParser.urlencoded({
         extended: true
     }))
-    .use('/wxa', WxApi.redirect)
     .use(Swaggerize({
         api: Path.resolve('./config/swagger.yml'),
         handlers: Path.resolve('./handlers'),
         security: Path.resolve('./security'),
         docspath: 'docs'
     }))
+    .use('/wxa', WxApiRouter.redirect)
     .use('/viewer', SwaggerizeUi({
         docs: '/api/docs'
     }))
