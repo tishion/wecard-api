@@ -1,5 +1,6 @@
 {
     "files.exclude": {
+        ".node-persist": true,
         "**/.git": true,
         "**/.svn": true,
         "**/*.es*": true,
