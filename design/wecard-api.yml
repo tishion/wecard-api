@@ -22,11 +22,13 @@ produces:
   - application/json
   - text/json
 paths:
-  /auth:
+  /security/auth:
     get:
       security: []
       tags:
-        - Authentication
+        - Security
+      summary: Authenticate with WX login code
+      operationId: security_auth
       parameters:
         - name: WX-LOGIN-CODE
           in: header
@@ -37,7 +39,18 @@ paths:
         '200':
           description: OK
           schema:
-            $ref: '#/definitions/User'
+            $ref: '#/definitions/UserInfo'
+  /security/wxaccesstoken:
+    get:
+      tags:
+        - Security
+      summary: Get WX access token
+      operationId: security_getWxAccessToken
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/WxAccessToken'
   /namecard:
     get:
       tags:
@@ -249,7 +262,7 @@ paths:
           schema:
             $ref: '#/definitions/AccessRequest'
 definitions:
-  User:
+  UserInfo:
     type: object
     properties:
       id:
@@ -259,6 +272,13 @@ definitions:
       cardcaseId:
         type: string
       token:
+        type: string
+  WxAccessToken:
+    type: object
+    properties:
+      token:
+        type: string
+      expires_at:
         type: string
   Namecard:
     type: object

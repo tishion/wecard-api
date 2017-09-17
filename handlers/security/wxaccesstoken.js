@@ -1,17 +1,17 @@
 'use strict';
-var dataProvider = require('../data/auth.js');
+var dataProvider = require('../../data/security/wxaccesstoken.js');
 /**
- * Operations on /auth
+ * Operations on /security/wxaccesstoken
  */
 module.exports = {
     /**
-     * summary: 
+     * summary: Get WX access token
      * description: 
-     * parameters: WX-LOGIN-CODE
+     * parameters: 
      * produces: 
      * responses: 200
      */
-    get: function (req, res, next) {
+    get: function security_getWxAccessToken(req, res, next) {
         /**
          * Get the data for response 200
          * For response `default` status 200 is used.

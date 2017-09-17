@@ -10,7 +10,10 @@ var Path = require('path');
 var Config = require('./config/config.js');
 var ErrorHandler = require('./error/handler.js');
 var FileSystem = require('fs');
+var cache = require('./x-cache')
 var db = require('./models');
+
+cache.syncInit();
 
 // Create Express instance
 var App = Express()
@@ -33,7 +36,9 @@ var App = Express()
             force: true
         }).then(() => {
             res.send('DB was cleaned successfully.');
-        })
+        }).catch(err => {
+            res.statusCode(500).send(err);
+        });
     });
 
 // Start the server
