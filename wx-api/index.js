@@ -88,7 +88,7 @@ wxApi.redirect = function _redirect(req, res) {
             target += '&'
         }
         target += `access_token=${value.access_token}`;
-        res.redirect(target);
+        res.redirect(307, target);
     }).catch(err => {
         res.status(500).send(err);
     });
