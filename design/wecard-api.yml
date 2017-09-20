@@ -273,6 +273,8 @@ definitions:
         type: string
       token:
         type: string
+      sessionKey:
+        type: string
   WxAccessToken:
     type: object
     properties:

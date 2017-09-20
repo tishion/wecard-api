@@ -21,7 +21,10 @@ module.exports = function authorize(req, res, next) {
             var user = AuthJwt.verifyToken(sa[1], Config.tokenSecret);
             if (user && user.id) {
                 //console.log('User Id: %s', user.id);
-                req.session = { userId: user.id };
+                req.session = { 
+                    userId: user.id,
+                    sessionKey: user.wx
+                };
                 return next();
             }
         }

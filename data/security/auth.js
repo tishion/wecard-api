@@ -77,7 +77,8 @@ module.exports = {
                     var userInfo = {
                         id: user.id,
                         wxOpenId: user.wxOpenId,
-                        cardcaseId: cardcase.id
+                        cardcaseId: cardcase.id,
+                        sessionKey: user.wxSessionKey
                     };
                     userInfo.token = AuthJwt.issueToken(userInfo, Config.tokenSecret);
                     return callback(null, {
