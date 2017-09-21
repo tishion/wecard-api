@@ -14,4 +14,4 @@ for (var attr in regionConfig) {
 
 config.port = config.port || process.env.PORT;
 
-module.exports = envConfig;
+module.exports = config;
