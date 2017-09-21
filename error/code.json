@@ -39,6 +39,21 @@
         "message": "Self access request is not allowed"
     },
 
+    "err_invalidItemType": {
+        "error": 80008,
+        "message": "Invalid item type (GROUP or CARD is allowed)"
+    },
+
+    "err_itemObjectNotFound": {
+        "error": 80009,
+        "message": "Item object not found"
+    },
+
+    "err_cardcaseNotFound": {
+        "error": 80010,
+        "message": "Cardcase not found"
+    },
+
     "err_template": {
         "error": 80000,
         "message": "Error template"

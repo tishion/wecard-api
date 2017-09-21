@@ -44,6 +44,32 @@ var App = Express()
             res.statusCode(500).send(err);
         });
     })
+    .use('/resetgroup', (req, res) => {
+        db.Group.sync({
+            force: true
+        }).then(() => {
+            return db.GroupMember.sync({
+                force: true
+            });
+        }).then(() => {
+            res.send('DB was cleaned successfully.');
+        }).catch(err => {
+            res.statusCode(500).send(err);
+        });
+    })
+    .use('/resetcardcaseitem', (req, res) => {
+        db.Cardcase.sync({
+            force: true
+        }).then(() => {
+            return db.CardcaseItem.sync({
+                force: true
+            });
+        }).then(() => {
+            res.send('DB was cleaned successfully.');
+        }).catch(err => {
+            res.statusCode(500).send(err);
+        });
+    })
     .use(ErrorHandler.globalErrorHadler);
 
 // Start the server

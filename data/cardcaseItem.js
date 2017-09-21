@@ -1,5 +1,6 @@
 'use strict';
 var HttpError = require('http-errors');
+var ErrorCode = require('../error/code.json');
 var db = require('../models');
 /**
  * Operations on /cardcaseItem
@@ -53,30 +54,52 @@ module.exports = {
             cardcaseItem.userId = req.session.userId
 
             if ('CARD' == cardcaseItem.itemType) {
-                var targetItem = db.Namecard;
+                var itemStorage = db.Namecard;
             } else if ('GROUP' == cardcaseItem.itemType) {
-                var targetItem = db.Group;
+                var itemStorage = db.Group;
             }
             else {
-                return callback(new HttpError.BadRequest('Invalid itemType'));
+                return callback(new HttpError.BadRequest(ErrorCode.err_invalidItemType));
             }
 
-            targetItem.findById(cardcaseItem.itemId)
-                .then(itemObj => {
-                    if (itemObj) {
-                        // The target item exists
-                        return db.CardcaseItem.findOrCreate(cardcaseItem);
+            itemStorage.findById(cardcaseItem.itemId)
+                .then(itemEntity => {
+                    if (itemEntity) {
+                        return db.Cardcase.findOne({
+                            where: {
+                                id: cardcaseItem.cardcaseId,
+                                userId: req.session.userId,
+                            }
+                        });
                     } else {
                         // The target item doesn't exist
-                        throw new HttpError.BadRequest('Item object not exist');
+                        throw new HttpError.BadRequest(ErrorCode.err_itemObjectNotFound);
                     }
-                }).then(item, created => {
+                }).then(cardcase => {
+                    if (cardcase) {
+                        return db.CardcaseItem.findOrCreate({
+                            where: {
+                                userId: cardcaseItem.userId,
+                                cardcaseId: cardcaseItem.cardcaseId,
+                                itemType: cardcaseItem.itemType,
+                                itemId: cardcaseItem.itemId
+                            },
+                            defaults: {
+                                name: cardcaseItem.name,
+                                thumbnail: cardcaseItem.thumbnail
+                            }
+                        });
+                    } else {
+                        // The card case not found
+                        throw new HttpError.BadRequest(ErrorCode.err_cardcaseNotFound);
+                    }
+                }).spread((item, created) => {
                     if (item) {
                         return callback(null, {
                             responses: item.prune
                         });
                     } else {
-                        throw new HttpError.InternalServerError('Database erro');
+                        throw new HttpError.InternalServerError('Database error');
                     }
                 }).catch(db.sequelize.Error, err => {
                     return callback(new HttpError.InternalServerError(err));
