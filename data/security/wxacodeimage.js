@@ -27,6 +27,9 @@ module.exports = {
                 }).then(response => {
                     if (response.statusCode === 200) {
                         if (response.headers['content-type'] === 'image/jpeg') {
+                            for (var attr in response.headers) {
+                                res.set(attr, response.headers.attr);
+                            }
                             return callback(null, {
                                 responses: response.body
                             });
