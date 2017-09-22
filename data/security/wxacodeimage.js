@@ -27,10 +27,17 @@ module.exports = {
                         return new HttpError.InternalServerError(ErrorCode.err_accessTokenUnavailable);
                     }
                 }).then(response => {
-                    //application/json; charset=UTF-8
-                    return callback(0, {
-                        responses: response
-                    });
+                    if (response.statusCode === 200) {
+                        if (response.headers['content-type'] === 'image/jpeg') {
+                            return callback(null, {
+                                responses: response.body
+                            });
+                        } else {
+                            throw new HttpError.BadRequest(response.body);
+                        }
+                    } else {
+                        throw new HttpError(response.statusCode, response.body);
+                    }
                 }).catch(err => {
                     return callback(err);
                 });

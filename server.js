@@ -68,6 +68,9 @@ var App = Express()
             res.statusCode(500).send(err);
         });
     })
+    .use('/generatedb', (req, res) => {
+        res.send('DB date generated successfully');
+    })
     .use(ErrorHandler.globalErrorHadler);
 
 // Start the server

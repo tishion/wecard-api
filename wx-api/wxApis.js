@@ -62,6 +62,7 @@ wxApi.getWxQRCodeImage = function _getWxQRCodeImage(accessToken, scene, page, wi
             page: page,
             width: width,
         },
-        json: true
+        json: true,
+        resolveWithFullResponse: true
     });
 }
