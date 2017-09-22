@@ -40,17 +40,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/UserInfo'
-  # /security/wxaccesstoken:
-  #   get:
-  #     tags:
-  #       - Security
-  #     summary: Get WX access token
-  #     operationId: security_getWxAccessToken
-  #     responses:
-  #       '200':
-  #         description: OK
-  #         schema:
-  #           $ref: '#/definitions/WxAccessToken'
   /security/wxacodeimage:
     get:
       tags:
@@ -288,6 +277,59 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/AccessRequest'
+  /develop/wxaccesstoken:
+    get:
+      security: []
+      tags:
+        - Development
+      summary: Get WX access token
+      operationId: develop_getWxAccessToken
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/WxAccessToken'
+  /develop/generatemockdata:
+    get:
+      security: []
+      tags:
+        - Development
+      summary: Generate mock data
+      operationId: develop_generateMockData
+      responses:
+        '200':
+          description: OK
+  /develop/cleangroup:
+    get:
+      security: []
+      tags:
+        - Development
+      summary: Clean Group & GroupMember tables
+      operationId: develop_cleanGroup
+      responses:
+        '200':
+          description: OK
+  /develop/cleancardcaseitem:
+    get:
+      security: []
+      tags:
+        - Development
+      summary: Clean cardcaseItem table
+      operationId: develop_cleanCardcaseItem
+      responses:
+        '200':
+          description: OK
+  /develop/resetdatabase:
+    get:
+      security: []
+      tags:
+        - Development
+      summary: Reset database
+      operationId: develop_resetDatabase
+      responses:
+        '200':
+          description: OK
+
 definitions:
   UserInfo:
     type: object
