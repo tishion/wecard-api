@@ -20,4 +20,8 @@ cacheEngine.get = function _get(key) {
     return persist.getItem(key);
 }
 
+cacheEngine.clear = function _clear(callback) {
+    return persist.clear(callback);
+}
+
 module.exports = cacheEngine;

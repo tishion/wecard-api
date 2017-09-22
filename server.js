@@ -71,6 +71,10 @@ var App = Express()
     .use('/generatedb', (req, res) => {
         res.send('DB date generated successfully');
     })
+    .use('/clearcache', (req, res) => {
+        Cache.clear();
+        res.send('Persist cache cleared successully');
+    })
     .use(ErrorHandler.globalErrorHadler);
 
 // Start the server
