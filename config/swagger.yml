@@ -47,7 +47,7 @@ paths:
       summary: Get WX application QR code image
       operationId: security_getWxQRCodeImage
       produces:
-        - application/jpeg
+        - image/jpeg
       parameters:
         - name: scene
           in: query
