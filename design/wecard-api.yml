@@ -329,6 +329,16 @@ paths:
       responses:
         '200':
           description: OK
+  /develop/refreshaccesstoken:
+    get:
+      security: []
+      tags:
+        - Development
+      summary: Refresh WX access token
+      operationId: develop_refreshAccessToken
+      responses:
+        '200':
+          description: OK
 
 definitions:
   UserInfo:

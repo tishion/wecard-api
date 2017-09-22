@@ -7,10 +7,10 @@ var BodyParser = require('body-parser');
 var Swaggerize = require('swaggerize-express');
 var SwaggerizeUi = require('swaggerize-ui');
 var Path = require('path');
-var Config = require('./config/config.js');
-var ErrorHandler = require('./error/handler.js');
 var FileSystem = require('fs');
 var Cache = require('./x-cache')
+var Config = require('./config/config.js');
+var ErrorHandler = require('./error/handler.js');
 var WxApi = require('./wx-api/wxApis.js');
 var db = require('./models');
 

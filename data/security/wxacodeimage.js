@@ -20,24 +20,13 @@ module.exports = {
             WxAccessToken.getToken()
                 .then(token => {
                     if (token) {
-                        return WxApi.getWxQRCodeImage(token, req.query.scene, req.query.page, req.width);
+                        return WxApi.getWxQRCodeImage(token, {
+                            scene: req.query.scene,
+                            page: req.query.page,
+                            width: req.width
+                        }).pipe(res);
                     } else {
-                        return new HttpError.InternalServerError(ErrorCode.err_accessTokenUnavailable);
-                    }
-                }).then(response => {
-                    if (response.statusCode === 200) {
-                        if (response.headers['content-type'] === 'image/jpeg') {
-                            for (var attr in response.headers) {
-                                res.set(attr, response.headers.attr);
-                            }
-                            return callback(null, {
-                                responses: response.body
-                            });
-                        } else {
-                            throw new HttpError.BadRequest(response.body);
-                        }
-                    } else {
-                        throw new HttpError(response.statusCode, response.body);
+                        throw new HttpError.InternalServerError(ErrorCode.err_accessTokenUnavailable);
                     }
                 }).catch(err => {
                     return callback(err);

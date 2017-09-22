@@ -1,6 +1,7 @@
 'use strict'
 var Url = require('url');
-var HttpRequest = require('request-promise');
+var RequestPromise = require('request-promise');
+var Request = require('request');
 
 var wxApi = module.exports;
 
@@ -12,7 +13,7 @@ wxApi.CgiUrl = 'https://api.weixin.qq.com/cgi-bin/';
 
 wxApi.getWxTicket = function _getWxTicket(code, appid, secret) {
     // `https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code&js_code=${code}&appid=${appid}&secret=${secret}`;
-    return HttpRequest({
+    return RequestPromise({
         uri: Url.resolve(wxApi.SnsUrl, 'jscode2session'),
         qs: {
             grant_type: 'authorization_code',
@@ -33,7 +34,7 @@ wxApi.getWxAccessToken = function _getWxAccessToken(appid, secret) {
     // `https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${appid}&secret=${secret}`;
     if (!lock.promise_pending) {
         lock.promise_pending = true;
-        lock.request_promise = Promise.resolve(HttpRequest({
+        lock.request_promise = Promise.resolve(RequestPromise({
             uri: Url.resolve(wxApi.CgiUrl, 'token'),
             qs: {
                 grant_type: 'client_credential',
@@ -49,19 +50,15 @@ wxApi.getWxAccessToken = function _getWxAccessToken(appid, secret) {
     return lock.request_promise;
 }
 
-wxApi.getWxQRCodeImage = function _getWxQRCodeImage(accessToken, scene, page, width) {
+wxApi.getWxQRCodeImage = function _getWxQRCodeImage(accessToken, options) {
     // `https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token={accessToken}`;
-    return HttpRequest({
+    return Request({
         method: 'POST',
         uri: Url.resolve(wxApi.WXAUrl, 'getwxacodeunlimit'),
         qs: {
             access_token: accessToken.access_token,
         },
-        body: {
-            scene: scene,
-            page: page,
-            width: width,
-        },
+        body: options,
         json: true,
         resolveWithFullResponse: true
     });
