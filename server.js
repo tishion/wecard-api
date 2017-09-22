@@ -11,8 +11,7 @@ var Config = require('./config/config.js');
 var ErrorHandler = require('./error/handler.js');
 var FileSystem = require('fs');
 var Cache = require('./x-cache')
-var WxApi = require('./wx-api');
-var WxApiRouter = require('./wx-api/router.js');
+var WxApi = require('./wx-api/wxApis.js');
 var db = require('./models');
 
 // Initialize the memory cache
@@ -31,7 +30,6 @@ var App = Express()
         security: Path.resolve('./security'),
         docspath: 'docs'
     }))
-    .use('/wxa', WxApiRouter.redirect)
     .use('/viewer', SwaggerizeUi({
         docs: '/api/docs'
     }))

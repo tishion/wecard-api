@@ -3,7 +3,7 @@ var HttpError = require('http-errors');
 var ErrorCode = require('../../error/code.json');
 var Config = require('../../config/config.js');
 var AuthJwt = require('../../security/jwtAuth.js');
-var WxApi = require('../../wx-api');
+var WxApi = require('../../wx-api/wxApis.js');
 var db = require('../../models');
 /**
  * Operations on /security/auth

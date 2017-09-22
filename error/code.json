@@ -53,6 +53,11 @@
         "error": 80010,
         "message": "Cardcase not found"
     },
+    
+    "err_accessTokenUnavailable": {
+        "error": 80011,
+        "message": "WX access tokem is unavailable"
+    },
 
     "err_template": {
         "error": 80000,

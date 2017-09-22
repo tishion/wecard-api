@@ -51,6 +51,33 @@ paths:
   #         description: OK
   #         schema:
   #           $ref: '#/definitions/WxAccessToken'
+  /security/wxacodeimage:
+    get:
+      tags:
+        - Security
+      summary: Get WX application QR code image
+      operationId: security_getWxQRCodeImage
+      produces:
+        - application/jpeg
+      parameters:
+        - name: scene
+          in: query
+          description: The scene
+          required: true
+          type: string
+        - name: page
+          in: query
+          description: The page
+          type: string
+        - name: width
+          in: query
+          description: The width
+          type: integer
+      responses:
+        '200':
+          description: QR code image
+          schema:
+            type: file
   /namecard:
     get:
       tags:

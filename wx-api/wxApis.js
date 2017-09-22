@@ -48,3 +48,20 @@ wxApi.getWxAccessToken = function _getWxAccessToken(appid, secret) {
     }
     return lock.request_promise;
 }
+
+wxApi.getWxQRCodeImage = function _getWxQRCodeImage(accessToken, scene, page, width) {
+    // `https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token={accessToken}`;
+    return HttpRequest({
+        method: 'POST',
+        uri: Url.resolve(wxApi.WXAUrl, 'getwxacodeunlimit'),
+        qs: {
+            access_token: accessToken.access_token,
+        },
+        body: {
+            scene: scene,
+            page: page,
+            width: width,
+        },
+        json: true
+    });
+}
