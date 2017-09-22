@@ -67,6 +67,7 @@ paths:
           description: QR code image
           schema:
             type: file
+            format: image/jpeg
   /namecard:
     get:
       tags:
