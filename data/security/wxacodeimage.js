@@ -24,9 +24,25 @@ module.exports = {
                             scene: req.query.scene,
                             page: req.query.page,
                             width: req.width
-                        }).pipe(res);
+                        });
                     } else {
                         throw new HttpError.InternalServerError(ErrorCode.err_accessTokenUnavailable);
+                    }
+                }).then(response => {
+                    if (response.statusCode === 200) {
+                        if (response.headers['content-type'] === 'image/jpeg') {
+                            res.set({
+                                'Content-Type': response.headers['content-type'],
+                                'Content-disposition': response.headers['content-disposition']
+                            })
+                            return callback(null, {
+                                responses: response.body
+                            });
+                        } else {
+                            throw new HttpError.BadRequest(response.body);
+                        }
+                    } else {
+                        throw new HttpError(response.statusCode, response.body);
                     }
                 }).catch(err => {
                     return callback(err);

@@ -19,6 +19,7 @@ consumes:
   - application/json
   - text/json
 produces:
+  - application/json, text/json
   - application/json
   - text/json
 paths:
@@ -47,7 +48,10 @@ paths:
       summary: Get WX application QR code image
       operationId: security_getWxQRCodeImage
       produces:
+        - image/jpeg, application/json, text/json
         - image/jpeg
+        - application/json
+        - text/json
       parameters:
         - name: scene
           in: query

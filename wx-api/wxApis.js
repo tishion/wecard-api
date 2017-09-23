@@ -52,12 +52,13 @@ wxApi.getWxAccessToken = function _getWxAccessToken(appid, secret) {
 
 wxApi.getWxQRCodeImage = function _getWxQRCodeImage(accessToken, options) {
     // `https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token={accessToken}`;
-    return Request({
+    return RequestPromise({
         method: 'POST',
         uri: Url.resolve(wxApi.WXAUrl, 'getwxacodeunlimit'),
         qs: {
             access_token: accessToken.access_token,
         },
+        encoding: null,
         body: options,
         json: true,
         resolveWithFullResponse: true
