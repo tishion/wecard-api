@@ -12,7 +12,7 @@ var wxAccessToken = module.exports;
 wxAccessToken.getToken = function (callback) {
     return Cache.get('WX_ACCESS_TOKEN')
         .then(value => {
-            if (!value || 'undefined' === typeof value) {
+            if (!value) {
                 return Promise.all([
                     // Communicate with WX server to get the WX access token
                     WxApi.getWxAccessToken(Config.appId, Config.appSecret),

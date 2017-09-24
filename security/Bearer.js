@@ -14,7 +14,7 @@ module.exports = function authorize(req, res, next) {
     // var authorization = this.in.get(this.name);
     var authorization = req.get('Authorization');
     //console.log('Authorization: %s', authorization);
-    if (typeof authorization !== 'undefined' && authorization) {
+    if (authorization) {
         var sa = authorization.split(' ');
         if (2 == sa.length && sa[0] == 'Bearer') {
 

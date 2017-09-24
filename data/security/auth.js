@@ -20,7 +20,7 @@ module.exports = {
     get: {
         200: function (req, res, callback) {
             var wxLoginCode = req.get('WX-LOGIN-CODE');
-            if (typeof wxLoginCode === 'undefined' || !wxLoginCode) {
+            if (!wxLoginCode) {
                 return callback(new HttpError.BadRequest(err_missingWxCodeInHeader));
             }
 
