@@ -44,6 +44,10 @@ var App = Express()
     .use('/viewer', SwaggerizeUi({
         docs: '/api/docs'
     }))
+    .use('/upload', (req, res) => {
+        console.log(req);
+        res.status(200).send("ok");
+    })
     // Set global erro hanlder
     .use(ErrorHandler.globalErrorHadler);
 
