@@ -133,6 +133,23 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Namecard'
+  '/namecard/{id}/avatar':
+    post:
+      tags:
+        - Namecard
+      summary: Create/Update the Namecard avatar
+      operationId: namecard_setAvatar
+      consumes:
+        - multipart/form-data
+      parameters:
+        - $ref: '#/parameters/EntityId'
+        - in: formData
+          name: file
+          type: file
+          description: The file to upload.
+      responses:
+        '200':
+          description: OK
   /cardcase:
     get:
       tags:
