@@ -11,8 +11,8 @@ var wxAccessToken = module.exports;
 
 wxAccessToken.getToken = function (callback) {
     return Cache.get('WX_ACCESS_TOKEN')
-        .then(value => {
-            if (!value) {
+        .then(token => {
+            if (!token) {
                 return Promise.all([
                     // Communicate with WX server to get the WX access token
                     WxApi.getWxAccessToken(Config.appId, Config.appSecret),
@@ -20,22 +20,22 @@ wxAccessToken.getToken = function (callback) {
                 ]);
             }
             return [
-                value,
+                token,
                 false
             ]
-        }).spread((value, updated) => {
+        }).spread((token, updated) => {
             if (updated) {
-                if (!value.access_token || !value.expires_in) {
-                    console.log(`Failed to authenticate with WX server: ${value.errmsg} [${value.errcode}]`);
+                if (!token.access_token || !token.expires_in) {
+                    console.log(`Failed to authenticate with WX server: ${token.errmsg} [${token.errcode}]`);
                     throw new HttpError.BadRequest(ErrorCode.err_wxAuthenticateFail);
                 }
-                var expiration = (value.expires_in - 200) * 1000;
+                var expiration = (token.expires_in - 200) * 1000;
                 var accessToken = {
-                    access_token: value.access_token,
-                    expires_at: Moment().add(value.expires_in, 's').format()
+                    access_token: token.access_token,
+                    expires_at: Moment().add(token.expires_in, 's').format()
                 };
-                return Cache.put('WX_ACCESS_TOKEN', accessToken, expiration).then(() => value);
+                return Cache.put('WX_ACCESS_TOKEN', accessToken, expiration).then(() => token);
             }
-            return value;
+            return token;
         });
 }

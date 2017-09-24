@@ -3,8 +3,9 @@
 var Http = require('http');
 var Express = require('express');
 var Logger = require('morgan');
+var Multer  = require('multer')
 var BodyParser = require('body-parser');
-var Swaggerize = require('swaggerize-express');
+var Swaggerize = require('./rebind_modules/swaggerize-express');
 var SwaggerizeUi = require('swaggerize-ui');
 var Path = require('path');
 var FileSystem = require('fs');
@@ -19,20 +20,31 @@ Cache.syncInit();
 
 // Create Express instance
 var App = Express()
+    // Add logger
     .use(Logger('dev'))
+    // Add JSON parser
     .use(BodyParser.json())
+    // Add encoded URL parser
     .use(BodyParser.urlencoded({
-        extended: true
+        extended: false
     }))
+    // Add multipart/form parser
+    .use(Multer({
+        storage: Multer.memoryStorage(),
+        limits: 3 * 1024 * 1024
+    }).single('avatar'))
+    // Add Swaggerize
     .use(Swaggerize({
         api: Path.resolve('./config/swagger.yml'),
         handlers: Path.resolve('./handlers'),
         security: Path.resolve('./security'),
         docspath: 'docs'
     }))
+    // Add Swagger UI
     .use('/viewer', SwaggerizeUi({
         docs: '/api/docs'
     }))
+    // Set global erro hanlder
     .use(ErrorHandler.globalErrorHadler);
 
 // Start the server

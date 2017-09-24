@@ -4,6 +4,12 @@
     "port": 8000,
     "appId": "wx35466fb977fbe38c",
     "appSecret": "8d28e9cc2d907f212de2e8a95df367f7",
+    "storage": {
+      "bucket": "wecard",
+      "appId": "1251252517",
+      "secretId" : "AKIDsb9ZrRxaHrErXhQ5hN8zQHJurxGVvkVO",
+      "secretKey": "rnVKKF4QxOjt4V8NwgS8uhuUuLG1bzQ9"
+    },
     "tokenSecret": "lessismore",
     "database": {
       "connection": "sqlite://wecard_dev.db",
@@ -19,6 +25,12 @@
     "host": "wecard.azurewebsites.net",
     "appId": "wx35466fb977fbe38c",
     "appSecret": "8d28e9cc2d907f212de2e8a95df367f7",
+    "storage": {
+      "bucket": "wecard",
+      "appId": "1251252517",
+      "secretId" : "AKIDsb9ZrRxaHrErXhQ5hN8zQHJurxGVvkVO",
+      "secretKey": "rnVKKF4QxOjt4V8NwgS8uhuUuLG1bzQ9"
+    },
     "tokenSecret": "lessismore",
     "database": {
       "connection": "sqlite://wecard_dev.db",

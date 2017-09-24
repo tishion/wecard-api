@@ -1,5 +1,10 @@
 'use strict';
-var Mockgen = require('../../mockgen.js');
+var FileType = require('file-type')
+var HttpError = require('http-errors');
+var ErrorCode = require('../../../error/code.json');
+var CosApi = require('../../../qcloud/cosApi.js');
+var db = require('../../../models');
+
 /**
  * Operations on /namecard/{id}/avatar
  */
@@ -14,15 +19,30 @@ module.exports = {
      */
     post: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/namecard/{id}/avatar',
-                operation: 'post',
-                response: '200'
-            }, callback);
+            return db.Namecard.findOne({
+                where: {
+                    id: req.params.id,
+                    userId: req.session.userId
+                }
+            }).then(namecard => {
+                if (namecard) {
+                    var fileType = FileType(req.file.buffer);
+                    if (['jpg', 'png'].indexOf(fileType.ext) < 0) {
+                        throw new HttpError.BadRequest(ErrorCode.err_invalidAvatarFormat);
+                    }
+                    return CosApi.upLoadAvatar(req.params.id, req.file.buffer);
+                } else {
+                    throw new HttpError.BadRequest(ErrorCode.err_namecardNotFound);
+                }
+            }).then(response =>{
+                return callback(null, {
+                    responses: response
+                });
+            }).catch(db.sequelize.Error, err => {
+                return callback(new HttpError.InternalServerError(err));
+            }).catch(err => {
+                return callback(err);
+            });
         }
     }
 };

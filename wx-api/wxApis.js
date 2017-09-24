@@ -1,20 +1,17 @@
 'use strict'
 var Url = require('url');
 var RequestPromise = require('request-promise');
-var Request = require('request');
+
+var WXAUrl = 'https://api.weixin.qq.com/wxa/';
+var SNSUrl = 'https://api.weixin.qq.com/sns/';
+var CGIUrl = 'https://api.weixin.qq.com/cgi-bin/';
 
 var wxApi = module.exports;
-
 wxApi.version = '0.0.1';
-
-wxApi.WXAUrl = 'https://api.weixin.qq.com/wxa/';
-wxApi.SnsUrl = 'https://api.weixin.qq.com/sns/';
-wxApi.CgiUrl = 'https://api.weixin.qq.com/cgi-bin/';
-
 wxApi.getWxTicket = function _getWxTicket(code, appid, secret) {
     // `https://api.weixin.qq.com/sns/jscode2session?grant_type=authorization_code&js_code=${code}&appid=${appid}&secret=${secret}`;
     return RequestPromise({
-        uri: Url.resolve(wxApi.SnsUrl, 'jscode2session'),
+        uri: Url.resolve(SNSUrl, 'jscode2session'),
         qs: {
             grant_type: 'authorization_code',
             js_code: code,
@@ -35,7 +32,7 @@ wxApi.getWxAccessToken = function _getWxAccessToken(appid, secret) {
     if (!lock.promise_pending) {
         lock.promise_pending = true;
         lock.request_promise = Promise.resolve(RequestPromise({
-            uri: Url.resolve(wxApi.CgiUrl, 'token'),
+            uri: Url.resolve(CGIUrl, 'token'),
             qs: {
                 grant_type: 'client_credential',
                 appid: appid,
@@ -54,7 +51,7 @@ wxApi.getWxQRCodeImage = function _getWxQRCodeImage(accessToken, options) {
     // `https://api.weixin.qq.com/wxa/getwxacodeunlimit?access_token={accessToken}`;
     return RequestPromise({
         method: 'POST',
-        uri: Url.resolve(wxApi.WXAUrl, 'getwxacodeunlimit'),
+        uri: Url.resolve(WXAUrl, 'getwxacodeunlimit'),
         qs: {
             access_token: accessToken.access_token,
         },

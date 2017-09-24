@@ -143,8 +143,8 @@ paths:
         - multipart/form-data
       parameters:
         - $ref: '#/parameters/EntityId'
-        - in: formData
-          name: file
+        - name: avatar
+          in: formData
           type: file
           description: The file to upload.
       responses:

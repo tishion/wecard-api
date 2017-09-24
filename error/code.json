@@ -41,7 +41,7 @@
 
     "err_invalidItemType": {
         "error": 80008,
-        "message": "Invalid item type (GROUP or CARD is allowed)"
+        "message": "Invalid item type, expect [GROUP,CARD]"
     },
 
     "err_itemObjectNotFound": {
@@ -57,6 +57,11 @@
     "err_accessTokenUnavailable": {
         "error": 80011,
         "message": "WX access tokem is unavailable"
+    },
+
+    "err_invalidAvatarFormat": {
+        "error": 80012,
+        "message": "Invalid avatart image format, expect [JPEG, PNG]"
     },
 
     "err_template": {
