@@ -20,9 +20,9 @@ module.exports = {
             if ('accept' === operation) {
                 operation = 'ACCEPTED';
             } else if ('reject' !== operation) {
-                operation = 'REJECTED';                
+                operation = 'REJECTED';
             } else {
-                return callback(new HttpError.BadRequest(ErrorCode.err_invalideOperation));                
+                return callback(new HttpError.BadRequest(ErrorCode.err_invalideOperation));
             }
 
             return db.AccessRequest.findOne({
@@ -31,25 +31,22 @@ module.exports = {
                     id: req.params.id
                 }
             }).then(accessRequest => {
-                if (accessRequest) {
-                    if ('PENDING' === accessRequest.status) {
-                        return accessRequest.update({
-                            status: operation
-                        });
-                    } else {
-                        throw new HttpError.BadRequest(ErrorCode.err_requestSignedAlready);
-                    }
-                } else {
+                if (!accessRequest) {
                     throw new HttpError.NotFound();
                 }
-            }).then(accessRequest => {
-                if (accessRequest) {
-                    return callback(null, {
-                        responses: accessRequest.prune 
-                    });
-                } else {
-                    throw new HttpError.InternalServerError('Database error');
+                if ('PENDING' !== accessRequest.status) {
+                    throw new HttpError.BadRequest(ErrorCode.err_requestSignedAlready);
                 }
+                return accessRequest.update({
+                    status: operation
+                });
+            }).then(accessRequest => {
+                if (!accessRequest) {
+                    throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
+                }
+                return callback(null, {
+                    responses: accessRequest.prune
+                });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {

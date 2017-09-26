@@ -21,16 +21,15 @@ module.exports = {
                     userId: req.session.userId,
                 }
             }).then(namecards => {
-                if (namecards) {
-                    var result = namecards.map((item, index, input) => {
-                        return item.prune;
-                    });
-                    return callback(null, {
-                        responses: result
-                    });
-                } else {
-                    throw new HttpError.InternalServerError('Database error');
+                if (!namecards) {
+                    throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
                 }
+                var result = namecards.map((item, index, input) => {
+                    return item.prune;
+                });
+                return callback(null, {
+                    responses: result
+                });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {
@@ -71,20 +70,17 @@ module.exports = {
                     userId: req.session.userId
                 }
             }).then(total => {
-                if (total < 5) {
-                    return db.Namecard.create(namecard);
-                }
-                else {
+                if (total > 5) {
                     throw new HttpError.BadRequest(ErrorCode.err_namecardCountExceedsLimit);
                 }
+                return db.Namecard.create(namecard);
             }).then(created => {
-                if (created) {
-                    return callback(null, {
-                        responses: created.prune
-                    })
-                } else {
-                    throw new HttpError.InternalServerError('Database error');
+                if (!created) {
+                    throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
                 }
+                return callback(null, {
+                    responses: created.prune
+                });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {
@@ -109,27 +105,24 @@ module.exports = {
                     userId: req.session.userId,
                 }
             }).then(original => {
-                if (original) {
-                    // Update attributes
-                    for (var attr in namecard) {
-                        if (original.rawAttributes.hasOwnProperty(attr)) {
-                            original[attr] = namecard[attr];
-                        }
-                    }
-                    original.userId = req.session.userId;
-                    return original.save();
-                }
-                else {
+                if (!original) {
                     throw new HttpError.NotFound();
                 }
-            }).then(updated => {
-                if (updated) {
-                    callback(null, {
-                        responses: updated.prune
-                    });
-                } else {
-                    throw new HttpError.InternalServerError('Database error');
+                // Update attributes
+                for (var attr in namecard) {
+                    if (original.rawAttributes.hasOwnProperty(attr)) {
+                        original[attr] = namecard[attr];
+                    }
                 }
+                original.userId = req.session.userId;
+                return original.save();
+            }).then(updated => {
+                if (!updated) {
+                    throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
+                }
+                return callback(null, {
+                    responses: updated.prune
+                });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {

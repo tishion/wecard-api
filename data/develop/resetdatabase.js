@@ -17,11 +17,11 @@ module.exports = {
             return db.sequelize.sync({
                 force: true
             }).then(() => {
-                callback(null, {
+                return callback(null, {
                     responses: 'Databse was reset successfully.'
                 });
             }).catch(err => {
-                callback(err);
+                return callback(err);
             });
         }
     }

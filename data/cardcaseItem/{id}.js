@@ -1,5 +1,6 @@
 'use strict';
 var HttpError = require('http-errors');
+var ErrorCode = require('../../error/code.json');
 var db = require('../../models');
 /**
  * Operations on /cardcaseItem/{id}
@@ -15,25 +16,23 @@ module.exports = {
      */
     delete: {
         200: function (req, res, callback) {
-            db.CardcaseItem.findOne({
+            return db.CardcaseItem.findOne({
                 where: {
                     userId: req.session.userId,
                     id: req.params.id,
                 }
             }).then(cardcaseItem => {
-                if (cardcaseItem) {
-                    return cardcaseItem.destroy();
-                } else {
+                if (!cardcaseItem) {
                     throw new HttpError.NotFound();
                 }
+                return cardcaseItem.destroy();
             }).then(deleted => {
-                if (deleted) {
-                    return callback(null, {
-                        responses: deleted.prune
-                    });
-                } else {
-                    throw new HttpError.InternalServerError('Database error');
+                if (!deleted) {
+                    throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
                 }
+                return callback(null, {
+                    responses: deleted.prune
+                });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {

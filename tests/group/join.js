@@ -5,13 +5,13 @@ var BodyParser = require('body-parser');
 var Swaggerize = require('swaggerize-express');
 var Path = require('path');
 var Request = require('supertest');
-var Mockgen = require('../data/mockgen.js');
+var Mockgen = require('../../data/mockgen.js');
 var Parser = require('swagger-parser');
 /**
- * Test for /group
+ * Test for /group/join
  */
-Test('/group', function (t) {
-    var apiPath = Path.resolve(__dirname, '../config/swagger.yml');
+Test('/group/join', function (t) {
+    var apiPath = Path.resolve(__dirname, '../../config/swagger.yml');
     var App = Express();
     App.use(BodyParser.json());
     App.use(BodyParser.urlencoded({
@@ -19,23 +19,23 @@ Test('/group', function (t) {
     }));
     App.use(Swaggerize({
         api: apiPath,
-        handlers: Path.resolve(__dirname, '../handlers'),
-        security: Path.resolve(__dirname, '../security')
+        handlers: Path.resolve(__dirname, '../../handlers'),
+        security: Path.resolve(__dirname, '../../security')
     }));
     Parser.validate(apiPath, function (err, api) {
         t.error(err, 'No parse error');
         t.ok(api, 'Valid swagger api');
         /**
-         * summary: Get group by WX open group id
+         * summary: Notify the server that the user has shared data to the group
          * description: 
-         * parameters: wxGroupId
+         * parameters: wxGroupId, namecardId
          * produces: 
          * responses: 200
          */
-        t.test('test group_getByWXOpenGid get operation', function (t) {
+        t.test('test group_create post operation', function (t) {
             Mockgen().requests({
-                path: '/group',
-                operation: 'get'
+                path: '/group/join',
+                operation: 'post'
             }, function (err, mock) {
                 var request;
                 t.error(err);
@@ -44,7 +44,7 @@ Test('/group', function (t) {
                 //Get the resolved path from mock request
                 //Mock request Path templates({}) are resolved using path parameters
                 request = Request(App)
-                    .get('/api' + mock.request.path);
+                    .post('/api' + mock.request.path);
                 if (mock.request.body) {
                     //Send the request body
                     request = request.send(mock.request.body);
@@ -64,7 +64,7 @@ Test('/group', function (t) {
                     t.error(err, 'No error');
                     t.ok(res.statusCode === 200, 'Ok response status');
                     var Validator = require('is-my-json-valid');
-                    var validate = Validator(api.paths['/group']['get']['responses']['200']['schema']);
+                    var validate = Validator(api.paths['/group/join']['post']['responses']['200']['schema']);
                     var response = res.body;
                     if (Object.keys(response).length <= 0) {
                         response = res.text;

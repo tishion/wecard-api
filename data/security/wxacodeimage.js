@@ -17,33 +17,30 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            WxAccessToken.getToken()
+            return WxAccessToken.getToken()
                 .then(token => {
-                    if (token) {
-                        return WxApi.getWxQRCodeImage(token, {
-                            scene: req.query.scene,
-                            page: req.query.page,
-                            width: req.width
-                        });
-                    } else {
+                    if (!token) {
                         throw new HttpError.InternalServerError(ErrorCode.err_accessTokenUnavailable);
                     }
+                    return WxApi.getWxQRCodeImage(token, {
+                        scene: req.query.scene,
+                        page: req.query.page,
+                        width: req.width
+                    });
                 }).then(response => {
-                    if (response.statusCode === 200) {
-                        if (response.headers['content-type'] === 'image/jpeg') {
-                            res.set({
-                                'Content-Type': response.headers['content-type'],
-                                'Content-disposition': response.headers['content-disposition']
-                            })
-                            return callback(null, {
-                                responses: response.body
-                            });
-                        } else {
-                            throw new HttpError.BadRequest(response.body);
-                        }
-                    } else {
+                    if (response.statusCode !== 200) {
                         throw new HttpError(response.statusCode, response.body);
                     }
+                    if (response.headers['content-type'] !== 'image/jpeg') {
+                        throw new HttpError.BadRequest(response.body);
+                    }
+                    res.set({
+                        'Content-Type': response.headers['content-type'],
+                        'Content-disposition': response.headers['content-disposition']
+                    })
+                    return callback(null, {
+                        responses: response.body
+                    });
                 }).catch(err => {
                     return callback(err);
                 });

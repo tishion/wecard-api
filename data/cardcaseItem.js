@@ -22,16 +22,15 @@ module.exports = {
                     userId: req.session.userId
                 }
             }).then(cardcaseItems => {
-                if (cardcaseItems) {
-                    var result = cardcaseItems.map((item, index, input) => {
-                        return item.prune;
-                    });
-                    return callback(null, {
-                        responses: result
-                    });
-                } else {
-                    throw new HttpError.InternalServerError('Database error');
+                if (!cardcaseItems) {
+                    throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
                 }
+                var result = cardcaseItems.map((item, index, input) => {
+                    return item.prune;
+                });
+                return callback(null, {
+                    responses: result
+                });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {
@@ -62,45 +61,40 @@ module.exports = {
                 return callback(new HttpError.BadRequest(ErrorCode.err_invalidItemType));
             }
 
-            itemStorage.findById(cardcaseItem.itemId)
+            return itemStorage.findById(cardcaseItem.itemId)
                 .then(itemEntity => {
-                    if (itemEntity) {
-                        return db.Cardcase.findOne({
-                            where: {
-                                id: cardcaseItem.cardcaseId,
-                                userId: req.session.userId,
-                            }
-                        });
-                    } else {
-                        // The target item doesn't exist
+                    if (!itemEntity) {
                         throw new HttpError.BadRequest(ErrorCode.err_itemObjectNotFound);
                     }
+                    return db.Cardcase.findOne({
+                        where: {
+                            id: cardcaseItem.cardcaseId,
+                            userId: req.session.userId,
+                        }
+                    });
                 }).then(cardcase => {
-                    if (cardcase) {
-                        return db.CardcaseItem.findOrCreate({
-                            where: {
-                                userId: cardcaseItem.userId,
-                                cardcaseId: cardcaseItem.cardcaseId,
-                                itemType: cardcaseItem.itemType,
-                                itemId: cardcaseItem.itemId
-                            },
-                            defaults: {
-                                name: cardcaseItem.name,
-                                thumbnail: cardcaseItem.thumbnail
-                            }
-                        });
-                    } else {
-                        // The card case not found
+                    if (!cardcase) {
                         throw new HttpError.BadRequest(ErrorCode.err_cardcaseNotFound);
                     }
+                    return db.CardcaseItem.findOrCreate({
+                        where: {
+                            userId: cardcaseItem.userId,
+                            cardcaseId: cardcaseItem.cardcaseId,
+                            itemType: cardcaseItem.itemType,
+                            itemId: cardcaseItem.itemId
+                        },
+                        defaults: {
+                            name: cardcaseItem.name,
+                            thumbnail: cardcaseItem.thumbnail
+                        }
+                    });
                 }).spread((item, created) => {
-                    if (item) {
-                        return callback(null, {
-                            responses: item.prune
-                        });
-                    } else {
-                        throw new HttpError.InternalServerError('Database error');
+                    if (!item) {
+                        throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
                     }
+                    return callback(null, {
+                        responses: item.prune
+                    });
                 }).catch(db.sequelize.Error, err => {
                     return callback(new HttpError.InternalServerError(err));
                 }).catch(err => {
@@ -125,26 +119,23 @@ module.exports = {
                     userId: req.session.userId,
                 }
             }).then(original => {
-                if (original) {
-                    // Update attributes
-                    for (var attr in cardcaseItem) {
-                        if (original.rawAttributes.hasOwnProperty(attr)) {
-                            original[attr] = cardcaseItem[attr];
-                        }
-                    }
-                    return original.save();
-                }
-                else {
+                if (!original) {
                     throw new HttpError.NotFound();
                 }
-            }).then(updated => {
-                if (updated) {
-                    callback(null, {
-                        responses: updated.prune
-                    });
-                } else {
-                    throw new HttpError.InternalServerError('Database error');                    
+                // Update attributes
+                for (var attr in cardcaseItem) {
+                    if (original.rawAttributes.hasOwnProperty(attr)) {
+                        original[attr] = cardcaseItem[attr];
+                    }
                 }
+                return original.save();
+            }).then(updated => {
+                if (!updated) {
+                    throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
+                }
+                return callback(null, {
+                    responses: updated.prune
+                });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {

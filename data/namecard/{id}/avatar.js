@@ -25,16 +25,15 @@ module.exports = {
                     userId: req.session.userId
                 }
             }).then(namecard => {
-                if (namecard) {
-                    var fileType = FileType(req.file.buffer);
-                    if (['jpg', 'png'].indexOf(fileType.ext) < 0) {
-                        throw new HttpError.BadRequest(ErrorCode.err_invalidAvatarFormat);
-                    }
-                    return CosApi.upLoadAvatar(req.params.id, req.file.buffer);
-                } else {
+                if (!namecard) {
                     throw new HttpError.BadRequest(ErrorCode.err_namecardNotFound);
                 }
-            }).then(response =>{
+                var fileType = FileType(req.file.buffer);
+                if (['jpg', 'png'].indexOf(fileType.ext) < 0) {
+                    throw new HttpError.BadRequest(ErrorCode.err_invalidAvatarFormat);
+                }
+                return CosApi.upLoadAvatar(req.params.id, req.file.buffer);
+            }).then(response => {
                 return callback(null, {
                     responses: response
                 });

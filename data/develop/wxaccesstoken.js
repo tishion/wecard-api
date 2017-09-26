@@ -16,18 +16,18 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            WxAccessToken.getToken()
-            .then(token => {
-                if (token) {
-                    return callback(null, {
-                        responses: token
-                    });
-                } else {
-                    return new HttpError.InternalServerError(ErrorCode.err_accessTokenUnavailable);
-                }
-            }).catch(err => {
-                return callback(err);
-            });
+            return WxAccessToken.getToken()
+                .then(token => {
+                    if (token) {
+                        return callback(null, {
+                            responses: token
+                        });
+                    } else {
+                        return new HttpError.InternalServerError(ErrorCode.err_accessTokenUnavailable);
+                    }
+                }).catch(err => {
+                    return callback(err);
+                });
         }
     }
 };

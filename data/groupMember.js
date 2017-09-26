@@ -1,5 +1,6 @@
 'use strict';
 var HttpError = require('http-errors');
+var ErrorCode = require('../error/code.json');
 var db = require('../models');
 /**
  * Operations on /groupMember
@@ -15,21 +16,76 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            db.GroupMember.findAll({
+            return db.GroupMember.findOne({
                 where: {
                     groupId: req.query.groupId,
+                    userId: req.session.userId
                 }
+            }).then(self => {
+                // If the current user doesn't exist in the group then reject the request
+                if (!self) {
+                    throw new HttpError.Forbidden(err_alienUserForbidden);
+                }
+                return db.GroupMember.findAll({
+                    where: {
+                        groupId: req.query.groupId,
+                    }
+                });
             }).then(groupMembers => {
-                if (groupMembers) {
-                    var result = groupMembers.map((item, index, input) => {
-                        return item.prune;
-                    });
-                    return callback(null, {
-                        responses: result
-                    });
-                } else {
-                    throw new HttpError.InternalServerError('Database error');
+                if (!groupMembers) {
+                    throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
                 }
+                var result = groupMembers.map((item, index, input) => {
+                    return item.prune;
+                });
+                return callback(null, {
+                    responses: result
+                });
+            }).catch(db.sequelize.Error, err => {
+                return callback(new HttpError.InternalServerError(err));
+            }).catch(err => {
+                return callback(err);
+            });
+        }
+    },
+    /**
+     * summary: Update self group member info
+     * description: 
+     * parameters: body
+     * produces: 
+     * responses: 200
+     * operationId: groupMemeber_getbyGroupId
+     */
+    put: {
+        200: function (req, res, callback) {
+            return db.GroupMember.findById(req.body.id)
+            .then(groupMember => {
+                if (!groupMember) {
+                    throw new HttpError.NotFound();
+                }
+                if (req.body.hidden) {
+                    return groupMember.update({
+                        hidden: req.body.hidden
+                    });
+                }
+            }).then(groupMember => {
+                if (req.body.cardId) {
+                    return Promise.all([
+                        groupMember,
+                        db.Namecard.findById(req.body.cardId)
+                    ]);
+                }
+            }).spread(groupMember, namecard => {
+                if (!namecard) {
+                    throw new HttpError.BadRequet(ErrorCode.err_namecardNotFound);                    
+                }
+                return groupMember.update({
+                    cardId: namecard.id
+                });
+            }).then(groupMember => {
+                return callback(null, {
+                    responses: groupMember
+                });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {

@@ -64,6 +64,16 @@
         "message": "Invalid avatart image format, expect [JPEG, PNG]"
     },
 
+    "err_alienUserForbidden": {
+        "error": 80013,
+        "message": "Need to join the group first"
+    },
+
+    "err_databaseError": {
+        "error": 80080,
+        "message": "Database error"
+    },
+
     "err_template": {
         "error": 80000,
         "message": "Error template"

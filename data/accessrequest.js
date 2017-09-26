@@ -26,16 +26,15 @@ module.exports = {
                         }]
                 }
             }).then(accessRequests => {
-                if (accessRequests) {
-                    var result = accessRequests.map((item, index, input) => {
-                        return item.prune;
-                    });
-                    return callback(null, {
-                        responses: result
-                    });
-                } else {
-                    throw new HttpError.InternalServerError('Database error');
+                if (!accessRequests) {
+                    throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
                 }
+                var result = accessRequests.map((item, index, input) => {
+                    return item.prune;
+                });
+                return callback(null, {
+                    responses: result
+                });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {
@@ -56,30 +55,26 @@ module.exports = {
             var accessRequest = req.body;
 
             return db.Namecard.findById(accessRequest.namecardId).then(namecard => {
-                if (namecard) {
-                    if (req.session.userId == namecard.userId) {
-                        throw new HttpError.BadRequest(ErrorCode.err_selfRequestNotAllowed);
-                    }
-
-                    return db.AccessRequest.findOrCreate({
-                        where: {
-                            namecardId: accessRequest.namecardId,
-                            fromUserId: req.session.userId,
-                            toUserId: namecard.userId
-                        }
-                    });
-                } else {
+                if (!namecard) {
                     throw new HttpError.BadRequest(ErrorCode.err_namecardNotFound);
                 }
+                if (req.session.userId == namecard.userId) {
+                    throw new HttpError.BadRequest(ErrorCode.err_selfRequestNotAllowed);
+                }
+                return db.AccessRequest.findOrCreate({
+                    where: {
+                        namecardId: accessRequest.namecardId,
+                        fromUserId: req.session.userId,
+                        toUserId: namecard.userId
+                    }
+                });
             }).spread((request, created) => {
-                if (created) {
-                    return callback(null, {
-                        responses: request.prune
-                    });
-                } else 
-                {
+                if (!created) {
                     throw new HttpError.Conflict('Already exist');
                 }
+                return callback(null, {
+                    responses: request.prune
+                });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {

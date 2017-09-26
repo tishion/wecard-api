@@ -25,7 +25,7 @@ module.exports = {
             }
 
             // Communicate with WX server to get the open id and session key
-            WxApi.getWxTicket(wxLoginCode, Config.appId, Config.appSecret)
+            return WxApi.getWxTicket(wxLoginCode, Config.appId, Config.appSecret)
                 .then(response => {
                     if (Config.mockWxAuth) {
                         return {

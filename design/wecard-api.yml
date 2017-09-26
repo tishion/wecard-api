@@ -220,17 +220,39 @@ paths:
           schema:
             $ref: '#/definitions/CardcaseItem'
   /group:
-    post:
+    get:
       tags:
         - Group
-      summary: Create a Group (if not exist)
+      summary: Get group by WX open group id
+      operationId: group_getByWXOpenGid
+      parameters:
+        - name: wxGroupId
+          type: string
+          in: query
+          required: true
+          description: The WX open group id
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Group'
+  /group/join:
+    get:
+      tags:
+        - Group
+      summary: Notify the server that the user has shared data to the group
       operationId: group_create
       parameters:
         - name: wxGroupId
           type: string
           in: query
           required: true
-          description: The Group id
+          description: The WX open group id
+        - name: namecardId
+          type: string
+          in: query
+          required: true
+          description: The id of the namecard to be displayed in the group
       responses:
         '200':
           description: OK
@@ -248,6 +270,20 @@ paths:
           in: query
           required: false
           description: The Group id
+      responses:
+        '200':
+          description: OK
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/GroupMember'
+    put:
+      tags:
+        - GroupMember
+      summary: Update self group member info
+      operationId: groupMemeber_getbyGroupId
+      parameters:
+        - $ref: '#/parameters/GroupMemberUpdate'
       responses:
         '200':
           description: OK
@@ -555,6 +591,22 @@ parameters:
     description: The Group
     schema:
       $ref: '#/definitions/Group'
+  GroupMemberUpdate:
+    name: body
+    in: body
+    required: true
+    description: The GroupMember
+    schema:
+      type: object
+      properties:
+        id:
+          type: string
+        cardId:
+          type: string
+        hidden:
+          type: boolean
+      required:
+        - id
   AccessRequestCreate:
     name: body
     in: body

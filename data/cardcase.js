@@ -1,5 +1,6 @@
 'use strict';
 var HttpError = require('http-errors');
+var ErrorCode = require('../error/code.json');
 var db = require('../models');
 /**
  * Operations on /cardcase
@@ -15,21 +16,20 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            db.Cardcase.findAll({
+            return db.Cardcase.findAll({
                 where: {
                     userId: req.session.userId
                 }
             }).then(cardcases => {
-                if (cardcases) {
-                    var result = cardcases.map((item, index, input) => {
-                        return item.prune;
-                    });
-                    return callback(null, {
-                        responses: result
-                    });
-                } else {
-                    throw new HttpError.InternalServerError('Database error');
+                if (!cardcases) {
+                    throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
                 }
+                var result = cardcases.map((item, index, input) => {
+                    return item.prune;
+                });
+                return callback(null, {
+                    responses: result
+                });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
             }).catch(err => {

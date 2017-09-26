@@ -19,7 +19,7 @@ module.exports = function _GroupMember(sequelize, DataTypes) {
             },
             cardId: {
                 type: DataTypes.UUID,
-                allowNull: false,
+                allowNull: true,
             },
             hidden: {
                 type: DataTypes.BOOLEAN,
