@@ -2,7 +2,7 @@ swagger: '2.0'
 info:
   version: v1
   title: wecard
-  description: A wecard API based on Swagger and built using Node.js
+  description: The wecard APIs based on Swagger and built using Node.js
 host: api.wecard.com
 schemes:
   - http
