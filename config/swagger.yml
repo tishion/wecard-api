@@ -516,7 +516,7 @@ definitions:
       toUserId:
         type: string
       status:
-        type: integer
+        type: string
 parameters:
   EntityId:
     required: true
