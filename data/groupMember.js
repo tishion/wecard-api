@@ -70,7 +70,7 @@ module.exports = {
                 }
                 return groupMember;
             }).then(groupMember => {
-                if (req.body.cardId && req.body.cardId != groupMember.cardId) {
+                if (req.body.cardId != groupMember.cardId) {
                     return db.namecard.findById(req.body.cardId)
                     .then(namecard => {
                         if (!namecard) {
