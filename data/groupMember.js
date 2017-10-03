@@ -69,14 +69,14 @@ module.exports = {
                 if (!groupMember) {
                     throw new HttpError.NotFound();
                 }
-                if (req.body.hidden != groupMember.hidden) {
+                if (typeof req.body.hidden !== 'undefined' && req.body.hidden != groupMember.hidden) {
                     return groupMember.update({
                         hidden: req.body.hidden
                     });
                 }
                 return groupMember;
             }).then(groupMember => {
-                if (req.body.cardId != groupMember.cardId) {
+                if (typeof req.body.cardId !== 'undefined' && req.body.cardId != groupMember.cardId) {
                     return db.namecard.findById(req.body.cardId)
                     .then(namecard => {
                         if (!namecard) {
