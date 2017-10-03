@@ -8,6 +8,7 @@ var Config = require('../config/config.js');
 var db = {};
 var connection = Config.database.connection;
 var options = Config.database.options;
+options.operatorsAliases = false;
 options.define = {
   paranoid: true,
   defaultScope: {
