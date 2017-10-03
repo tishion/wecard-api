@@ -18,21 +18,33 @@ module.exports = {
         200: function (req, res, callback) {
             db.AccessRequest.findAll({
                 where: {
-                    [db.sequelize.Op.or]: [{
+                    [db.sequelize.Op.or]: [
+                        {
                             fromUserId: req.session.userId
                         },
                         {
                             toUserId: req.session.userId
-                        }]
-                }
+                        }
+                    ]},
+                include: [
+                    {
+                        model: db.Namecard,
+                        as: 'ToNamecard',
+                    },
+                    {
+                        model: db.Namecard,
+                        as: 'FromNamecard',
+                    }
+                ]
             }).then(accessRequests => {
                 if (!accessRequests) {
                     throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
                 }
-
                 var result = accessRequests.map((item, index, input) => {
-
-                    return item.prune;
+                    var o = item.prune;
+                    o['toUserName'] = item.getToNameccard.name;
+                    o['fromUserName'] = item.getFromNamecard.name;
+                    return o;
                 });
                 return callback(null, {
                     responses: result
