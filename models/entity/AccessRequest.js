@@ -1,6 +1,6 @@
 'use strict'
 module.exports = function _AccessRequest(sequelize, DataTypes) {
-    return sequelize.define(
+    var AccessRequest = sequelize.define(
         'AccessRequest',
         {
             id: {
@@ -33,9 +33,16 @@ module.exports = function _AccessRequest(sequelize, DataTypes) {
         },
         {
             indexes: [{
-                fields: ['namecardId', 'fromUserId'],
+                fields: ['toNamecardId', 'fromNamecardId'],
                 unique: true
             }]
         }
     );
+    
+    AccessRequest.associate = function (db) {
+        AccessRequest.belongsTo(db.Namecard, {as: 'toNamecard', foreignKey: 'toNamecardId', targetKey: 'id'});
+        AccessRequest.belongsTo(db.Namecard, {aas: 'fromNamecard', foreignKey: 'fromNamecardId', targetKey: 'id'});
+    }
+
+    return AccessRequest;
 };

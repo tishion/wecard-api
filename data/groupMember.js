@@ -75,7 +75,7 @@ module.exports = {
                         db.Namecard.findById(req.body.cardId)
                     ]);
                 }
-            }).spread(groupMember, namecard => {
+            }).spread((groupMember, namecard) => {
                 if (!namecard) {
                     throw new HttpError.BadRequet(ErrorCode.err_namecardNotFound);                    
                 }
