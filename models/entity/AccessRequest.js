@@ -9,15 +9,19 @@ module.exports = function _AccessRequest(sequelize, DataTypes) {
                 allowNull: false,
                 primaryKey: true
             },
-            namecardId: {
-                type: DataTypes.UUID,
-                allowNull: false,
-            },
-            fromUserId: {
+            toNamecardId: {
                 type: DataTypes.UUID,
                 allowNull: false,
             },
             toUserId: {
+                type: DataTypes.UUID,
+                allowNull: false,
+            },
+            fromNamecardId: {
+                type: DataTypes.UUID,
+                allowNull: false,
+            },
+            fromUserId: {
                 type: DataTypes.UUID,
                 allowNull: false,
             },

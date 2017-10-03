@@ -18,7 +18,7 @@ module.exports = {
         200: function (req, res, callback) {
             db.AccessRequest.findAll({
                 where: {
-                    $or: [{
+                    [db.sequelize.Op.or]: [{
                             fromUserId: req.session.userId
                         },
                         {
@@ -29,7 +29,9 @@ module.exports = {
                 if (!accessRequests) {
                     throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
                 }
+
                 var result = accessRequests.map((item, index, input) => {
+
                     return item.prune;
                 });
                 return callback(null, {
@@ -54,26 +56,51 @@ module.exports = {
         200: function (req, res, callback) {
             var accessRequest = req.body;
 
-            return db.Namecard.findById(accessRequest.namecardId).then(namecard => {
-                if (!namecard) {
+            // Check the existence of the tareget namecard
+            return db.Namecard.findById(accessRequest.toNamecardId).then(toNamecard => {
+                if (!toNamecard) {
                     throw new HttpError.BadRequest(ErrorCode.err_namecardNotFound);
                 }
-                if (req.session.userId == namecard.userId) {
+                if (req.session.userId == toNamecard.userId) {
                     throw new HttpError.BadRequest(ErrorCode.err_selfRequestNotAllowed);
                 }
-                return db.AccessRequest.findOrCreate({
-                    where: {
-                        namecardId: accessRequest.namecardId,
-                        fromUserId: req.session.userId,
-                        toUserId: namecard.userId
-                    }
-                });
-            }).spread((request, created) => {
-                if (!created) {
+                // Check the ownership of the from Namecard
+                return Promise.all([
+                    toNamecard,
+                    db.Namecard.findOne({
+                        where: {
+                            id: accessRequest.fromNamecardId,
+                            userId: req.session.userId
+                        }
+                    })  
+                ]);
+            }).spread((toNamecard, fromNamecard) => {
+                if (!fromNamecard) {
+                    throw new HttpError.BadRequest(ErrorCode.err_namecardNotFound);                    
+                }
+                return Promise.all([
+                    toNamecard, 
+                    fromNamecard,
+                    db.AccessRequest.findOrCreate({
+                        where: {
+                            toNamecardId: toNamecard.id,
+                            fromNamecardId: fromNamecard.id,
+                        },
+                        default: {
+                            toUserId: toNamecard.userId,
+                            fromUserId: fromNamecard.userId
+                        }
+                    })
+                ]);
+            }).spread((toNameccard, fromNamecard, findOrCreateResult) => {
+                if (!findOrCreateResult[1]) {
                     throw new HttpError.Conflict('Already exist');
                 }
+                var result = findOrCreateResult[0].prune;
+                result['toUserName'] = toNameccard.name;
+                result['fromUserName'] = fromNamecard.name;
                 return callback(null, {
-                    responses: request.prune
+                    responses: result
                 });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));

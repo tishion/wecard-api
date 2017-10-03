@@ -237,7 +237,7 @@ paths:
           schema:
             $ref: '#/definitions/Group'
   /group/join:
-    get:
+    post:
       tags:
         - Group
       summary: Notify the server that the user has shared data to the group
@@ -509,11 +509,17 @@ definitions:
     properties:
       id:
         type: string
-      namecardId:
+      toNamecardId:
+        type: string
+      toUserId:
+        type: string
+      toUserName:
         type: string
       fromUserId:
         type: string
-      toUserId:
+      fromNamecardId:
+        type: string
+      fromUserName:
         type: string
       status:
         type: string
@@ -614,5 +620,7 @@ parameters:
     schema:
       type: object
       properties:
-        namecardId:
+        toNamecardId:
+          type: string
+        fromNamecardId:
           type: string
