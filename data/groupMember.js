@@ -29,7 +29,13 @@ module.exports = {
                 return db.GroupMember.findAll({
                     where: {
                         groupId: req.query.groupId,
-                    }
+                    },
+                    // include: [
+                    //     {
+                    //         model: db.Namecard,
+                    //         as: 'Namecard'
+                    //     }
+                    // ]
                 });
             }).then(groupMembers => {
                 if (!groupMembers) {
@@ -63,7 +69,7 @@ module.exports = {
                 if (!groupMember) {
                     throw new HttpError.NotFound();
                 }
-                if (req.body.hidden) {
+                if (req.body.hidden != groupMember.hidden) {
                     return groupMember.update({
                         hidden: req.body.hidden
                     });
@@ -84,7 +90,7 @@ module.exports = {
                 return groupMember;
             }).then(groupMember => {
                 return callback(null, {
-                    responses: groupMember
+                    responses: groupMember.prune
                 });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));

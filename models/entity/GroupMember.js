@@ -1,6 +1,6 @@
 'use strict'
 module.exports = function _GroupMember(sequelize, DataTypes) {
-    return sequelize.define(
+    var GroupMember = sequelize.define(
         'GroupMember',
         {
             id: {
@@ -34,4 +34,14 @@ module.exports = function _GroupMember(sequelize, DataTypes) {
             }]
         }
     );
+
+    // GroupMember.associate = function (db) {
+    //     GroupMember.belongsTo(db.Namecard, {
+    //         as: 'Namecard', 
+    //         foreignKey: 'cardId', 
+    //         targetKey: 'id'
+    //     });
+    // }
+
+    return GroupMember;
 };
