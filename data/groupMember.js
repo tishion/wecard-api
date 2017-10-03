@@ -68,20 +68,20 @@ module.exports = {
                         hidden: req.body.hidden
                     });
                 }
+                return groupMember;
             }).then(groupMember => {
-                if (req.body.cardId) {
-                    return Promise.all([
-                        groupMember,
-                        db.Namecard.findById(req.body.cardId)
-                    ]);
+                if (req.body.cardId && req.body.cardId != groupMember.cardId) {
+                    return db.namecard.findById(req.body.cardId)
+                    .then(namecard => {
+                        if (!namecard) {
+                            throw new HttpError.BadRequet(ErrorCode.err_namecardNotFound);                    
+                        }
+                        return groupMember.update({
+                            cardId: namecard.id
+                        });
+                    });
                 }
-            }).spread((groupMember, namecard) => {
-                if (!namecard) {
-                    throw new HttpError.BadRequet(ErrorCode.err_namecardNotFound);                    
-                }
-                return groupMember.update({
-                    cardId: namecard.id
-                });
+                return groupMember;
             }).then(groupMember => {
                 return callback(null, {
                     responses: groupMember
