@@ -33,7 +33,7 @@ module.exports = {
      * produces: 
      * responses: 200
      */
-    put: function groupMemeber_getbyGroupId(req, res, next) {
+    put: function groupMemeber_updateSelfInfo(req, res, next) {
         /**
          * Get the data for response 200
          * For response `default` status 200 is used.

@@ -236,6 +236,18 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Group'
+    put:
+      tags:
+        - Group
+      summary: Update group
+      operationId: group_update
+      parameters:
+        - $ref: '#/parameters/GroupUpdate'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Group'
   /group/join:
     post:
       tags:
@@ -281,7 +293,7 @@ paths:
       tags:
         - GroupMember
       summary: Update self group member info
-      operationId: groupMemeber_getbyGroupId
+      operationId: groupMemeber_updateSelfInfo
       parameters:
         - $ref: '#/parameters/GroupMemberUpdate'
       responses:
@@ -491,6 +503,8 @@ definitions:
         type: string
       wxGroupId:
         type: string
+      name:
+        type: string
   GroupMember:
     type: object
     properties:
@@ -512,8 +526,6 @@ definitions:
       toNamecardId:
         type: string
       toUserId:
-        type: string
-      toUserName:
         type: string
       fromUserId:
         type: string
@@ -589,13 +601,18 @@ parameters:
         - $ref: '#/definitions/CardcaseItem'
       required:
         - id
-  Group:
+  GroupUpdate:
     name: body
     in: body
     required: true
     description: The Group
     schema:
-      $ref: '#/definitions/Group'
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
   GroupMemberUpdate:
     name: body
     in: body

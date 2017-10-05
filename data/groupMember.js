@@ -60,7 +60,7 @@ module.exports = {
      * parameters: body
      * produces: 
      * responses: 200
-     * operationId: groupMemeber_getbyGroupId
+     * operationId: groupMemeber_updateSelfInfo
      */
     put: {
         200: function (req, res, callback) {

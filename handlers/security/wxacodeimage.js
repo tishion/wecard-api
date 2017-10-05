@@ -8,7 +8,7 @@ module.exports = {
      * summary: Get WX application QR code image
      * description: 
      * parameters: scene, page, width
-     * produces: application/jpeg
+     * produces: image/jpeg, application/json, text/json, image/jpeg, application/json, text/json
      * responses: 200
      */
     get: function security_getWxQRCodeImage(req, res, next) {

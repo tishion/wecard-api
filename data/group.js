@@ -33,5 +33,26 @@ module.exports = {
                 return callback(err);
             });
         }
+    },
+    /**
+     * summary: Update group
+     * description: 
+     * parameters: body
+     * produces: 
+     * responses: 200
+     * operationId: group_update
+     */
+    put: {
+        200: function (req, res, callback) {
+            /**
+             * Using mock data generator module.
+             * Replace this by actual data for the api.
+             */
+            Mockgen().responses({
+                path: '/group',
+                operation: 'put',
+                response: '200'
+            }, callback);
+        }
     }
 };

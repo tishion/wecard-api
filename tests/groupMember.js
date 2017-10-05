@@ -81,7 +81,7 @@ Test('/groupMember', function (t) {
          * produces: 
          * responses: 200
          */
-        t.test('test groupMemeber_getbyGroupId put operation', function (t) {
+        t.test('test groupMemeber_updateSelfInfo put operation', function (t) {
             Mockgen().requests({
                 path: '/groupMember',
                 operation: 'put'

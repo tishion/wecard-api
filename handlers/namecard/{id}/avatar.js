@@ -7,7 +7,7 @@ module.exports = {
     /**
      * summary: Create/Update the Namecard avatar
      * description: 
-     * parameters: id, file
+     * parameters: id, avatar
      * produces: 
      * responses: 200
      */
