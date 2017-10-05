@@ -42,8 +42,10 @@ module.exports = {
                 }
                 var result = accessRequests.map((item, index, input) => {
                     var o = item.prune;
-                    o['toUserName'] = item.getToNameccard.name;
-                    o['fromUserName'] = item.getFromNamecard.name;
+                    delete o.ToNamecard;
+                    delete o.FromNamecard;
+                    o['toUserName'] = item.ToNamecard.name;
+                    o['fromUserName'] = item.FromNamecard.name;
                     return o;
                 });
                 return callback(null, {
