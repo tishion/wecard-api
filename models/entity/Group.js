@@ -13,6 +13,10 @@ module.exports = function _Group(sequelize, DataTypes) {
                 type: DataTypes.CHAR,
                 allowNull: false,
                 unique: true
+            },
+            name: {
+                type: DataTypes.CHAR,
+                allowNull: false,
             }
         }
     );

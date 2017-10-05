@@ -44,15 +44,43 @@ module.exports = {
      */
     put: {
         200: function (req, res, callback) {
-            /**
-             * Using mock data generator module.
-             * Replace this by actual data for the api.
-             */
-            Mockgen().responses({
-                path: '/group',
-                operation: 'put',
-                response: '200'
-            }, callback);
+
+            return db.Group.findById(
+                req.body.id
+            ).then(group => {
+                if (!group) {
+                    throw new HttpError.NotFound();                    
+                }
+                return Promise.all([
+                    group,
+                    db.GroupMember.findOne({
+                        where: {
+                            id: req.body.id,
+                            userId: req.session.userId
+                        }
+                    })
+                ]);
+            }).spread((group, groupMember) => {
+                if (!groupMember) {
+                    throw new HttpError.Forbidden(ErrorCode.err_alienUserForbidden);
+                }
+
+                if (req.body.name) {
+                    throw new HttpError.BadRequest(ErrorCode.err_emptyNameNotAllowed);
+                }
+
+                return group.update({
+                    name: req.body.name
+                });
+            }).then(group => {
+                return callback(null, {
+                    responses: group.prune
+                });
+            }).catch(db.sequelize.Error, err => {
+                return callback(new HttpError.InternalServerError(err));
+            }).catch(err => {
+                return callback(err);
+            });
         }
     }
 };

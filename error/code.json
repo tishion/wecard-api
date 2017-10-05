@@ -69,6 +69,11 @@
         "message": "Need to join the group first"
     },
 
+    "err_emptyNameNotAllowed": {
+        "error": 80014,
+        "message": "Empty group name is not allowed"
+    },
+
     "err_databaseError": {
         "error": 80080,
         "message": "Database error"
