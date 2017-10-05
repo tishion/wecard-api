@@ -98,7 +98,7 @@ module.exports = {
                             toNamecardId: toNamecard.id,
                             fromNamecardId: fromNamecard.id,
                         },
-                        default: {
+                        defaults: {
                             toUserId: toNamecard.userId,
                             fromUserId: fromNamecard.userId
                         }

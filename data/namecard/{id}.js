@@ -28,8 +28,9 @@ module.exports = {
                         true,
                         db.AccessRequest.findOne({
                             where: {
-                                namecardId: namecard.id,
-                                fromUserId: req.session.userId
+                                toNamecardId: namecard.id,
+                                fromUserId: req.session.userId,
+                                status: 'ACCEPTED'
                             }
                         })
                     ]);

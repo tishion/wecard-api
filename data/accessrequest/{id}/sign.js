@@ -19,7 +19,7 @@ module.exports = {
             var operation = req.query.operation.toLowerCase();
             if ('accept' === operation) {
                 operation = 'ACCEPTED';
-            } else if ('reject' !== operation) {
+            } else if ('reject' === operation) {
                 operation = 'REJECTED';
             } else {
                 return callback(new HttpError.BadRequest(ErrorCode.err_invalideOperation));
