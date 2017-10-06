@@ -33,7 +33,7 @@
     },
     "tokenSecret": "lessismore",
     "database": {
-      "connection": "mysql://azure:6#vWHD_$@localhost:50354/localdb",
+      "connection": "mysql://localhost:50354/localdb",
       "options": {
         "username": "azure",
         "password": "6#vWHD_$",
