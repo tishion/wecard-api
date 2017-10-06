@@ -33,11 +33,11 @@
     },
     "tokenSecret": "lessismore",
     "database": {
-      "connection": "sqlite://wecard_dev.db",
+      "connection": "mysql://azure:6#vWHD_$@127.0.0.1:50354/localdb",
       "options": {
-        "username": "root",
-        "password": "wechatwecard",
-        "dialect": "sqlite"
+        "username": "azure",
+        "password": "6#vWHD_$",
+        "dialect": "mysql"
       }
     },
     "china": {
