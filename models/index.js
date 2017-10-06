@@ -6,7 +6,6 @@ var Sequelize = require('sequelize');
 var Config = require('../config/config.js');
 
 var db = {};
-var connection = Config.database.connection;
 var options = Config.database.options;
 options.operatorsAliases = false;
 options.define = {
@@ -27,7 +26,7 @@ options.define = {
     }
   }
 };
-var sequelize = new Sequelize(connection, options);
+var sequelize = new Sequelize(options);
 
 var entityFolderName = Path.join(__dirname, 'entity');
 Fs

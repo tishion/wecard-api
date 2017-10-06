@@ -12,8 +12,9 @@
     },
     "tokenSecret": "lessismore",
     "database": {
-      "connection": "sqlite://wecard_dev.db",
       "options": {
+        "database": "wecard_dev.db",
+        "storage": "wecard_dev.db",
         "username": "root",
         "password": "wechatwecard",
         "dialect": "sqlite"
@@ -33,8 +34,10 @@
     },
     "tokenSecret": "lessismore",
     "database": {
-      "connection": "mysql://localhost:50354/localdb",
       "options": {
+        "host": "localhost",
+        "port": 50354,
+        "database": "localdb",
         "username": "azure",
         "password": "6#vWHD_$",
         "dialect": "mysql"
