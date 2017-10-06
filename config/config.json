@@ -36,7 +36,7 @@
     "database": {
       "options": {
         "host": "localhost",
-        "port": 50354,
+        "port": 51556,
         "database": "localdb",
         "username": "azure",
         "password": "6#vWHD_$",
