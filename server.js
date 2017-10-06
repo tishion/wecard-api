@@ -14,7 +14,6 @@ var Config = require('./config/config.js');
 var ErrorHandler = require('./error/handler.js');
 var WxApi = require('./wx-api/wxApis.js');
 var db = require('./models');
-var Crypto = require("crypto");
 
 // Initialize the memory cache
 Cache.syncInit();
