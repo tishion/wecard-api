@@ -24,7 +24,7 @@ module.exports = {
             }).then(self => {
                 // If the current user doesn't exist in the group then reject the request
                 if (!self) {
-                    throw new HttpError.Forbidden(err_alienUserForbidden);
+                    throw new HttpError.Forbidden(ErrorCode.err_alienUserForbidden);
                 }
                 return db.GroupMember.findAll({
                     where: {
