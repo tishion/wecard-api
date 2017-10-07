@@ -516,6 +516,8 @@ definitions:
         type: string
       toUserId:
         type: string
+      toUserName:
+        type: string
       fromUserId:
         type: string
       fromNamecardId:
@@ -574,12 +576,14 @@ parameters:
     required: true
     description: The Cardcase
     schema:
-      allOf:
-        - $ref: '#/definitions/CardcaseItem'
-      required: 
-        - itemId
-        - itemType
-        - cardcaseId
+      type: object
+      properties:
+        itemId:
+          type: string
+        itemType:
+          type: string
+        cardcaseId:
+          type: string
   GroupUpdate:
     name: body
     in: body

@@ -19,7 +19,7 @@ consumes:
   - application/json
   - text/json
 produces:
-  - 'application/json, text/json'
+  - application/json, text/json
   - application/json
   - text/json
 paths:
@@ -48,7 +48,7 @@ paths:
       summary: Get WX application QR code image
       operationId: security_getWxQRCodeImage
       produces:
-        - 'image/jpeg, application/json, text/json'
+        - image/jpeg, application/json, text/json
         - image/jpeg
         - application/json
         - text/json
@@ -396,6 +396,7 @@ paths:
       responses:
         '200':
           description: OK
+
 definitions:
   UserInfo:
     type: object
@@ -459,7 +460,7 @@ definitions:
       interests:
         type: array
         items:
-          type: string
+          type: string 
   Cardcase:
     type: object
     properties:
@@ -514,6 +515,8 @@ definitions:
       toNamecardId:
         type: string
       toUserId:
+        type: string
+      toUserName:
         type: string
       fromUserId:
         type: string
@@ -573,12 +576,14 @@ parameters:
     required: true
     description: The Cardcase
     schema:
-      allOf:
-        - $ref: '#/definitions/CardcaseItem'
-      required:
-        - itemId
-        - itemType
-        - cardcaseId
+      type: object
+      properties:
+        itemId:
+          type: string
+        itemType:
+          type: string
+        cardcaseId:
+          type: string
   GroupUpdate:
     name: body
     in: body

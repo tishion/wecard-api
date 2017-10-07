@@ -116,10 +116,6 @@ module.exports = {
                             cardcaseId: cardcaseItem.cardcaseId,
                             itemType: cardcaseItem.itemType,
                             itemId: cardcaseItem.itemId
-                        },
-                        defaults: {
-                            name: cardcaseItem.name,
-                            thumbnail: cardcaseItem.thumbnail
                         }
                     });
                 }).spread((item, created) => {
