@@ -58,7 +58,7 @@ module.exports = {
                     group,
                     db.GroupMember.findOne({
                         where: {
-                            id: req.body.id,
+                            groupId: req.body.id,
                             userId: req.session.userId
                         }
                     })
