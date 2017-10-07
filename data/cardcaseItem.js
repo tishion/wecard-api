@@ -51,8 +51,8 @@ module.exports = {
                     }
                     else if ('GROUP' === o.itemType) {
                         if (item.Group) {
-                            o['name'] = item.Namecard.name;
-                            o['thumbnail'] = item.Namecard.avatarUri;
+                            o['name'] = item.Group.name;
+                            o['thumbnail'] = '';
                         }
                     }
                     else {
