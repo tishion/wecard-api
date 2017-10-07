@@ -68,7 +68,9 @@ module.exports = {
                     throw new HttpError.Forbidden(ErrorCode.err_alienUserForbidden);
                 }
                 if (req.body.name) {
-                    throw new HttpError.BadRequest(ErrorCode.err_emptyNameNotAllowed);
+                    if (null == req.body.name || '' == req.body.name) {
+                        throw new HttpError.BadRequest(ErrorCode.err_emptyNameNotAllowed);                        
+                    }
                 }
                 return group.update({
                     name: req.body.name
