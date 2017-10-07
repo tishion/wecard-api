@@ -19,6 +19,9 @@ module.exports = {
             return db.Group.findOrCreate({
                 where: {
                     wxGroupId: req.query.wxGroupId,
+                },
+                defaults: {
+                    name: ""
                 }
             }).spread((group, created) => {
                 if (!group) {
