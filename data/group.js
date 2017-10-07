@@ -67,11 +67,9 @@ module.exports = {
                 if (!groupMember) {
                     throw new HttpError.Forbidden(ErrorCode.err_alienUserForbidden);
                 }
-
                 if (req.body.name) {
                     throw new HttpError.BadRequest(ErrorCode.err_emptyNameNotAllowed);
                 }
-
                 return group.update({
                     name: req.body.name
                 });
