@@ -37,7 +37,7 @@ module.exports = {
                 if (!cardcaseItems) {
                     throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
                 }
-                var result = cardcaseItems.reduce((item, r) => {
+                var result = cardcaseItems.reduce((r, item) => {
                     var o = item.prune;
                     delete o.Namecard;
                     delete o.Group;
