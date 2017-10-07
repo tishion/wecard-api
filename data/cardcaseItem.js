@@ -18,23 +18,6 @@ module.exports = {
      */
     get: {
         200: function (req, res, callback) {
-            var l = [];
-            for (var i = 0; i < 50; i++) {
-                l.push({
-                    id: Uuid.v4(),
-                    userId: Uuid.v4(),
-                    cardcaseId: req.query.cardcaseId,
-                    itemId: Uuid.v4(),
-                    itemType: ['CARD', 'GROUP'][i % 2],
-                    name: ['MockCard', 'MockGroup'][i % 2],
-                    thumbnail: 'https://cdnjs.cloudflare.com/ajax/libs/emojione/2.2.7/assets/png/' + emoji[i+8]
-                });
-            }
-
-            return callback(null, {
-                responses: l
-            });
-
             db.CardcaseItem.findAll({
                 where: {
                     cardcaseId: req.query.cardcaseId,

@@ -39,7 +39,7 @@ module.exports = {
                 });
             }).then(groupMember => {
                 return callback(null, {
-                    responses: groupMember
+                    responses: groupMember.prune
                 });
             }).catch(db.sequelize.Error, err => {
                 return callback(new HttpError.InternalServerError(err));
