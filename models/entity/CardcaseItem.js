@@ -39,12 +39,14 @@ module.exports = function _CardcaseItem(sequelize, DataTypes) {
         CardcaseItem.belongsTo(db.Namecard, {
             as: 'Namecard', 
             foreignKey: 'itemId', 
-            targetKey: 'id'
+            targetKey: 'id',
+            constraints: false            
         });
         CardcaseItem.belongsTo(db.Group, {
             as: 'Group', 
             foreignKey: 'itemId', 
-            targetKey: 'id'
+            targetKey: 'id',
+            constraints: false            
         });
     }
 

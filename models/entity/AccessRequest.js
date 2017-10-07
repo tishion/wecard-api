@@ -43,12 +43,14 @@ module.exports = function _AccessRequest(sequelize, DataTypes) {
         AccessRequest.belongsTo(db.Namecard, {
             as: 'ToNamecard', 
             foreignKey: 'toNamecardId', 
-            targetKey: 'id'
+            targetKey: 'id',
+            constraints: false
         });
         AccessRequest.belongsTo(db.Namecard, {
             as: 'FromNamecard', 
             foreignKey: 'fromNamecardId', 
-            targetKey: 'id'
+            targetKey: 'id',
+            constraints: false
         });
     }
 
