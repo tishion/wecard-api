@@ -22,14 +22,46 @@ module.exports = {
                 where: {
                     cardcaseId: req.query.cardcaseId,
                     userId: req.session.userId
-                }
+                },
+                include: [
+                    {
+                        model: db.Namecard,
+                        as: 'Namecard',
+                    },
+                    {
+                        model: db.Group,
+                        as: 'Group',
+                    }
+                ]
             }).then(cardcaseItems => {
                 if (!cardcaseItems) {
                     throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
                 }
-                var result = cardcaseItems.map((item, index, input) => {
-                    return item.prune;
-                });
+                var result = cardcaseItems.reduce((item, r) => {
+                    var o = item.prune;
+                    delete o.Namecard;
+                    delete o.Group;
+                    o['name'] = undefined
+                    o['thumbnail'] = undefined
+                    if ('CARD' === o.itemType) {
+                        if (item.Namecard) {
+                            o['name'] = item.Namecard.name;
+                            o['thumbnail'] = item.Namecard.avatarUri;
+                        }
+                    }
+                    else if ('GROUP' === o.itemType) {
+                        if (item.Group) {
+                            o['name'] = item.Namecard.name;
+                            o['thumbnail'] = item.Namecard.avatarUri;
+                        }
+                    }
+                    else {
+                        // Skip the invalid item
+                        return r;
+                    }
+                    r.push(o);
+                    return r;
+                }, []);
                 return callback(null, {
                     responses: result
                 });
@@ -102,47 +134,6 @@ module.exports = {
                 }).catch(err => {
                     return callback(err);
                 });
-        }
-    },
-    /**
-     * summary: Update a CardcaseItem in Cardcase
-     * description: 
-     * parameters: body
-     * produces: 
-     * responses: 200
-     * operationId: cardcaseItem_update
-     */
-    put: {
-        200: function (req, res, callback) {
-            var cardcaseItem = req.body;
-            return db.CardcaseItem.findOne({
-                where: {
-                    id: cardcaseItem.id,
-                    userId: req.session.userId,
-                }
-            }).then(original => {
-                if (!original) {
-                    throw new HttpError.NotFound();
-                }
-                // Update attributes
-                for (var attr in cardcaseItem) {
-                    if (original.rawAttributes.hasOwnProperty(attr)) {
-                        original[attr] = cardcaseItem[attr];
-                    }
-                }
-                return original.save();
-            }).then(updated => {
-                if (!updated) {
-                    throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
-                }
-                return callback(null, {
-                    responses: updated.prune
-                });
-            }).catch(db.sequelize.Error, err => {
-                return callback(new HttpError.InternalServerError(err));
-            }).catch(err => {
-                return callback(err);
-            });
         }
     }
 };

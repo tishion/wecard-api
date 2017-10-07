@@ -194,18 +194,6 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/CardcaseItem'
-    put:
-      tags:
-        - CardcaseItem
-      summary: Update a CardcaseItem in Cardcase
-      operationId: cardcaseItem_update
-      parameters:
-        - $ref: '#/parameters/CardcaseItemUpdate'
-      responses:
-        '200':
-          description: OK
-          schema:
-            $ref: '#/definitions/CardcaseItem'
   '/cardcaseItem/{id}':
     delete:
       tags:
@@ -591,16 +579,6 @@ parameters:
         - itemId
         - itemType
         - cardcaseId
-  CardcaseItemUpdate:
-    name: body
-    in: body
-    required: true
-    description: The Cardcase
-    schema:
-      allOf:
-        - $ref: '#/definitions/CardcaseItem'
-      required:
-        - id
   GroupUpdate:
     name: body
     in: body

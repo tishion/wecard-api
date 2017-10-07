@@ -25,7 +25,8 @@ module.exports = {
                         {
                             toUserId: req.session.userId
                         }
-                    ]},
+                    ]
+                },
                 include: [
                     {
                         model: db.Namecard,

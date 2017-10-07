@@ -1,6 +1,6 @@
 'use strict'
 module.exports = function _CardcaseItem(sequelize, DataTypes) {
-    return sequelize.define(
+    var CardcaseItem = sequelize.define(
         'CardcaseItem',
         {
             id: {
@@ -25,14 +25,6 @@ module.exports = function _CardcaseItem(sequelize, DataTypes) {
                 type: DataTypes.ENUM('CARD', 'GROUP'),
                 defaultValue: 'CARD',
                 allowNull: false,
-            },
-            name: {
-                type: DataTypes.CHAR,
-                allowNull: false,
-            },
-            thumbnail: {
-                type: DataTypes.STRING,
-                allowNull: false,
             }
         },
         {
@@ -42,4 +34,19 @@ module.exports = function _CardcaseItem(sequelize, DataTypes) {
             }]
         }
     );
+
+    CardcaseItem.associate = function (db) {
+        CardcaseItem.belongsTo(db.Namecard, {
+            as: 'Namecard', 
+            foreignKey: 'itemId', 
+            targetKey: 'id'
+        });
+        CardcaseItem.belongsTo(db.Group, {
+            as: 'Group', 
+            foreignKey: 'itemId', 
+            targetKey: 'id'
+        });
+    }
+
+    return CardcaseItem;
 };

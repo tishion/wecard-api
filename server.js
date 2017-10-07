@@ -3,7 +3,7 @@
 var Http = require('http');
 var Express = require('express');
 var Logger = require('morgan');
-var Multer  = require('multer')
+var Multer = require('multer')
 var BodyParser = require('body-parser');
 var Swaggerize = require('./rebind_modules/swaggerize-express');
 var SwaggerizeUi = require('swaggerize-ui');
@@ -47,14 +47,19 @@ var App = Express()
     // Set global erro hanlder
     .use(ErrorHandler.globalErrorHadler);
 
-// Start the server
-Http.createServer(App)
-    .listen(Config.port, function () {
-        App.swagger.api.host = Config.host;
-        if (this.address().port != undefined) {
-            App.swagger.api.host += (':' + this.address().port);
-        }
-        /* eslint-disable no-console */
-        console.log('App running on %s', App.swagger.api.host);
-        /* eslint-disable no-console */
-    });
+// Sync the database
+db.sequelize.sync().then(() => {
+    // Start the server
+    Http.createServer(App)
+        .listen(Config.port, function () {
+            App.swagger.api.host = Config.host;
+            if (this.address().port != undefined) {
+                App.swagger.api.host += (':' + this.address().port);
+            }
+            /* eslint-disable no-console */
+            console.log('App running on %s', App.swagger.api.host);
+            /* eslint-disable no-console */
+        });
+}).catch(err => {
+    console.log("Failed to sync the database!");
+});
