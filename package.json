@@ -2,7 +2,7 @@
   "name": "wecard-api",
   "description": "",
   "version": "1.0.0",
-  "author": "sheen <limshion@gmail.com>",
+  "author": "Sheen Tian <sheentianshen@gmail.com>",
   "license": "MIT",
   "contributors": [],
   "repository": {
@@ -34,7 +34,8 @@
     "swaggerize-express": "^4.0.0",
     "swaggerize-ui": "^1.0.1",
     "swagmock": "~0.0.2",
-    "uuid": "^3.1.0"
+    "uuid": "^3.1.0",
+    "winston": "^2.4.0"
   },
   "devDependencies": {
     "eslint": "^2",

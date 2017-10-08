@@ -19,7 +19,7 @@ consumes:
   - application/json
   - text/json
 produces:
-  - application/json, text/json
+  - 'application/json, text/json'
   - application/json
   - text/json
 paths:
@@ -48,7 +48,7 @@ paths:
       summary: Get WX application QR code image
       operationId: security_getWxQRCodeImage
       produces:
-        - image/jpeg, application/json, text/json
+        - 'image/jpeg, application/json, text/json'
         - image/jpeg
         - application/json
         - text/json
@@ -236,6 +236,19 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Group'
+  '/group/{id}':
+    get:
+      tags:
+        - Group
+      summary: Get the Group by id
+      operationId: group_getById
+      parameters:
+        - $ref: '#/parameters/EntityId'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Group'
   /group/join:
     post:
       tags:
@@ -396,7 +409,6 @@ paths:
       responses:
         '200':
           description: OK
-
 definitions:
   UserInfo:
     type: object
@@ -460,7 +472,7 @@ definitions:
       interests:
         type: array
         items:
-          type: string 
+          type: string
   Cardcase:
     type: object
     properties:

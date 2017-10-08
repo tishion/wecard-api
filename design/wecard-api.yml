@@ -236,6 +236,19 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/Group'
+  '/group/{id}':
+    get:
+      tags:
+        - Group
+      summary: Get the Group by id
+      operationId: group_getById
+      parameters:
+        - $ref: '#/parameters/EntityId'
+      responses:
+        '200':
+          description: OK
+          schema:
+            $ref: '#/definitions/Group'
   /group/join:
     post:
       tags:
