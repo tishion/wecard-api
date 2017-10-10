@@ -71,7 +71,7 @@ module.exports = {
                 return groupMember;
             }).then(groupMember => {
                 if (typeof req.body.cardId !== 'undefined' && req.body.cardId != groupMember.cardId) {
-                    return db.namecard.findById(req.body.cardId)
+                    return db.Namecard.findById(req.body.cardId)
                     .then(namecard => {
                         if (!namecard) {
                             throw new HttpError.BadRequet(ErrorCode.err_namecardNotFound);                    
