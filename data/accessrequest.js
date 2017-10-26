@@ -41,14 +41,19 @@ module.exports = {
                 if (!accessRequests) {
                     throw new HttpError.InternalServerError(ErrorCode.err_databaseError);
                 }
-                var result = accessRequests.map((item, index, input) => {
+                var result = accessRequests.reduce((r, item) => {
+                    if (!item.ToNamecard || !item.FromNamecard) {
+                        // Skip the invalid item
+                        return r;
+                    }
                     var o = item.prune;
                     delete o.ToNamecard;
                     delete o.FromNamecard;
                     o['toUserName'] = item.ToNamecard.name;
                     o['fromUserName'] = item.FromNamecard.name;
-                    return o;
-                });
+                    r.push(o);
+                    return r;
+                }, []);
                 return callback(null, {
                     responses: result
                 });
