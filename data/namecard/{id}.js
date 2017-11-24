@@ -43,7 +43,12 @@ module.exports = {
                 }
             }).spread((namecard, needCheck, accessRequest) => {
                 if (needCheck && !accessRequest) {
-                    delete namecard.dataValues.phone;
+                    if (namecard.dataValues.phone.length >= 11) {
+                        namecard.dataValues.phone = namecard.dataValues.phone.substring(0, 3) + '****' + namecard.dataValues.phone.substring(7, 4);                        
+                    } else {
+                        namecard.dataValues.phone = "-";
+                    }
+                    //delete namecard.dataValues.phone;                        
                 }
 
                 return callback(null, {
