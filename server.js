@@ -1,7 +1,8 @@
 'use strict';
 
-var Http = require('http');
+var Https = require('https');
 var Express = require('express');
+var ForceSsl = require('express-force-ssl');
 var Logger = require('morgan');
 var Multer = require('multer')
 var BodyParser = require('body-parser');
@@ -22,6 +23,8 @@ Cache.syncInit();
 var App = Express()
     // Add logger
     .use(Logger('dev'))
+    // foce SSL
+    .use(ForceSsl)
     // Add JSON parser
     .use(BodyParser.json())
     // Add encoded URL parser
@@ -47,10 +50,17 @@ var App = Express()
     // Set global erro hanlder
     .use(ErrorHandler.globalErrorHadler);
 
+var Opts = {
+    key: FileSystem.readFileSync("F:/Projects/repository_vsts/wecard/ssl_cert/xiaona.xinzhibang168.com.key"),
+    cert: FileSystem.readFileSync("F:/Projects/repository_vsts/wecard/ssl_cert/xiaona.xinzhibang168.com.crt"),
+    ca: FileSystem.readFileSync("F:/Projects/repository_vsts/wecard/ssl_cert/ca.crt"),
+};
+
+
 // Sync the database
-db.sequelize.sync().then(() => {
+db.sequelize.sync({ force: true }).then(() => {
     // Start the server
-    Http.createServer(App)
+    Https.createServer(Opts, App)
         .listen(Config.port, function () {
             App.swagger.api.host = Config.host;
             if (this.address().port != undefined) {
@@ -61,5 +71,5 @@ db.sequelize.sync().then(() => {
             /* eslint-disable no-console */
         });
 }).catch(err => {
-    console.log("Failed to sync the database!");
+    console.log("Failed to start server:\r\n  " + err);
 });
