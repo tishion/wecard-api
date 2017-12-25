@@ -51,9 +51,9 @@ var App = Express()
     .use(ErrorHandler.globalErrorHadler);
 
 var Opts = {
-    key: FileSystem.readFileSync("F:/Projects/repository_vsts/wecard/ssl_cert/xiaona.xinzhibang168.com.key"),
-    cert: FileSystem.readFileSync("F:/Projects/repository_vsts/wecard/ssl_cert/xiaona.xinzhibang168.com.crt"),
-    ca: FileSystem.readFileSync("F:/Projects/repository_vsts/wecard/ssl_cert/ca.crt"),
+    key: FileSystem.readFileSync(Path.resolve(Config.ssl.key)),
+    cert: FileSystem.readFileSync(Path.resolve(Config.ssl.cert)),
+    ca: FileSystem.readFileSync(Path.resolve(Config.ssl.ca)),
 };
 
 
