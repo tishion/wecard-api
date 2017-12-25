@@ -8,3 +8,4 @@ wecard_dev.db
 launch.json
 settings.json
 /.vscode
+/package-lock.json
