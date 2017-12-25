@@ -3,9 +3,9 @@
     "host": "localhost",
     "port": 443,
     "ssl": {
-      "key": "config/certs/1_root_bundle.crt",
+      "key": "config/certs/3_xiaona.xinzhibang168.com.key",
       "cert": "config/certs/2_xiaona.xinzhibang168.com.crt",
-      "ca": "config/certs/3_xiaona.xinzhibang168.com.key"
+      "ca": "config/certs/1_root_bundle.crt"
     },
     "appId": "wx35466fb977fbe38c",
     "appSecret": "8d28e9cc2d907f212de2e8a95df367f7",
@@ -31,9 +31,9 @@
     "host": "xiaona.xinzhibang163.com",
     "port": 443,
     "ssl": {
-      "key": "config/certs/1_root_bundle.crt",
+      "key": "config/certs/3_xiaona.xinzhibang168.com.key",
       "cert": "config/certs/2_xiaona.xinzhibang168.com.crt",
-      "ca": "config/certs/3_xiaona.xinzhibang168.com.key"
+      "ca": "config/certs/1_root_bundle.crt"
     },
     "appId": "wx35466fb977fbe38c",
     "appSecret": "8d28e9cc2d907f212de2e8a95df367f7",
