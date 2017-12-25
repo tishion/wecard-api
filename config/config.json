@@ -27,7 +27,7 @@
     "mockWxAuth": true
   },
   "production": {
-    "host": "wecard-dev.azurewebsites.net",
+    "host": "xiaona.xinzhibang163.com",
     "port": 443,
     "ssl": {
       "cert": "",
@@ -46,8 +46,8 @@
       "options": {
         "host": "localhost",
         "port": 51556,
-        "database": "localdb",
-        "username": "azure",
+        "database": "knowmewell",
+        "username": "knowmewell",
         "password": "6#vWHD_$",
         "dialect": "mysql"
       }
