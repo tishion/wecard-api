@@ -58,7 +58,7 @@ var Opts = {
 
 
 // Sync the database
-db.sequelize.sync({ force: true }).then(() => {
+db.sequelize.sync({ force: false }).then(() => {
     // Start the server
     Https.createServer(Opts, App)
         .listen(Config.port, function () {
