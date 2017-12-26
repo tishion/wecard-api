@@ -1,5 +1,6 @@
 [Unit]
 Description=Wecard API serice
+After=network.target
 
 [Service]
 ExecStart=/var/www/wecard-api/server.js
