@@ -28,7 +28,7 @@
     "mockWxAuth": true
   },
   "production": {
-    "host": "xiaona.xinzhibang163.com",
+    "host": "xiaona.xinzhibang168.com",
     "port": 443,
     "ssl": {
       "key": "config/certs/3_xiaona.xinzhibang168.com.key",
