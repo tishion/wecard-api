@@ -35,8 +35,8 @@
       "cert": "config/certs/2_xiaona.xinzhibang168.com.crt",
       "ca": "config/certs/1_root_bundle.crt"
     },
-    "appId": "wx35466fb977fbe38c",
-    "appSecret": "8d28e9cc2d907f212de2e8a95df367f7",
+    "appId": "wxc61cbfcf4c451843",
+    "appSecret": "61ccd2f8569fbbdd3355a702f6334430",
     "storage": {
       "bucket": "wecard",
       "appId": "1251252517",
