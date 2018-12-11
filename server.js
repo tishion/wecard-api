@@ -50,11 +50,11 @@ var App = Express()
     // Set global erro hanlder
     .use(ErrorHandler.globalErrorHadler);
 
-var Opts = {
-    key: FileSystem.readFileSync(Path.resolve(Config.ssl.key)),
-    cert: FileSystem.readFileSync(Path.resolve(Config.ssl.cert)),
-    ca: FileSystem.readFileSync(Path.resolve(Config.ssl.ca)),
-};
+//var Opts = {
+//    key: FileSystem.readFileSync(Path.resolve(Config.ssl.key)),
+//    cert: FileSystem.readFileSync(Path.resolve(Config.ssl.cert)),
+//    ca: FileSystem.readFileSync(Path.resolve(Config.ssl.ca)),
+//};
 
 
 // Sync the database
