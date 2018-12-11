@@ -60,7 +60,7 @@ var App = Express()
 // Sync the database
 db.sequelize.sync({ force: false }).then(() => {
     // Start the server
-    Https.createServer(Opts, App)
+    Https.createServer(/*Opts,*/ App)
         .listen(Config.port, function () {
             App.swagger.api.host = Config.host;
             if (this.address().port != undefined) {
