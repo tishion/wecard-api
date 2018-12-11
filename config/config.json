@@ -1,12 +1,7 @@
 {
   "development": {
     "host": "localhost",
-    "port": 443,
-    "ssl": {
-      "key": "config/certs/3_xiaona.xinzhibang168.com.key",
-      "cert": "config/certs/2_xiaona.xinzhibang168.com.crt",
-      "ca": "config/certs/1_root_bundle.crt"
-    },
+    "port": 8000,
     "appId": "wx35466fb977fbe38c",
     "appSecret": "8d28e9cc2d907f212de2e8a95df367f7",
     "storage": {
@@ -28,15 +23,9 @@
     "mockWxAuth": true
   },
   "production": {
-    "host": "xiaona.xinzhibang168.com",
-    "port": 443,
-    "ssl": {
-      "key": "config/certs/3_xiaona.xinzhibang168.com.key",
-      "cert": "config/certs/2_xiaona.xinzhibang168.com.crt",
-      "ca": "config/certs/1_root_bundle.crt"
-    },
-    "appId": "wxc61cbfcf4c451843",
-    "appSecret": "61ccd2f8569fbbdd3355a702f6334430",
+    "host": "wecard-dev.azurewebsites.net",
+    "appId": "wx35466fb977fbe38c",
+    "appSecret": "8d28e9cc2d907f212de2e8a95df367f7",
     "storage": {
       "bucket": "wecard",
       "appId": "1251252517",
@@ -48,8 +37,8 @@
       "options": {
         "host": "localhost",
         "port": 51556,
-        "database": "knowmewell",
-        "username": "knowmewell",
+        "database": "localdb",
+        "username": "azure",
         "password": "6#vWHD_$",
         "dialect": "mysql"
       }
