@@ -22,7 +22,7 @@
     "mockWxAuth": true
   },
   "production": {
-    "host": "localhost",
+    "host": "wecard-dev.azurewebsites.net",
     "appId": "wx35466fb977fbe38c",
     "appSecret": "8d28e9cc2d907f212de2e8a95df367f7",
     "storage": {
