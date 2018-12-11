@@ -24,7 +24,7 @@ var App = Express()
     // Add logger
     .use(Logger('dev'))
     // foce SSL
-    .use(ForceSsl)
+    //.use(ForceSsl)
     // Add JSON parser
     .use(BodyParser.json())
     // Add encoded URL parser
